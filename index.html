@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ragnarok Solo</title>
+    <meta name="description" content="Solo prototype web app for Ragnarok.">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Ragnarok Solo</p>
+          <h1 id="deckTitle">Choose Deck</h1>
+        </div>
+        <div class="top-actions">
+          <button id="menuBtn" class="ghost-btn" type="button" title="Menu">M</button>
+          <button id="newGameBtn" class="ghost-btn" type="button" title="Restart">R</button>
+          <button id="deckViewerBtn" class="ghost-btn" type="button" title="View deck">D</button>
+          <button id="rulesBtn" class="ghost-btn" type="button" title="Open reference">I</button>
+        </div>
+      </header>
+
+      <section id="startScreen" class="start-screen" aria-label="Deck selection">
+        <div class="start-copy">
+          <p class="eyebrow">Setup</p>
+          <h2>Select your deck</h2>
+          <p>Choose a God deck, inspect its cards, and begin a solo game.</p>
+        </div>
+        <div id="deckChoices" class="deck-choice-grid"></div>
+        <div class="start-actions">
+          <button id="startGameBtn" class="primary-btn" type="button">Start Game</button>
+          <button id="menuDeckViewerBtn" class="secondary-btn" type="button">View Full Deck</button>
+          <button id="monsterDeckViewerBtn" class="secondary-btn" type="button">View Monster Deck</button>
+          <button id="worldDeckViewerBtn" class="secondary-btn" type="button">View World Deck</button>
+          <button id="scoresStatsBtn" class="secondary-btn" type="button">High Scores &amp; Statistics</button>
+        </div>
+      </section>
+
+      <section id="gameScreen" class="game-screen is-hidden" aria-label="Game">
+        <section class="score-strip" aria-label="Game state">
+          <div><span id="roundStat">1/7</span><small>Round</small></div>
+          <div><span id="vikingsStat">0</span><small>Vikings</small></div>
+          <div><span id="combatStat">1</span><small>Fights</small></div>
+          <div><span id="vpStat">0</span><small>Estimated VP</small></div>
+          <div><span id="deckStat">0</span><small>Deck</small></div>
+        </section>
+
+        <section class="main-grid">
+          <section class="play-area" aria-label="Turn">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Hand</p>
+                <h2 id="phaseTitle">Choose 1 card</h2>
+              </div>
+              <div class="choice-actions hand-actions">
+                <button id="mulliganBtn" class="secondary-btn" type="button">Mulligan</button>
+                <button id="advanceBtn" class="primary-btn" type="button">Play Other 3</button>
+              </div>
+            </div>
+            <div id="hand" class="card-row"></div>
+
+            <div class="reserved-band">
+              <div>
+                <p class="eyebrow">Reserved card</p>
+                <div id="reservedSlot" class="empty-slot">No card selected</div>
+              </div>
+              <div class="choice-actions">
+                <button id="valhallaBtn" class="primary-btn" type="button">Valhalla</button>
+                <button id="banishBtn" class="secondary-btn" type="button">Banish +2</button>
+              </div>
+            </div>
+
+            <section class="player-board" aria-label="God recap">
+              <div class="section-head compact">
+                <div>
+                  <p class="eyebrow">In Play</p>
+                  <h2>God Recap</h2>
+                </div>
+              </div>
+              <img id="godRecapImg" class="god-recap-img" src="assets/heimdall-recap.jpg" alt="Heimdall recap">
+            </section>
+
+            <div class="table-split">
+              <section>
+                <div class="section-head compact">
+                  <div>
+                    <p class="eyebrow">Central Board</p>
+                    <h2>Worlds and Linked Monsters</h2>
+                  </div>
+                  <div class="choice-actions">
+                    <button id="passMonsterBtn" class="secondary-btn" type="button">Pass Monster</button>
+                    <button id="passWorldBtn" class="secondary-btn" type="button">Pass World</button>
+                  </div>
+                </div>
+                <div id="availableWorlds" class="available-worlds"></div>
+                <div id="battlefield" class="battlefield"></div>
+              </section>
+            </div>
+          </section>
+
+          <aside class="side-panel" aria-label="Player area">
+            <section id="finalScoreBreakdown" class="final-score is-hidden" aria-label="Final score breakdown"></section>
+            <section>
+              <div class="section-head compact">
+                <div>
+                  <p class="eyebrow">Valhalla</p>
+                  <h2 id="valhallaTitle">0 cards</h2>
+                </div>
+              </div>
+              <div id="valhalla" class="mini-list"></div>
+            </section>
+
+            <section>
+              <div class="section-head compact">
+                <div>
+                  <p class="eyebrow">Monsters</p>
+                  <h2 id="trophyTitle">0 VP</h2>
+                </div>
+              </div>
+              <div id="trophies" class="mini-list"></div>
+            </section>
+
+            <section>
+              <div class="section-head compact">
+                <div>
+                  <p class="eyebrow">Log</p>
+                  <h2>Turn</h2>
+                </div>
+              </div>
+              <ol id="log" class="log"></ol>
+            </section>
+          </aside>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="deckDialog">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">Deck Archive</p>
+          <h2 id="deckDialogTitle">Heimdall</h2>
+        </div>
+        <button id="closeDeckBtn" class="ghost-btn" type="button" title="Close">X</button>
+      </div>
+      <div id="deckViewer" class="deck-viewer"></div>
+    </dialog>
+
+    <dialog id="friggChoiceDialog" class="choice-dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">Frigg Power</p>
+          <h2>Choose one effect</h2>
+        </div>
+      </div>
+      <div class="frigg-power-actions">
+        <button id="friggVikingsBtn" class="primary-btn" type="button">Gain 2 Vikings</button>
+        <div>
+          <p class="eyebrow">Play from exile for free</p>
+          <div id="friggExileChoices" class="exile-choice-list"></div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="scoresStatsDialog" class="scores-dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">History</p>
+          <h2>High Scores &amp; Statistics</h2>
+        </div>
+        <button id="closeScoresStatsBtn" class="ghost-btn" type="button" title="Close">X</button>
+      </div>
+      <section class="high-scores" aria-label="High scores">
+        <div class="section-head compact">
+          <h2>High Scores</h2>
+          <div class="choice-actions">
+            <span id="completedGamesCount" class="pill">0 games</span>
+            <button id="resetScoresBtn" class="danger-btn compact-btn" type="button">Reset Scores</button>
+          </div>
+        </div>
+        <div id="highScoresList" class="high-score-list"></div>
+      </section>
+      <section class="deck-statistics" aria-label="Deck statistics">
+        <div class="section-head compact">
+          <div>
+            <p class="eyebrow">Statistics</p>
+            <h2>Deck Performance</h2>
+          </div>
+        </div>
+        <div id="deckStatistics" class="deck-stat-list"></div>
+      </section>
+    </dialog>
+
+    <dialog id="resetScoresDialog" class="confirm-dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">High Scores</p>
+          <h2>Reset all scores?</h2>
+        </div>
+      </div>
+      <p>This permanently removes every completed game and all deck statistics from this browser.</p>
+      <div class="confirm-actions">
+        <button id="cancelResetScoresBtn" class="secondary-btn" type="button">Cancel</button>
+        <button id="confirmResetScoresBtn" class="danger-btn" type="button">Reset Scores</button>
+      </div>
+    </dialog>
+
+    <dialog id="referenceDialog">
+      <div class="dialog-head">
+        <h2>Reference Heimdall</h2>
+        <button id="closeRulesBtn" class="ghost-btn" type="button" title="Close">X</button>
+      </div>
+      <div class="reference-grid">
+        <figure>
+          <img src="assets/heimdall-deck.jpg" alt="Deck Heimdall completo">
+          <figcaption>Deck Heimdall</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/heimdall-recap.jpg" alt="Recap Heimdall">
+          <figcaption>Recap</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/monsters.jpg" alt="Monster sheet">
+          <figcaption>Monsters</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/worlds.jpg" alt="World sheet">
+          <figcaption>Worlds</figcaption>
+        </figure>
+      </div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
