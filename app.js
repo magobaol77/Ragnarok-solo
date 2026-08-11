@@ -220,7 +220,7 @@ const DECKS = {
   },
   freya: {
     id: "freya", name: "Freya", subtitle: "Warrior icons and cumulative combat bonuses.", cards: freyaDeck,
-    image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 2, available: true,
+    image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 3, available: true,
   },
 };
 
