@@ -564,11 +564,10 @@ function resolvePlayEffect(playedCard) {
 
 function resolveFreyaPower() {
   const characters = countCardType("Character");
-  if (characters >= 3) state.temp.fightAny = true;
-  else if (characters >= 1) state.temp.fightAnyTypes.push("Beast");
+  if (characters >= 1) state.temp.fightAny = true;
   if (characters >= 2) state.temp.combatLeft += 1;
   if (characters >= 3) state.vikings += 1;
-  const access = characters >= 3 ? "fight any Monster" : characters >= 1 ? "fight any Beast" : "no tier unlocked";
+  const access = characters >= 1 ? "fight any Monster" : "no tier unlocked";
   addLog(`Freya active with ${characters} Character card${characters === 1 ? "" : "s"}: ${access}${characters >= 2 ? ", +1 fight" : ""}${characters >= 3 ? ", +1 Viking" : ""}.`);
 }
 
