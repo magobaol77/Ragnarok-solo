@@ -19,7 +19,7 @@ const heimdallDeck = [
 ];
 
 const tyrDeck = [
-  card("tyr-pact", "Pact of Binding", "Event", "Destiny", 4, "2 x Event", "Gain 1 Viking per different square icon.", { gainUniqueTags: true }, { perCardType: "Event", value: 2 }),
+  card("tyr-pact", "Pact of Binding", "Event", "Destiny", 4, "2 x Event", "Gain 1 Viking per different Monster type.", { gainUniqueMonsterTypes: true }, { perCardType: "Event", value: 2 }),
   card("tyr-gleipnir", "Gleipnir", "Item", "Artefact", 2, "1 x Beast", "Fight 1 additional Beast.", { restrictedExtraFight: "Beast" }, { perMonster: "Beast", value: 1 }),
   card("tyr-hand", "Severed Hand", "Event", "Destiny", 2, "5 VP", "Gain 1 Viking, then 1 Viking per Equipment icon.", { gainFlat: 1, gainTag: "Equipment" }, { fixed: 5 }),
   card("tyr-sword", "Sword of Tyr", "Item", "Equipment", 1, "1 x Giant", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Giant", value: 1 }),
@@ -30,13 +30,13 @@ const tyrDeck = [
   card("tyr-thing", "Assembly of the Thing", "Event", "Destiny", 1, "", "No immediate effect.", {}, {}),
   card("tyr-hermod", "Hermod", "Character", null, 2, "3 x Destiny", "Gain 1 Viking per Item card in Valhalla.", { gainCardType: "Item" }, { perTag: "Destiny", value: 3 }),
   card("tyr-oath", "Oath of Tyr", "Event", "Destiny", 3, "3 VP", "Gain 3 Vikings minus Artefact icons.", { gainFlat: 3, losePerTag: "Artefact" }, { fixed: 3 }),
-  card("tyr-vidar", "Vidar", "Character", null, 3, "2 x MAX", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { maxIcons: 2 }),
+  card("tyr-vidar", "Vidar", "Character", null, 3, "2 x MAX", "Gain 1 Viking per different Monster type.", { gainUniqueMonsterTypes: true }, { maxIcons: 2 }),
   card("tyr", "Tyr", "God", null, 0, "2 x majority Monster type", "God card: gain 1 Viking and activate Tyr's combat power this round.", { god: true, tyrPower: true, gainFlat: 1 }, { maxMonsterType: 2 }),
 ];
 
 const friggDeck = [
   card("frigg-weaving", "Weaving the Future", "Event", "Destiny", 1, "", "Each time you banish a card, gain 1 additional Viking.", {}, {}),
-  card("frigg-belt", "Hlin's Belt", "Item", "Artefact", 0, "1 x MAX", "You may fight any visible Monster.", { fightAny: true }, { maxIcons: 1 }),
+  card("frigg-belt", "Hlin's Belt", "Item", "Artefact", 0, "1 x majority card type", "You may fight any visible Monster.", { fightAny: true }, { maxCardType: 1 }),
   card("frigg-hlin", "Hlin", "Character", null, 2, "4 x Artefact", "Gain 1 Viking, then 1 Viking per Artefact icon.", { gainFlat: 1, gainTag: "Artefact" }, { perTag: "Artefact", value: 4 }),
   card("frigg-prophecy", "Prophecy", "Event", "Destiny", 2, "3 VP", "Gain 1 Viking.", { gainFlat: 1 }, { fixed: 3 }),
   card("frigg-council", "Council of Queens", "Event", null, 3, "3 x Item", "Gain 1 Viking per Event in Valhalla.", { gainCardType: "Event" }, { perCardType: "Item", value: 3 }),
@@ -112,7 +112,7 @@ const CARD_UI = {
   gjall: { ongoing: { cardDiscount: ["Event"] }, instant: null },
   gardien: { ongoing: { worldDiscount: 1 }, instant: { gain: 1, gainCardType: "Character" } },
   heimdall: { ongoing: null, instant: { gain: 1, heimdallPower: true, allTagDiscount: true } },
-  "tyr-pact": { ongoing: null, instant: { gainUniqueTags: true } },
+  "tyr-pact": { ongoing: null, instant: { gainUniqueMonsterTypes: true } },
   "tyr-gleipnir": { ongoing: { cardDiscount: ["Event"] }, instant: { restrictedExtraFight: "Beast" } },
   "tyr-hand": { ongoing: null, instant: { gain: 1, gainTag: "Equipment" } },
   "tyr-sword": { ongoing: null, instant: { gain: 1 } },
@@ -123,7 +123,7 @@ const CARD_UI = {
   "tyr-thing": { ongoing: { cardDiscount: ["Character", "Item"] }, instant: null },
   "tyr-hermod": { ongoing: null, instant: { gainCardType: "Item" } },
   "tyr-oath": { ongoing: { extraFight: 1 }, instant: { gain: 3, minusTag: "Artefact" } },
-  "tyr-vidar": { ongoing: { fightAny: true }, instant: { gainMajority: true } },
+  "tyr-vidar": { ongoing: { fightAny: true }, instant: { gainUniqueMonsterTypes: true } },
   tyr: { ongoing: null, instant: { gain: 1, tyrPower: true } },
   "frigg-weaving": { ongoing: { exileBonus: 1 }, instant: null },
   "frigg-belt": { ongoing: { discount: ["Artefact"] }, instant: { fightAny: true } },
