@@ -1405,6 +1405,7 @@ function iconHtml(name) {
     TyrPower: "tyr-power.png",
     ThorPower: "odin-power.png",
     FreyaPower: "freya-power.jpg",
+    MonsterSet: "monster-set.png",
   };
   if (imageIcons[name]) {
     return `<img class="game-icon" src="assets/icons/${imageIcons[name]}" title="${name}" alt="${name}">`;
@@ -1521,7 +1522,7 @@ function scoreHtml(cardToRender) {
   if (score.maxIcons) return `<span class="score-badge">${score.maxIcons}x <span class="diff-token" title="Highest icon count">MAX</span></span>`;
   if (score.maxCardType) return `<span class="score-badge">${score.maxCardType}x ${maxCardIconHtml()}</span>`;
   if (score.maxMonsterType) return `<span class="score-badge">${score.maxMonsterType}x <span class="diff-token" title="Most common Monster type">MAX</span>${iconHtml("Giant")}${iconHtml("Beast")}${iconHtml("Undead")}</span>`;
-  if (score.monsterSets) return `<span class="score-badge">${score.monsterSets}x ${["Giant", "Beast", "Undead"].map(iconHtml).join("")}</span>`;
+  if (score.monsterSets) return `<span class="score-badge">${score.monsterSets}x ${iconHtml("MonsterSet")}</span>`;
   return "";
 }
 
@@ -1536,7 +1537,7 @@ function monsterScoreHtml(monsterToRender) {
   if (score.uniqueTags) return `<span class="score-badge">${score.uniqueTags}x <span class="diff-token">DIFF</span></span>`;
   if (score.maxIcons) return `<span class="score-badge">${score.maxIcons}x <span class="diff-token">MAX</span></span>`;
   if (score.cardSets) return `<span class="score-badge">${score.cardSets}x ${["Character", "Item", "Event"].map(iconHtml).join("")}</span>`;
-  if (score.monsterSets) return `<span class="score-badge">${score.monsterSets}x ${["Giant", "Beast", "Undead"].map(iconHtml).join("")}</span>`;
+  if (score.monsterSets) return `<span class="score-badge">${score.monsterSets}x ${iconHtml("MonsterSet")}</span>`;
   return `<span class="pill">0 VP</span>`;
 }
 
