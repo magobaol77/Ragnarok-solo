@@ -55,11 +55,11 @@ const thorDeck = [
   card("thor-lightning", "Lightning", "Event", null, 3, "2 x Monster set", "Discount 1 on Beasts, Undead, and Giants.", { discountTypes: ["Beast", "Undead", "Giant"] }, { monsterSets: 2 }),
   card("thor-tanngnjostr", "Tanngnjostr", "Character", "Animal", 1, "1 x Giant", "Gain 1 Viking per Giant. Discount 1 on Giants.", { discountTypes: ["Giant"], gainMonster: "Giant" }, { perMonster: "Giant", value: 1 }),
   card("thor-belt", "Megingjord", "Item", "Equipment", 2, "3 x Warrior", "Gain 1 Viking.", { gainFlat: 1 }, { perTag: "Warrior", value: 3 }),
-  card("thor-thrud", "Thrud", "Character", null, 4, "4 x Warrior", "Gain 3 Vikings minus Warrior icons.", { gainFlat: 3, losePerTag: "Warrior" }, { perTag: "Warrior", value: 4 }),
+  card("thor-thrud", "Thrud", "Character", null, 4, "4 x Equipment", "Gain 3 Vikings minus Equipment icons.", { gainFlat: 3, losePerTag: "Equipment" }, { perTag: "Equipment", value: 4 }),
   card("thor-char", "Char", "Item", null, 4, "6 VP", "You may fight any visible Monster. Gain 1 Viking, then 1 Viking per Warrior icon.", { fightAny: true, gainFlat: 1, gainTag: "Warrior" }, { fixed: 6 }),
   card("thor-tanngrisnir", "Tanngrisnir", "Character", "Animal", 1, "1 x Beast", "Gain 1 Viking per Beast. Discount 1 on Beasts.", { discountTypes: ["Beast"], gainMonster: "Beast" }, { perMonster: "Beast", value: 1 }),
   card("thor-mjolnir", "Mjolnir", "Item", "Equipment", 3, "2 x Elite", "Gain 1 Viking, then 1 Viking per different Monster type.", { gainFlat: 1, gainUniqueMonsterTypes: true }, { perMonster: "Elite", value: 2 }),
-  card("thor-sif", "Sif", "Character", null, 3, "3 VP", "Fight 1 additional Monster. Gain 1 Viking, then 1 Viking per Warrior icon.", { extraFight: 1, gainFlat: 1, gainTag: "Warrior" }, { fixed: 3 }),
+  card("thor-sif", "Sif", "Character", null, 3, "3 VP", "Fight 1 additional Monster. Gain 1 Viking, then 1 Viking per Equipment icon.", { extraFight: 1, gainFlat: 1, gainTag: "Equipment" }, { fixed: 3 }),
   card("thor-goats", "Resurrection of the Goats", "Event", null, 0, "2 x Animal", "Gain 1 Viking, then 1 Viking per Animal icon.", { gainFlat: 1, gainTag: "Animal" }, { perTag: "Animal", value: 2 }),
   card("thor-death", "Fight to the Death", "Event", "Warrior", 0, "1 x Elite", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Elite", value: 1 }),
   card("thor-gloves", "Jarngreipr", "Item", null, 2, "", "Gain 1 Viking per Elite. Discount 1 on Elite Monsters.", { discountTypes: ["Elite"], gainMonster: "Elite" }, {}),
@@ -142,11 +142,11 @@ const CARD_UI = {
   "thor-lightning": { ongoing: { discount: ["Beast", "Undead", "Giant"] }, instant: null },
   "thor-tanngnjostr": { ongoing: { discount: ["Giant"] }, instant: { gainMonster: "Giant" } },
   "thor-belt": { ongoing: null, instant: { gain: 1 } },
-  "thor-thrud": { ongoing: null, instant: { gain: 3, minusTag: "Warrior" } },
+  "thor-thrud": { ongoing: null, instant: { gain: 3, minusTag: "Equipment" } },
   "thor-char": { ongoing: { fightAny: true }, instant: { gain: 1, gainTag: "Warrior" } },
   "thor-tanngrisnir": { ongoing: { discount: ["Beast"] }, instant: { gainMonster: "Beast" } },
   "thor-mjolnir": { ongoing: null, instant: { gain: 1, gainUniqueMonsterTypes: true } },
-  "thor-sif": { ongoing: { extraFight: 1 }, instant: { gain: 1, gainTag: "Warrior" } },
+  "thor-sif": { ongoing: { extraFight: 1 }, instant: { gain: 1, gainTag: "Equipment" } },
   "thor-goats": { ongoing: null, instant: { gain: 1, gainTag: "Animal" } },
   "thor-death": { ongoing: null, instant: { gain: 1 } },
   "thor-gloves": { ongoing: { discount: ["Elite"] }, instant: { gainMonster: "Elite" } },
@@ -524,7 +524,7 @@ function resolvePlayEffect(playedCard) {
     if (effect.friggChoice) state.pendingFriggChoice = true;
     if (effect.allTagDiscount) addLog("Heimdall active: square icons cost -1 this round.");
     if (effect.tyrPower) addLog("Tyr active: Monsters cost -1 per defeated Monster of the same type this round.");
-    if (effect.thorPower) addLog("Thor active: Elite Monsters cost -1 per Event in Valhalla this round.");
+    if (effect.thorPower) addLog("Thor active: Elite Monsters cost -1 per Equipment icon this round.");
     if (effect.friggChoice) addLog("Frigg active: choose 2 Vikings or a free card from exile.");
   }
   if (effect.fightAny) state.temp.fightAny = true;
@@ -772,7 +772,7 @@ function monsterCost(monsterToFight) {
   for (const tag of monsterToFight.tags) discount += countOngoingDiscount(tag);
   if (monsterHasSquareIcon(monsterToFight)) discount += countHeimdallPowerSources();
   discount += countTyrPowerSources() * countMonsterType(monsterToFight.type);
-  if (monsterToFight.tags.includes("Elite")) discount += state.temp.thorPower * countTag("Warrior");
+  if (monsterToFight.tags.includes("Elite")) discount += state.temp.thorPower * countTag("Equipment");
   return Math.max(0, monsterToFight.cost - discount);
 }
 
