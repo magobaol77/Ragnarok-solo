@@ -512,6 +512,7 @@ function playThree() {
 
 function resolvePlayEffect(playedCard) {
   const effect = playedCard.play;
+  const instant = CARD_UI[playedCard.id]?.instant || {};
   if (effect.god) {
     state.temp.godActive = true;
     if (effect.allTagDiscount) {
@@ -527,17 +528,17 @@ function resolvePlayEffect(playedCard) {
     if (effect.thorPower) addLog("Thor active: Elite Monsters cost -1 per Equipment icon this round.");
     if (effect.friggChoice) addLog("Frigg active: choose 2 Vikings or a free card from exile.");
   }
-  if (effect.fightAny) state.temp.fightAny = true;
-  if (effect.extraFight) state.temp.combatLeft += effect.extraFight;
-  if (effect.restrictedExtraFight) {
+  if (effect.fightAny && instant.fightAny) state.temp.fightAny = true;
+  if (effect.extraFight && instant.extraFight) state.temp.combatLeft += effect.extraFight;
+  if (effect.restrictedExtraFight && instant.restrictedExtraFight) {
     state.temp.combatLeft += 1;
     state.temp.restrictedFights.push(effect.restrictedExtraFight);
   }
-  if (effect.worldDiscount) state.temp.worldDiscount += effect.worldDiscount;
-  if (effect.discountTypes) {
+  if (effect.worldDiscount && instant.worldDiscount) state.temp.worldDiscount += effect.worldDiscount;
+  if (effect.discountTypes && instant.discount) {
     for (const type of effect.discountTypes) state.temp.discounts[type] = (state.temp.discounts[type] || 0) + 1;
   }
-  if (effect.discountCardTypes) {
+  if (effect.discountCardTypes && instant.cardDiscount) {
     for (const type of effect.discountCardTypes) state.temp.cardDiscounts[type] = (state.temp.cardDiscounts[type] || 0) + 1;
   }
   let gain = effect.gainFlat || 0;
