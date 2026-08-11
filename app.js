@@ -873,7 +873,7 @@ function effectiveValhalla() {
 }
 
 function majorityCount() {
-  return Math.max(0, ...TAGS.map((tag) => countTag(tag)), ...TYPES.map((type) => countMonsterType(type)));
+  return Math.max(0, ...TAGS.map((tag) => countTag(tag)));
 }
 
 function majorityCardCount() {
@@ -1366,8 +1366,8 @@ function worldCriterionIconHtml(criterion) {
   if (criterion === "CardTotal") return `<span class="criterion-symbol card-total" aria-label="All cards"></span>`;
   if (criterion === "Banished") return `<span class="criterion-symbol banished-card" aria-label="Banished cards"></span>`;
   if (criterion === "MajorityCardType") return `<span class="criterion-symbol card-total labelled">MAX</span>`;
-  if (criterion === "MajorityTag") return `<span class="criterion-symbol square-total">MAX</span>`;
-  if (criterion === "DifferentTags") return `<span class="criterion-symbol square-total">DIFF</span>`;
+  if (criterion === "MajorityTag") return iconHtml("SquareMax");
+  if (criterion === "DifferentTags") return iconHtml("SquareDiff");
   return iconHtml(criterion);
 }
 
@@ -1406,6 +1406,10 @@ function iconHtml(name) {
     ThorPower: "odin-power.png",
     FreyaPower: "freya-power.jpg",
     MonsterSet: "monster-set.png",
+    SquareMax: "square-max.png",
+    MonsterMax: "monster-max.png",
+    SquareDiff: "square-diff.png",
+    MonsterDiff: "monster-diff.png",
   };
   if (imageIcons[name]) {
     return `<img class="game-icon" src="assets/icons/${imageIcons[name]}" title="${name}" alt="${name}">`;
@@ -1460,9 +1464,9 @@ function instantHtml(cardToRender) {
   if (instant.gainMonster) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x${iconHtml(instant.gainMonster)}</span>`);
   if (instant.gainCardType) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x${iconHtml(instant.gainCardType)}</span>`);
   if (instant.multiplier) parts.push(`<span class="effect-chip">x${instant.multiplier}</span>`);
-  if (instant.gainUniqueTags) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x<span class="diff-token">DIFF</span></span>`);
-  if (instant.gainUniqueMonsterTypes) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x<span class="criterion-symbol monster-total labelled">DIFF</span></span>`);
-  if (instant.gainMajority) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}xMAX</span>`);
+  if (instant.gainUniqueTags) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x${iconHtml("SquareDiff")}</span>`);
+  if (instant.gainUniqueMonsterTypes) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x${iconHtml("MonsterDiff")}</span>`);
+  if (instant.gainMajority) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x${iconHtml("SquareMax")}</span>`);
   if (instant.gainCardMajority) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x${maxCardIconHtml()}</span>`);
   if (instant.gainMixedSet) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x${instant.value || 1} ${instant.gainMixedSet.map(iconHtml).join("")}</span>`);
   if (instant.minus) parts.push(`<span class="effect-chip"><span class="minus-plain">-${iconHtml(instant.minus)}</span></span>`);
@@ -1517,11 +1521,11 @@ function scoreHtml(cardToRender) {
   if (score.perTag) return `<span class="score-badge">${score.value}x ${iconHtml(score.perTag)}</span>`;
   if (score.perCardType) return `<span class="score-badge">${score.value}x ${iconHtml(score.perCardType)}</span>`;
   if (score.perMonster) return `<span class="score-badge">${score.value}x ${iconHtml(score.perMonster)}</span>`;
-  if (score.uniqueTags) return `<span class="score-badge">${score.uniqueTags}x <span class="diff-token" title="Different icons">DIFF</span></span>`;
+  if (score.uniqueTags) return `<span class="score-badge">${score.uniqueTags}x ${iconHtml("SquareDiff")}</span>`;
   if (score.perWorld) return `<span class="score-badge">${score.perWorld}x <span class="proto-icon special world" title="Worlds">W</span></span>`;
-  if (score.maxIcons) return `<span class="score-badge">${score.maxIcons}x <span class="diff-token" title="Highest icon count">MAX</span></span>`;
+  if (score.maxIcons) return `<span class="score-badge">${score.maxIcons}x ${iconHtml("SquareMax")}</span>`;
   if (score.maxCardType) return `<span class="score-badge">${score.maxCardType}x ${maxCardIconHtml()}</span>`;
-  if (score.maxMonsterType) return `<span class="score-badge">${score.maxMonsterType}x <span class="diff-token" title="Most common Monster type">MAX</span>${iconHtml("Giant")}${iconHtml("Beast")}${iconHtml("Undead")}</span>`;
+  if (score.maxMonsterType) return `<span class="score-badge">${score.maxMonsterType}x ${iconHtml("MonsterMax")}</span>`;
   if (score.monsterSets) return `<span class="score-badge">${score.monsterSets}x ${iconHtml("MonsterSet")}</span>`;
   return "";
 }
@@ -1534,8 +1538,8 @@ function monsterScoreHtml(monsterToRender) {
   if (score.perMonster) return `<span class="score-badge">${score.value}x ${iconHtml(score.perMonster)}</span>`;
   if (score.perAnyMonster) return `<span class="score-badge">${score.perAnyMonster}x ${iconHtml("Giant")}${iconHtml("Beast")}${iconHtml("Undead")}</span>`;
   if (score.perWorld) return `<span class="score-badge">${score.perWorld}x ${iconHtml("World")}</span>`;
-  if (score.uniqueTags) return `<span class="score-badge">${score.uniqueTags}x <span class="diff-token">DIFF</span></span>`;
-  if (score.maxIcons) return `<span class="score-badge">${score.maxIcons}x <span class="diff-token">MAX</span></span>`;
+  if (score.uniqueTags) return `<span class="score-badge">${score.uniqueTags}x ${iconHtml("SquareDiff")}</span>`;
+  if (score.maxIcons) return `<span class="score-badge">${score.maxIcons}x ${iconHtml("SquareMax")}</span>`;
   if (score.cardSets) return `<span class="score-badge">${score.cardSets}x ${["Character", "Item", "Event"].map(iconHtml).join("")}</span>`;
   if (score.monsterSets) return `<span class="score-badge">${score.monsterSets}x ${iconHtml("MonsterSet")}</span>`;
   return `<span class="pill">0 VP</span>`;
