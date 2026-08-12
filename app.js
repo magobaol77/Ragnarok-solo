@@ -310,12 +310,18 @@ const worlds = [
 
 let state;
 let selectedDeckId = "heimdall";
+let selectedPlayerCount = 1;
+let playerSetup = [{ controller: "human", deckId: "heimdall" }];
 
 const els = {
   deckTitle: document.querySelector("#deckTitle"),
   startScreen: document.querySelector("#startScreen"),
   gameScreen: document.querySelector("#gameScreen"),
   deckChoices: document.querySelector("#deckChoices"),
+  playerCountControl: document.querySelector("#playerCountControl"),
+  playerSetup: document.querySelector("#playerSetup"),
+  setupDescription: document.querySelector("#setupDescription"),
+  setupStatus: document.querySelector("#setupStatus"),
   startGameBtn: document.querySelector("#startGameBtn"),
   menuBtn: document.querySelector("#menuBtn"),
   deckViewerBtn: document.querySelector("#deckViewerBtn"),
@@ -369,6 +375,10 @@ const els = {
   scoresStatsBtn: document.querySelector("#scoresStatsBtn"),
   scoresStatsDialog: document.querySelector("#scoresStatsDialog"),
   closeScoresStatsBtn: document.querySelector("#closeScoresStatsBtn"),
+  exileViewerBtn: document.querySelector("#exileViewerBtn"),
+  exileDialog: document.querySelector("#exileDialog"),
+  exileViewer: document.querySelector("#exileViewer"),
+  closeExileBtn: document.querySelector("#closeExileBtn"),
 };
 
 function card(id, name, type, tag, cost, scoreText, playText, play, score) {
@@ -391,6 +401,11 @@ function world(name, criteria, cost, vp, tags = []) {
 }
 
 function newGame() {
+  if (selectedPlayerCount > 1 && playerSetup.some((player) => player.controller === "automa")) {
+    renderPlayerSetup("Automa seats are not implemented yet. Set every seat to Human to start a multiplayer game.");
+    return;
+  }
+  if (selectedPlayerCount > 1) return newMultiplayerGame();
   const chosenDeck = DECKS[selectedDeckId];
   state = {
     round: 1,
@@ -414,6 +429,7 @@ function newGame() {
     phase: "choose",
     mulliganUsed: false,
     pendingFriggChoice: false,
+    odinBonusDrawn: false,
     gameRecorded: false,
     temp: blankTemp(),
     log: [`Game started with ${chosenDeck.name}. Choose 1 card from your hand.`],
@@ -426,12 +442,108 @@ function newGame() {
   render();
 }
 
+function createPlayer(index, config) {
+  const chosenDeck = DECKS[config.deckId];
+  return {
+    index, controller: config.controller, vikings: chosenDeck.startingVikings,
+    deckId: chosenDeck.id, deckName: chosenDeck.name, deck: shuffle([...chosenDeck.cards]),
+    discard: [], hand: [], reservedId: null, playedThisTurn: [], valhalla: [], banished: [],
+    trophies: [], savedWorlds: [], phase: "choose", mulliganUsed: false,
+    pendingFriggChoice: false, odinBonusDrawn: false, temp: blankTemp(), cardsDone: false,
+    monsterDone: false, worldDone: false,
+  };
+}
+
+function newMultiplayerGame() {
+  const players = playerSetup.map((config, index) => createPlayer(index, config));
+  state = {
+    multiplayer: true, players, activePlayerIndex: 0, priorityIndex: 0,
+    round: 1, maxRounds: 7, availableWorlds: [], monsterDeck: shuffle([...monsters]),
+    worldDeck: shuffle([...worlds]), battlefield: [], phase: "choose", gameRecorded: false,
+    log: ["Multiplayer game started. Player 1 chooses a reserved card."],
+  };
+  loadPlayer(0, "choose");
+  setupBattlefield();
+  for (let index = 0; index < players.length; index += 1) {
+    loadPlayer(index, "choose");
+    drawToFour();
+    syncActivePlayer();
+  }
+  loadPlayer(0, "choose");
+  els.startScreen.classList.add("is-hidden");
+  els.gameScreen.classList.remove("is-hidden");
+  render();
+}
+
+function isMultiplayer() {
+  return Boolean(state?.multiplayer);
+}
+
+function syncActivePlayer() {
+  if (!isMultiplayer()) return;
+  const player = state.players[state.activePlayerIndex];
+  for (const key of ["vikings", "deckId", "deckName", "deck", "discard", "hand", "reservedId", "playedThisTurn", "valhalla", "banished", "trophies", "savedWorlds", "mulliganUsed", "pendingFriggChoice", "odinBonusDrawn", "temp"]) player[key] = state[key];
+}
+
+function loadPlayer(index, phase) {
+  if (!state.multiplayer) return;
+  state.activePlayerIndex = index;
+  const player = state.players[index];
+  for (const key of ["vikings", "deckId", "deckName", "deck", "discard", "hand", "reservedId", "playedThisTurn", "valhalla", "banished", "trophies", "savedWorlds", "mulliganUsed", "pendingFriggChoice", "odinBonusDrawn", "temp"]) state[key] = player[key];
+  state.phase = phase;
+}
+
 function showMenu() {
   els.startScreen.classList.remove("is-hidden");
   els.gameScreen.classList.add("is-hidden");
   els.deckTitle.textContent = "Choose Deck";
   renderDeckChoices();
+  renderPlayerSetup();
   renderHighScores();
+}
+
+function setPlayerCount(count) {
+  selectedPlayerCount = count;
+  const deckIds = Object.keys(DECKS);
+  while (playerSetup.length < count) {
+    const usedDecks = new Set(playerSetup.map((player) => player.deckId));
+    playerSetup.push({
+      controller: playerSetup.length === 0 ? "human" : "automa",
+      deckId: deckIds.find((deckId) => !usedDecks.has(deckId)) || deckIds[0],
+    });
+  }
+  playerSetup = playerSetup.slice(0, count);
+  selectedDeckId = playerSetup[0].deckId;
+  renderDeckChoices();
+  renderPlayerSetup();
+}
+
+function renderPlayerSetup(statusMessage = "") {
+  els.playerCountControl.querySelectorAll("[data-player-count]").forEach((button) => {
+    button.classList.toggle("selected", Number(button.dataset.playerCount) === selectedPlayerCount);
+  });
+  const multiplayer = selectedPlayerCount > 1;
+  els.playerSetup.classList.toggle("is-hidden", !multiplayer);
+  els.setupDescription.textContent = multiplayer
+    ? "Assign a controller and a unique God deck to each seat."
+    : "Choose a God deck, inspect its cards, and begin a solo game.";
+  els.startGameBtn.textContent = multiplayer ? "Confirm Table" : "Start Game";
+  els.setupStatus.textContent = statusMessage;
+  els.setupStatus.classList.toggle("is-hidden", !statusMessage);
+  if (!multiplayer) return;
+  const usedDecks = new Set(playerSetup.map((player) => player.deckId));
+  els.playerSetup.innerHTML = playerSetup.map((player, index) => `
+    <div class="player-slot" data-player-slot="${index}">
+      <strong>Player ${index + 1}</strong>
+      <select data-player-controller aria-label="Player ${index + 1} controller">
+        <option value="human" ${player.controller === "human" ? "selected" : ""}>Human</option>
+        <option value="automa" ${player.controller === "automa" ? "selected" : ""}>Automa</option>
+      </select>
+      <select data-player-deck aria-label="Player ${index + 1} deck">
+        ${Object.values(DECKS).map((deck) => `<option value="${deck.id}" ${player.deckId === deck.id ? "selected" : ""} ${usedDecks.has(deck.id) && player.deckId !== deck.id ? "disabled" : ""}>${deck.name}</option>`).join("")}
+      </select>
+    </div>
+  `).join("");
 }
 
 function blankTemp() {
@@ -458,6 +570,11 @@ function drawToFour() {
       addLog("Discard reshuffled into the deck.");
     }
     state.hand.push(state.deck.pop());
+  }
+  if (state.deckId === "odin" && state.hand.some((cardInHand) => cardInHand.id === "odin") && !state.odinBonusDrawn) {
+    if (state.deck.length) state.hand.push(state.deck.pop());
+    state.odinBonusDrawn = true;
+    addLog("Odin was drawn: draw 1 additional card before choosing.");
   }
 }
 
@@ -520,7 +637,6 @@ function resolvePlayEffect(playedCard) {
     }
     if (effect.tyrPower) state.temp.tyrPower += 1;
     if (effect.thorPower) state.temp.thorPower += 1;
-    if (effect.odinPower) drawOdinExtraCard();
     if (effect.freyaPower) resolveFreyaPower();
     if (effect.friggChoice) state.pendingFriggChoice = true;
     if (effect.allTagDiscount) addLog("Heimdall active: square icons cost -1 this round.");
@@ -571,20 +687,6 @@ function resolveFreyaPower() {
   addLog(`Freya active with ${characters} Character card${characters === 1 ? "" : "s"}: ${access}${characters >= 2 ? ", +1 fight" : ""}${characters >= 3 ? ", +1 Viking" : ""}.`);
 }
 
-function drawOdinExtraCard() {
-  if (!state.deck.length && state.discard.length) {
-    state.deck = shuffle(state.discard);
-    state.discard = [];
-  }
-  const extraCard = state.deck.pop();
-  if (!extraCard) {
-    addLog("Odin found no additional card to draw.");
-    return;
-  }
-  state.playedThisTurn.push(extraCard);
-  addLog(`Odin draws and plays ${extraCard.name} as the fourth card.`);
-}
-
 function sendReservedToValhalla() {
   if (state.phase !== "reserve" || state.pendingFriggChoice) return;
   const reserved = state.hand[0];
@@ -605,6 +707,7 @@ function sendReservedToValhalla() {
   state.phase = "monster";
   state.temp.combatLeft += countOngoingExtraFight();
   addLog(`${reserved.name} enters Valhalla for ${cost}.`);
+  if (isMultiplayer()) return completeMultiplayerCardChoice();
   render();
 }
 
@@ -623,6 +726,22 @@ function banishReserved() {
   state.phase = "monster";
   state.temp.combatLeft += countOngoingExtraFight();
   addLog(`${reserved.name} banished: +${2 + exileBonus} Vikings${exileBonus ? ` (${exileBonus} exile bonus)` : ""}.`);
+  if (isMultiplayer()) return completeMultiplayerCardChoice();
+  render();
+}
+
+function completeMultiplayerCardChoice() {
+  const current = state.players[state.activePlayerIndex];
+  current.cardsDone = true;
+  syncActivePlayer();
+  const next = state.players.find((player) => !player.cardsDone);
+  if (next) {
+    loadPlayer(next.index, "choose");
+    addLog(`Player ${next.index + 1} chooses a reserved card.`);
+  } else {
+    loadPlayer(state.priorityIndex, "monster");
+    addLog(`Monster phase: Player ${state.priorityIndex + 1} has priority.`);
+  }
   render();
 }
 
@@ -644,7 +763,10 @@ function fightMonster(laneIndex, side, monsterIndex) {
   lane[side].splice(monsterIndex, 1);
   addLog(`Defeated ${target.name}: ${monsterScoreText(target)}.`);
   refillLiberatedWorlds();
-  if (state.temp.combatLeft <= 0) state.phase = "world";
+  if (state.temp.combatLeft <= 0) {
+    if (isMultiplayer()) return completeMultiplayerMonsterPhase();
+    state.phase = "world";
+  }
   render();
 }
 
@@ -660,8 +782,19 @@ function consumeFightFor(monsterToFight) {
 
 function passMonster() {
   if (state.phase !== "monster") return;
+  if (isMultiplayer()) {
+    addLog(`Player ${state.activePlayerIndex + 1} passed the Monster phase.`);
+    return completeMultiplayerMonsterPhase();
+  }
   state.phase = "world";
   addLog("You passed the Monster fight.");
+  render();
+}
+
+function completeMultiplayerMonsterPhase() {
+  state.players[state.activePlayerIndex].monsterDone = true;
+  syncActivePlayer();
+  loadPlayer(state.activePlayerIndex, "world");
   render();
 }
 
@@ -683,6 +816,7 @@ function protectWorld(worldIndex) {
   state.savedWorlds.push(target);
   state.availableWorlds.splice(worldIndex, 1);
   addLog(`Protected ${target.name}: ${target.vp} VP.`);
+  if (isMultiplayer()) return completeMultiplayerWorldPhase();
   resolveWorldAutoma();
   state.phase = "end";
   render();
@@ -690,9 +824,58 @@ function protectWorld(worldIndex) {
 
 function passWorld() {
   if (state.phase !== "world") return;
+  if (isMultiplayer()) {
+    addLog(`Player ${state.activePlayerIndex + 1} passed World protection.`);
+    return completeMultiplayerWorldPhase();
+  }
   resolveWorldAutoma();
   state.phase = "end";
   addLog("You passed World protection.");
+  render();
+}
+
+function multiplayerTurnOrder() {
+  return state.players.map((_, offset) => (state.priorityIndex + offset) % state.players.length);
+}
+
+function completeMultiplayerWorldPhase() {
+  state.players[state.activePlayerIndex].worldDone = true;
+  syncActivePlayer();
+  const next = multiplayerTurnOrder().find((index) => !state.players[index].worldDone);
+  if (next !== undefined) {
+    loadPlayer(next, "monster");
+    render();
+    return;
+  }
+  endMultiplayerRound();
+}
+
+function endMultiplayerRound() {
+  for (const player of state.players) {
+    player.discard.push(...player.playedThisTurn);
+    player.playedThisTurn = [];
+    player.reservedId = null;
+    player.temp = blankTemp();
+    player.cardsDone = false;
+    player.monsterDone = false;
+    player.worldDone = false;
+    player.odinBonusDrawn = false;
+  }
+  if (state.round >= state.maxRounds) {
+    loadPlayer(state.priorityIndex, "gameover");
+    addLog("Multiplayer game over. Review each player area from the table summary in the next iteration.");
+    render();
+    return;
+  }
+  state.round += 1;
+  state.priorityIndex = (state.priorityIndex + 1) % state.players.length;
+  for (const player of state.players) {
+    loadPlayer(player.index, "choose");
+    drawToFour();
+    syncActivePlayer();
+  }
+  loadPlayer(state.priorityIndex, "choose");
+  addLog(`Round ${state.round}. Player ${state.priorityIndex + 1} has priority.`);
   render();
 }
 
@@ -850,6 +1033,7 @@ function hasReq(req) {
 function countTag(tag) {
   let total = effectiveValhalla().filter((cardInValhalla) => cardInValhalla.tag === tag).length;
   total += state.trophies.reduce((sum, trophy) => sum + (trophy.tags.includes(tag) ? 1 : 0), 0);
+  total += state.savedWorlds.reduce((sum, savedWorld) => sum + (savedWorld.tags.includes(tag) ? 1 : 0), 0);
   return total;
 }
 
@@ -1022,7 +1206,7 @@ function render() {
     renderDeckChoices();
     return;
   }
-  els.deckTitle.textContent = state.deckName;
+  els.deckTitle.textContent = isMultiplayer() ? `Player ${state.activePlayerIndex + 1} · ${state.deckName}` : state.deckName;
   els.godRecapImg.src = DECKS[state.deckId].recap;
   els.godRecapImg.alt = `${state.deckName} recap`;
   renderStats();
@@ -1044,7 +1228,7 @@ function render() {
   els.passMonsterBtn.disabled = state.phase !== "monster";
   els.passWorldBtn.disabled = state.phase !== "world";
   els.advanceBtn.disabled = state.phase === "end" ? false : els.advanceBtn.disabled;
-  els.advanceBtn.textContent = state.phase === "end" ? "End Turn" : "Play Other 3";
+  els.advanceBtn.textContent = state.phase === "end" ? "End Turn" : `Play Other ${Math.max(0, state.hand.length - 1)}`;
   els.advanceBtn.onclick = state.phase === "end" ? endTurn : playThree;
 }
 
@@ -1057,7 +1241,7 @@ function renderFriggChoice() {
     .map((cardInExile, index) => ({ cardInExile, index }))
     .filter(({ cardInExile }) => cardInExile.type !== "God");
   els.friggExileChoices.innerHTML = availableCards.length
-    ? availableCards.map(({ cardInExile, index }) => `<button class="exile-choice" type="button" data-frigg-exile="${index}">${iconHtml(cardInExile.type)}<strong>${cardInExile.name}</strong></button>`).join("")
+    ? availableCards.map(({ cardInExile, index }) => `<button class="exile-choice game-card type-${cardInExile.type.toLowerCase()}" type="button" data-frigg-exile="${index}">${cardHtml(cardInExile, cardInExile.cost)}</button>`).join("")
     : `<div class="empty-slot compact">No eligible cards in exile</div>`;
   if (!els.friggChoiceDialog.open) els.friggChoiceDialog.showModal();
 }
@@ -1287,7 +1471,9 @@ function renderDeckChoices() {
     button.disabled = !deck.available;
     button.onclick = () => {
       selectedDeckId = deck.id;
+      playerSetup[0].deckId = deck.id;
       renderDeckChoices();
+      if (selectedPlayerCount > 1) renderPlayerSetup();
     };
     button.innerHTML = `
       <h3>${deck.name}</h3>
@@ -1308,6 +1494,21 @@ function openDeckViewer() {
     els.deckViewer.appendChild(article);
   }
   els.deckDialog.showModal();
+}
+
+function openExileViewer() {
+  els.exileViewer.innerHTML = "";
+  if (!state?.banished?.length) {
+    els.exileViewer.innerHTML = `<div class="empty-slot">No cards in exile</div>`;
+  } else {
+    for (const exiledCard of state.banished) {
+      const article = document.createElement("article");
+      article.className = `game-card deck-card type-${exiledCard.type.toLowerCase()}`;
+      article.innerHTML = cardHtml(exiledCard, exiledCard.type === "God" ? "-" : exiledCard.cost);
+      els.exileViewer.appendChild(article);
+    }
+  }
+  els.exileDialog.showModal();
 }
 
 function openMonsterDeckViewer() {
@@ -1570,10 +1771,11 @@ function renderLog() {
 }
 
 function phaseTitle() {
-  if (state.phase === "choose") return "Choose 1 card";
-  if (state.phase === "reserve") return "Valhalla or banish";
-  if (state.phase === "monster") return "Fight a Monster or pass";
-  if (state.phase === "world") return "Protect a World or pass";
+  const player = isMultiplayer() ? `Player ${state.activePlayerIndex + 1}: ` : "";
+  if (state.phase === "choose") return `${player}Choose 1 card`;
+  if (state.phase === "reserve") return `${player}Valhalla or banish`;
+  if (state.phase === "monster") return `${player}Fight a Monster or pass`;
+  if (state.phase === "world") return `${player}Protect a World or pass`;
   if (state.phase === "end") return "End the turn";
   return "Game over";
 }
@@ -1592,6 +1794,22 @@ function shuffle(items) {
 }
 
 els.advanceBtn.addEventListener("click", playThree);
+els.playerCountControl.addEventListener("click", (event) => {
+  const target = event.target.closest("[data-player-count]");
+  if (target) setPlayerCount(Number(target.dataset.playerCount));
+});
+els.playerSetup.addEventListener("change", (event) => {
+  const slot = event.target.closest("[data-player-slot]");
+  if (!slot) return;
+  const playerIndex = Number(slot.dataset.playerSlot);
+  if (event.target.matches("[data-player-controller]")) playerSetup[playerIndex].controller = event.target.value;
+  if (event.target.matches("[data-player-deck]")) {
+    playerSetup[playerIndex].deckId = event.target.value;
+    if (playerIndex === 0) selectedDeckId = event.target.value;
+    renderDeckChoices();
+  }
+  renderPlayerSetup();
+});
 els.mulliganBtn.addEventListener("click", useMulligan);
 els.valhallaBtn.addEventListener("click", sendReservedToValhalla);
 els.banishBtn.addEventListener("click", banishReserved);
@@ -1629,5 +1847,9 @@ els.closeScoresStatsBtn.addEventListener("click", () => els.scoresStatsDialog.cl
 els.closeDeckBtn.addEventListener("click", () => els.deckDialog.close());
 els.rulesBtn.addEventListener("click", () => els.referenceDialog.showModal());
 els.closeRulesBtn.addEventListener("click", () => els.referenceDialog.close());
+els.exileViewerBtn.addEventListener("click", openExileViewer);
+els.closeExileBtn.addEventListener("click", () => els.exileDialog.close());
+
+renderPlayerSetup();
 
 showMenu();

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ragnarok Solo</title>
     <meta name="description" content="Solo prototype web app for Ragnarok.">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20260812-player-setup">
   </head>
   <body>
     <main class="app-shell">
@@ -25,8 +25,15 @@
       <section id="startScreen" class="start-screen" aria-label="Deck selection">
         <div class="start-copy">
           <p class="eyebrow">Setup</p>
-          <h2>Select your deck</h2>
-          <p>Choose a God deck, inspect its cards, and begin a solo game.</p>
+          <h2>Game mode</h2>
+          <div id="playerCountControl" class="segmented-control" aria-label="Number of players">
+            <button class="selected" type="button" data-player-count="1">Solo</button>
+            <button type="button" data-player-count="2">2</button>
+            <button type="button" data-player-count="3">3</button>
+            <button type="button" data-player-count="4">4</button>
+          </div>
+          <p id="setupDescription">Choose a God deck, inspect its cards, and begin a solo game.</p>
+          <div id="playerSetup" class="player-setup is-hidden" aria-label="Player setup"></div>
         </div>
         <div id="deckChoices" class="deck-choice-grid"></div>
         <div class="start-actions">
@@ -36,6 +43,7 @@
           <button id="worldDeckViewerBtn" class="secondary-btn" type="button">View World Deck</button>
           <button id="scoresStatsBtn" class="secondary-btn" type="button">High Scores &amp; Statistics</button>
         </div>
+        <p id="setupStatus" class="setup-status is-hidden" role="status"></p>
       </section>
 
       <section id="gameScreen" class="game-screen is-hidden" aria-label="Game">
@@ -108,6 +116,7 @@
                   <p class="eyebrow">Valhalla</p>
                   <h2 id="valhallaTitle">0 cards</h2>
                 </div>
+                <button id="exileViewerBtn" class="ghost-btn" type="button" title="View exile">E</button>
               </div>
               <div id="valhalla" class="mini-list"></div>
             </section>
@@ -145,6 +154,14 @@
         <button id="closeDeckBtn" class="ghost-btn" type="button" title="Close">X</button>
       </div>
       <div id="deckViewer" class="deck-viewer"></div>
+    </dialog>
+
+    <dialog id="exileDialog">
+      <div class="dialog-head">
+        <div><p class="eyebrow">Player Area</p><h2>Exile</h2></div>
+        <button id="closeExileBtn" class="ghost-btn" type="button" title="Close">X</button>
+      </div>
+      <div id="exileViewer" class="deck-viewer"></div>
     </dialog>
 
     <dialog id="friggChoiceDialog" class="choice-dialog">
@@ -231,6 +248,6 @@
       </div>
     </dialog>
 
-    <script src="app.js?v=20260812-heimdall-english"></script>
+    <script src="app.js?v=20260812-priority-turn-flow"></script>
   </body>
 </html>

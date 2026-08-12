@@ -152,6 +152,70 @@ h2 {
   line-height: 1.45;
 }
 
+.segmented-control {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+}
+
+.segmented-control button {
+  min-height: 36px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.segmented-control button.selected {
+  background: var(--ink);
+  color: white;
+}
+
+.player-setup {
+  display: grid;
+  gap: 7px;
+}
+
+.player-slot {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+}
+
+.player-slot strong {
+  font-size: .8rem;
+}
+
+.player-slot select {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  padding: 0 7px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.setup-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 9px 11px;
+  border-left: 4px solid var(--gold);
+  background: var(--paper);
+  color: var(--muted);
+  font-size: .86rem;
+}
+
 .deck-choice-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1440,6 +1504,14 @@ figcaption {
 
   .start-actions button {
     flex: 1;
+  }
+
+  .player-slot {
+    grid-template-columns: 62px 1fr;
+  }
+
+  .player-slot select:last-child {
+    grid-column: 2;
   }
 
   .high-score-row {
