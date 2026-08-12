@@ -3,18 +3,18 @@ const TYPES = ["Giant", "Beast", "Undead", "Elite"];
 const HIGH_SCORES_KEY = "ragnarok-solo-completed-games-v1";
 
 const heimdallDeck = [
-  card("veille", "Veille Eternelle", "Event", "Glory", 3, "1 x Giant", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Giant", value: 1 }),
+  card("veille", "Eternal Vigil", "Event", "Glory", 3, "1 x Giant", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Giant", value: 1 }),
   card("rig", "Rig", "Character", "Warrior", 2, "4 x Equipment", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { perTag: "Equipment", value: 4 }),
-  card("dents", "Dents d'Or", "Item", "Artefact", 1, "1 x Undead", "Gain 1 Viking per Undead Monster.", { gainMonster: "Undead" }, { perMonster: "Undead", value: 1 }),
-  card("yeux", "Yeux Percants", "Event", "Glory", 1, "1 x different icons", "You may fight any visible Monster.", { fightAny: true }, { uniqueTags: 1 }),
-  card("combat", "Combat a Mort", "Event", "Warrior", 2, "2 x Elite", "Gain 3 Vikings minus Elite icons among Monsters.", { gainFlat: 3, losePerMonster: "Elite" }, { perMonster: "Elite", value: 2 }),
-  card("meres", "Les 9 Meres", "Character", "Destiny", 5, "9 VP", "Gain 1 Viking per Event in Valhalla.", { gainCardType: "Event" }, { fixed: 9 }),
+  card("dents", "Golden Teeth", "Item", "Artefact", 1, "1 x Undead", "Gain 1 Viking per Undead Monster.", { gainMonster: "Undead" }, { perMonster: "Undead", value: 1 }),
+  card("yeux", "Piercing Eyes", "Event", "Glory", 1, "1 x different icons", "You may fight any visible Monster.", { fightAny: true }, { uniqueTags: 1 }),
+  card("combat", "Fight to the Death", "Event", null, 2, "2 x Elite", "Gain 3 Vikings minus Elite icons among Monsters.", { gainFlat: 3, losePerMonster: "Elite" }, { perMonster: "Elite", value: 2 }),
+  card("meres", "The Nine Mothers", "Character", "Destiny", 5, "9 VP", "Gain 1 Viking per Event in Valhalla.", { gainCardType: "Event" }, { fixed: 9 }),
   card("bifrost", "Bifrost", "Item", null, 0, "1 x Event", "Gain 1 Viking, then 1 Viking per Glory.", { gainFlat: 1, gainTag: "Glory" }, { perCardType: "Event", value: 1 }),
-  card("evel", "Eveil du Ragnarok", "Event", "Warrior", 3, "4 VP", "Gain 1 Viking per different square icon.", { gainUniqueTags: true }, { fixed: 4 }),
-  card("epee", "Epee Resonante", "Item", "Equipment", 3, "1 x Beast", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Beast", value: 1 }),
+  card("evel", "Ragnarok's Awakening", "Event", "Glory", 3, "4 VP", "Gain 1 Viking per different square icon.", { gainUniqueTags: true }, { fixed: 4 }),
+  card("epee", "Resonating Sword", "Item", "Equipment", 3, "1 x Beast", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Beast", value: 1 }),
   card("gulltopp", "Gulltopp", "Character", "Animal", 1, "2 VP", "Undead costs -1 this turn.", { discountTypes: ["Undead"] }, { fixed: 2 }),
-  card("gjall", "Gjallarkhorn", "Item", "Glory", 2, "3 x Glory", "No immediate effect.", {}, { perTag: "Glory", value: 3 }),
-  card("gardien", "Gardien des Mondes", "Event", "Warrior", 4, "3 x Worlds", "Gain 1 Viking, then 1 Viking per Character in Valhalla.", { gainFlat: 1, gainCardType: "Character" }, { perWorld: 3 }),
+  card("gjall", "Gjallarhorn", "Item", "Equipment", 2, "3 x Glory", "No immediate effect.", {}, { perTag: "Glory", value: 3 }),
+  card("gardien", "Guardian of the Worlds", "Event", null, 4, "3 x Worlds", "Gain 1 Viking, then 1 Viking per Character in Valhalla.", { gainFlat: 1, gainCardType: "Character" }, { perWorld: 3 }),
   card("heimdall", "Heimdall", "God", null, 0, "2 x different square icons", "God card: gain 1 Viking and all square icons cost -1 this round.", { god: true, allTagDiscount: true, gainFlat: 1 }, { uniqueTags: 2 }),
 ];
 
@@ -25,12 +25,12 @@ const tyrDeck = [
   card("tyr-sword", "Sword of Tyr", "Item", "Equipment", 1, "1 x Giant", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Giant", value: 1 }),
   card("tyr-death", "Fight to the Death", "Event", null, 2, "1 x Undead", "No immediate effect.", {}, { perMonster: "Undead", value: 1 }),
   card("tyr-stone", "Oath Stone", "Item", "Artefact", 2, "2 x Artefact", "Gain 1 Viking per Destiny icon.", { gainTag: "Destiny" }, { perTag: "Artefact", value: 2 }),
-  card("tyr-duel", "Loyal Duel", "Event", null, 1, "1 x MAX", "Gain 1 Viking.", { gainFlat: 1 }, { maxIcons: 1 }),
+  card("tyr-duel", "Loyal Duel", "Event", null, 1, "1 x majority Monster type", "Gain 1 Viking.", { gainFlat: 1 }, { maxMonsterType: 1 }),
   card("tyr-armour", "Armour of Tyr", "Item", "Equipment", 3, "2 x Worlds", "Gain 1 Viking, then 1 Viking per Destiny icon.", { gainFlat: 1, gainTag: "Destiny" }, { perWorld: 2 }),
   card("tyr-thing", "Assembly of the Thing", "Event", "Destiny", 1, "", "No immediate effect.", {}, {}),
   card("tyr-hermod", "Hermod", "Character", null, 2, "3 x Destiny", "Gain 1 Viking per Item card in Valhalla.", { gainCardType: "Item" }, { perTag: "Destiny", value: 3 }),
   card("tyr-oath", "Oath of Tyr", "Event", "Destiny", 3, "3 VP", "Gain 3 Vikings minus Artefact icons.", { gainFlat: 3, losePerTag: "Artefact" }, { fixed: 3 }),
-  card("tyr-vidar", "Vidar", "Character", null, 3, "2 x MAX", "Gain 1 Viking per different Monster type.", { gainUniqueMonsterTypes: true }, { maxIcons: 2 }),
+  card("tyr-vidar", "Vidar", "Character", null, 3, "2 x majority Monster type", "Gain 1 Viking per different Monster type.", { gainUniqueMonsterTypes: true }, { maxMonsterType: 2 }),
   card("tyr", "Tyr", "God", null, 0, "2 x majority Monster type", "God card: gain 1 Viking and activate Tyr's combat power this round.", { god: true, tyrPower: true, gainFlat: 1 }, { maxMonsterType: 2 }),
 ];
 
@@ -62,7 +62,7 @@ const thorDeck = [
   card("thor-sif", "Sif", "Character", null, 3, "3 VP", "Fight 1 additional Monster. Gain 1 Viking, then 1 Viking per Equipment icon.", { extraFight: 1, gainFlat: 1, gainTag: "Equipment" }, { fixed: 3 }),
   card("thor-goats", "Resurrection of the Goats", "Event", null, 0, "2 x Animal", "Gain 1 Viking, then 1 Viking per Animal icon.", { gainFlat: 1, gainTag: "Animal" }, { perTag: "Animal", value: 2 }),
   card("thor-death", "Fight to the Death", "Event", "Warrior", 0, "1 x Elite", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Elite", value: 1 }),
-  card("thor-gloves", "Jarngreipr", "Item", null, 2, "", "Gain 1 Viking per Elite. Discount 1 on Elite Monsters.", { discountTypes: ["Elite"], gainMonster: "Elite" }, {}),
+  card("thor-gloves", "Jarngreipr", "Item", "Equipment", 2, "", "Gain 1 Viking per Elite. Discount 1 on Elite Monsters.", { discountTypes: ["Elite"], gainMonster: "Elite" }, {}),
   card("thor", "Thor", "God", null, 0, "3 x Elite", "God card: gain 2 Vikings and activate Thor's power this round.", { god: true, gainFlat: 2, thorPower: true }, { perMonster: "Elite", value: 3 }),
 ];
 
@@ -84,7 +84,7 @@ const odinDeck = [
 
 const freyaDeck = [
   card("freya-song", "Song of the Valkyries", "Event", null, 3, "3 x Warrior", "Gain 1 Viking per Warrior icon.", { gainTag: "Warrior" }, { perTag: "Warrior", value: 3 }),
-  card("freya-hildr", "Hildr", "Character", "Warrior", 2, "2 x Monster set", "No immediate effect.", {}, { monsterSets: 2 }),
+  card("freya-hildr", "Hildr", "Character", "Warrior", 2, "2 x Monster set", "Discount 1 on Event cards.", { discountCardTypes: ["Event"] }, { monsterSets: 2 }),
   card("freya-cat-a", "Cat", "Character", "Animal", 1, "", "Discount 1 on Character, Item, and Event cards.", { discountCardTypes: ["Character", "Item", "Event"] }, {}),
   card("freya-char", "Char", "Item", null, 2, "4 x Glory", "Gain 1 Viking, then 1 Viking per Animal icon.", { gainFlat: 1, gainTag: "Animal" }, { perTag: "Glory", value: 4 }),
   card("freya-cat-b", "Cat", "Character", "Animal", 0, "1 x Beast", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { perMonster: "Beast", value: 1 }),
@@ -93,7 +93,7 @@ const freyaDeck = [
   card("freya-tears", "Golden Tears", "Event", null, 4, "3 x Monster set", "Discount 1 on Giants.", { discountTypes: ["Giant"] }, { monsterSets: 3 }),
   card("freya-brynhildr", "Brynhildr", "Character", "Warrior", 4, "4 VP", "Gain 2 Vikings per Event card. Discount 1 on Giants and Beasts.", { discountTypes: ["Giant", "Beast"], gainCardType: "Event", gainMultiplier: 2 }, { fixed: 4 }),
   card("freya-skuld", "Skuld", "Character", "Warrior", 3, "2 VP", "Gain 1 Viking per Animal icon. Discount 1 on Giants and Undead.", { discountTypes: ["Giant", "Undead"], gainTag: "Animal" }, { fixed: 2 }),
-  card("freya-cloak", "Fjadrhamr", "Item", null, 3, "2 x Character", "No immediate effect.", {}, { perCardType: "Character", value: 2 }),
+  card("freya-cloak", "Fjadrhamr", "Item", null, 3, "2 x Character", "Discount 1 on Beasts.", { discountTypes: ["Beast"] }, { perCardType: "Character", value: 2 }),
   card("freya-necklace", "Brisingamen", "Item", null, 0, "1 x Giant", "Gain 2 Vikings minus Item cards.", { gainFlat: 2, losePerCardType: "Item" }, { perMonster: "Giant", value: 1 }),
   card("freya", "Freya", "God", null, 0, "4 x Monster set", "God card: gain 2 Vikings and activate Freya's cumulative power.", { god: true, gainFlat: 2, freyaPower: true }, { monsterSets: 4 }),
 ];
@@ -165,7 +165,7 @@ const CARD_UI = {
   "odin-mimir": { ongoing: { worldDiscount: 1 }, instant: { gain: 1, gainTag: "Artefact" } },
   odin: { ongoing: null, instant: { gain: 1, odinPower: true } },
   "freya-song": { ongoing: null, instant: { gainTag: "Warrior" } },
-  "freya-hildr": { ongoing: null, instant: null },
+  "freya-hildr": { ongoing: { cardDiscount: ["Event"] }, instant: null },
   "freya-cat-a": { ongoing: { cardDiscount: ["Event", "Character", "Item"] }, instant: null },
   "freya-char": { ongoing: null, instant: { gain: 1, gainTag: "Animal" } },
   "freya-cat-b": { ongoing: null, instant: { gainMajority: true } },
@@ -174,7 +174,7 @@ const CARD_UI = {
   "freya-tears": { ongoing: { discount: ["Giant"] }, instant: null },
   "freya-brynhildr": { ongoing: { discount: ["Giant", "Beast"] }, instant: { gainCardType: "Event", multiplier: 2 } },
   "freya-skuld": { ongoing: { discount: ["Giant", "Undead"] }, instant: { gainTag: "Animal" } },
-  "freya-cloak": { ongoing: null, instant: null },
+  "freya-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
   "freya-necklace": { ongoing: null, instant: { gain: 2, minusCardType: "Item" } },
   freya: { ongoing: null, instant: { gain: 2, freyaPower: true } },
 };
