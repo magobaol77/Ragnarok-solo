@@ -262,8 +262,8 @@ const monsters = [
 
   monster("Haugbui", "Undead", [], 4, { perMonster: "Undead", value: 1 }),
   monster("Haugbui", "Undead", ["Glory"], 4, 3),
-  monster("Haugbui", "Undead", ["Animal"], 4, 4),
   monster("Haugbui", "Undead", ["Animal"], 4, 3),
+  monster("Haugbui", "Undead", [], 4, 3),
   monster("Bear", "Beast", ["Warrior"], 4, { uniqueTags: 1 }),
   monster("Bear", "Beast", [], 4, { perMonster: "Beast", value: 1 }),
   monster("Bear", "Beast", [], 4, { monsterSets: 3 }),
@@ -299,7 +299,7 @@ const worlds = [
 
   world("Nidavellir", ["Event", "Undead"], 7, 6),
   world("Helheim", ["Character", "Undead"], 6, 4),
-  world("Yggdrasil", ["CardTotal"], 9, 7),
+  world("Yggdrasil", ["SquareTotal"], 9, 7),
   world("Yggdrasil", ["MonsterTotal"], 8, 7, ["Warrior"]),
 
   world("Muspelheim", ["Item", "Giant"], 7, 6),
@@ -401,8 +401,10 @@ function world(name, criteria, cost, vp, tags = []) {
 }
 
 function newGame() {
-  if (selectedPlayerCount > 1 && playerSetup.some((player) => player.controller === "automa")) {
-    renderPlayerSetup("Automa seats are not implemented yet. Set every seat to Human to start a multiplayer game.");
+  const supportedAutomaDecks = ["heimdall", "tyr"];
+  const unsupportedAutoma = playerSetup.find((player) => player.controller === "automa" && !supportedAutomaDecks.includes(player.deckId));
+  if (selectedPlayerCount > 1 && unsupportedAutoma) {
+    renderPlayerSetup(`No Automa is available for ${DECKS[unsupportedAutoma.deckId].name} yet. Choose Heimdall or Tyr, or set this seat to Human.`);
     return;
   }
   if (selectedPlayerCount > 1) return newMultiplayerGame();
@@ -531,7 +533,6 @@ function renderPlayerSetup(statusMessage = "") {
   els.setupStatus.textContent = statusMessage;
   els.setupStatus.classList.toggle("is-hidden", !statusMessage);
   if (!multiplayer) return;
-  const usedDecks = new Set(playerSetup.map((player) => player.deckId));
   els.playerSetup.innerHTML = playerSetup.map((player, index) => `
     <div class="player-slot" data-player-slot="${index}">
       <strong>Player ${index + 1}</strong>
@@ -540,7 +541,7 @@ function renderPlayerSetup(statusMessage = "") {
         <option value="automa" ${player.controller === "automa" ? "selected" : ""}>Automa</option>
       </select>
       <select data-player-deck aria-label="Player ${index + 1} deck">
-        ${Object.values(DECKS).map((deck) => `<option value="${deck.id}" ${player.deckId === deck.id ? "selected" : ""} ${usedDecks.has(deck.id) && player.deckId !== deck.id ? "disabled" : ""}>${deck.name}</option>`).join("")}
+        ${Object.values(DECKS).map((deck) => `<option value="${deck.id}" ${player.deckId === deck.id ? "selected" : ""}>${deck.name}</option>`).join("")}
       </select>
     </div>
   `).join("");
@@ -863,7 +864,7 @@ function endMultiplayerRound() {
   }
   if (state.round >= state.maxRounds) {
     loadPlayer(state.priorityIndex, "gameover");
-    addLog("Multiplayer game over. Review each player area from the table summary in the next iteration.");
+    addLog("Multiplayer game over. Final scores are shown for every player.");
     render();
     return;
   }
@@ -960,10 +961,24 @@ function monsterCost(monsterToFight) {
 }
 
 function worldCost(worldToProtect) {
-  const ongoingDiscount = state.valhalla.reduce((sum, cardInValhalla) => sum + (CARD_UI[cardInValhalla.id]?.ongoing?.worldDiscount || 0), 0);
-  const heimdallDiscount = worldHasSquareIcon(worldToProtect) ? countHeimdallPowerSources() : 0;
-  const criteriaDiscount = worldToProtect.criteria.reduce((sum, criterion) => sum + worldCriterionCount(criterion), 0);
-  return Math.max(0, worldToProtect.cost - criteriaDiscount - state.temp.worldDiscount - ongoingDiscount - heimdallDiscount);
+  return worldDiscountBreakdown(worldToProtect).cost;
+}
+
+function worldDiscountBreakdown(worldToProtect) {
+  const criteria = worldToProtect.criteria.reduce((sum, criterion) => sum + worldCriterionCount(criterion), 0);
+  const ongoing = state.valhalla.reduce((sum, cardInValhalla) => sum + (CARD_UI[cardInValhalla.id]?.ongoing?.worldDiscount || 0), 0);
+  const temporary = state.temp.worldDiscount || 0;
+  const heimdall = worldHasSquareIcon(worldToProtect) ? countHeimdallPowerSources() : 0;
+  const total = criteria + ongoing + temporary + heimdall;
+  return { criteria, ongoing, temporary, heimdall, total, cost: Math.max(0, worldToProtect.cost - total) };
+}
+
+function worldDiscountSummary(worldToProtect) {
+  const discount = worldDiscountBreakdown(worldToProtect);
+  const parts = [`criteria -${discount.criteria}`];
+  if (discount.ongoing) parts.push(`ongoing -${discount.ongoing}`);
+  if (discount.temporary || discount.heimdall) parts.push(`power -${discount.temporary + discount.heimdall}`);
+  return parts.join(" · ");
 }
 
 function worldCriterionCount(criterion) {
@@ -972,6 +987,7 @@ function worldCriterionCount(criterion) {
   if (TAGS.includes(criterion)) return countTag(criterion);
   if (criterion === "MonsterTotal") return state.trophies.length;
   if (criterion === "CardTotal") return state.valhalla.length;
+  if (criterion === "SquareTotal") return TAGS.reduce((sum, tag) => sum + countTag(tag), 0);
   if (criterion === "Banished") return state.banished.length;
   if (criterion === "MajorityCardType") return Math.max(0, ...["Character", "Item", "Event"].map(countCardType));
   if (criterion === "MajorityTag") return Math.max(0, ...TAGS.map(countTag));
@@ -1230,6 +1246,7 @@ function render() {
   els.advanceBtn.disabled = state.phase === "end" ? false : els.advanceBtn.disabled;
   els.advanceBtn.textContent = state.phase === "end" ? "End Turn" : `Play Other ${Math.max(0, state.hand.length - 1)}`;
   els.advanceBtn.onclick = state.phase === "end" ? endTurn : playThree;
+  queueAutomaAction();
 }
 
 function renderFriggChoice() {
@@ -1269,6 +1286,25 @@ function renderFinalScore() {
   const isFinal = state.phase === "gameover";
   els.finalScoreBreakdown.classList.toggle("is-hidden", !isFinal);
   if (!isFinal) return;
+  if (isMultiplayer()) {
+    const results = multiplayerFinalScores();
+    els.finalScoreBreakdown.innerHTML = `
+      <div class="section-head compact"><div><p class="eyebrow">Final Scores</p><h2>${results[0]?.deckName || "Game Over"}</h2></div></div>
+      <div class="multiplayer-final-list">
+        ${results.map((result, rank) => `
+          <article class="multiplayer-final-row ${rank === 0 ? "winner" : ""}">
+            <div class="final-player"><span>${rank + 1}</span><strong>Player ${result.playerIndex + 1}</strong><small>${result.deckName}</small></div>
+            <div><strong>${result.breakdown.cards}</strong><small>Cards</small></div>
+            <div><strong>${result.breakdown.monsters}</strong><small>Monsters</small></div>
+            <div><strong>${result.breakdown.worlds}</strong><small>Worlds</small></div>
+            <div><strong>${result.breakdown.hero}</strong><small>Hero</small></div>
+            <div class="final-total"><strong>${result.total}</strong><small>Total VP</small></div>
+          </article>
+        `).join("")}
+      </div>
+    `;
+    return;
+  }
   const score = scoreBreakdown();
   els.finalScoreBreakdown.innerHTML = `
     <div class="section-head compact"><div><p class="eyebrow">Final Score</p><h2>${totalVp()} VP</h2></div></div>
@@ -1279,6 +1315,24 @@ function renderFinalScore() {
       <div><strong>${score.hero}</strong><span>Hero Power</span></div>
     </div>
   `;
+}
+
+function multiplayerFinalScores() {
+  const originalIndex = state.activePlayerIndex;
+  const originalPhase = state.phase;
+  syncActivePlayer();
+  const results = state.players.map((player) => {
+    loadPlayer(player.index, "gameover");
+    const breakdown = scoreBreakdown();
+    return {
+      playerIndex: player.index,
+      deckName: player.deckName,
+      breakdown,
+      total: breakdown.cards + breakdown.monsters + breakdown.worlds + breakdown.hero,
+    };
+  }).sort((a, b) => b.total - a.total || a.playerIndex - b.playerIndex);
+  loadPlayer(originalIndex, originalPhase);
+  return results;
 }
 
 function renderStats() {
@@ -1369,7 +1423,7 @@ function worldButton(lane) {
       </div>
       <strong>${visibleWorld.name}</strong>
       ${worldCriteriaHtml(visibleWorld)}
-      <small>In battle · ${worldCriteriaDiscount(visibleWorld)} discount</small>
+      <small>In battle · ${worldDiscountSummary(visibleWorld)}</small>
     </button>
   `;
 }
@@ -1385,7 +1439,7 @@ function availableWorldButton(visibleWorld, worldIndex) {
       </div>
       <strong>${visibleWorld.name}</strong>
       ${worldCriteriaHtml(visibleWorld)}
-      <small>Available · ${worldCriteriaDiscount(visibleWorld)} discount</small>
+      <small>Available · ${worldDiscountSummary(visibleWorld)}</small>
     </button>
   `;
 }
@@ -1550,10 +1604,6 @@ function openWorldDeckViewer() {
   els.deckDialog.showModal();
 }
 
-function worldCriteriaDiscount(worldToRender) {
-  return worldToRender.criteria.reduce((sum, criterion) => sum + worldCriterionCount(criterion), 0);
-}
-
 function worldCriteriaHtml(worldToRender, showCounts = true) {
   const criteria = worldToRender.criteria.map((criterion) => {
     const count = showCounts && state ? `<b>-${worldCriterionCount(criterion)}</b>` : "";
@@ -1565,6 +1615,7 @@ function worldCriteriaHtml(worldToRender, showCounts = true) {
 function worldCriterionIconHtml(criterion) {
   if (criterion === "MonsterTotal") return `<span class="criterion-symbol monster-total" aria-label="All Monsters"></span>`;
   if (criterion === "CardTotal") return `<span class="criterion-symbol card-total" aria-label="All cards"></span>`;
+  if (criterion === "SquareTotal") return `<span class="criterion-symbol square-total" aria-label="All square icons"></span>`;
   if (criterion === "Banished") return `<span class="criterion-symbol banished-card" aria-label="Banished cards"></span>`;
   if (criterion === "MajorityCardType") return `<span class="criterion-symbol card-total labelled">MAX</span>`;
   if (criterion === "MajorityTag") return iconHtml("SquareMax");
@@ -1784,6 +1835,370 @@ function addLog(message) {
   state.log.unshift(message);
 }
 
+let automaTimer = null;
+
+function activeAutoma() {
+  if (!isMultiplayer()) return null;
+  const player = state.players[state.activePlayerIndex];
+  return player?.controller === "automa" ? player : null;
+}
+
+function queueAutomaAction() {
+  if (!activeAutoma() || state.phase === "gameover" || automaTimer) return;
+  automaTimer = setTimeout(() => {
+    automaTimer = null;
+    runAutomaAction();
+  }, 450);
+}
+
+function runAutomaAction() {
+  const automa = activeAutoma();
+  if (automa?.deckId === "heimdall") return runHeimdallAutomaAction();
+  if (automa?.deckId === "tyr") return runTyrAutomaAction();
+}
+
+function runHeimdallAutomaAction() {
+  const automa = activeAutoma();
+  if (!automa || automa.deckId !== "heimdall") return;
+  if (state.phase === "choose") return heimdallAutomaChooseCard();
+  if (state.phase === "reserve") return heimdallAutomaResolveReserve();
+  if (state.phase === "monster") return heimdallAutomaFight();
+  if (state.phase === "world") return heimdallAutomaWorld();
+}
+
+function heimdallStrategySignals() {
+  const has = (id) => state.valhalla.some((cardInValhalla) => cardInValhalla.id === id);
+  return {
+    swords: countTag("Equipment"), glory: countTag("Glory"), events: countCardType("Event"),
+    undead: countMonsterType("Undead"), undeadEngine: Number(has("dents")) + Number(has("gulltopp")),
+    squareFocus: Number(has("meres")) + countHeimdallPowerSources(),
+  };
+}
+
+function heimdallCardValue(cardToEvaluate) {
+  const signals = heimdallStrategySignals();
+  const early = state.round <= 3;
+  const late = state.round >= 6;
+  let value = 2 - cardToEvaluate.cost * 0.45 + scoreCard(cardToEvaluate) * 0.18;
+  const earlyCards = ["veille", "dents", "meres", "epee", "gulltopp", "gjall"];
+  if (early && earlyCards.includes(cardToEvaluate.id)) value += 3;
+  if (cardToEvaluate.tag === "Equipment") value += 0.8 + signals.swords * 0.35;
+  if (cardToEvaluate.tag === "Glory") value += 0.7 + signals.glory * 0.3;
+  if (cardToEvaluate.type === "Event") value += signals.events * 0.35;
+  if (signals.squareFocus && cardToEvaluate.tag) value += 1.2 * signals.squareFocus;
+  if (["dents", "gulltopp"].includes(cardToEvaluate.id)) value += signals.undeadEngine * 1.5;
+  if (cardToEvaluate.id === "rig") value += late ? 4 + signals.swords : -3;
+  if (cardToEvaluate.id === "bifrost") value += late ? 2 + signals.events : -1.5;
+  value += automaValhallaEffectBias(cardToEvaluate);
+  if (cardToEvaluate.type === "God") value = -100;
+  return value;
+}
+
+function automaValhallaEffectBias(cardToEvaluate) {
+  const instant = CARD_UI[cardToEvaluate.id]?.instant;
+  if (!instant) return 1.4;
+  const strongInstant = instant.gainMajority || instant.gainUniqueTags || instant.gainUniqueMonsterTypes ||
+    instant.extraFight || instant.restrictedExtraFight || instant.fightAny || instant.friggChoice;
+  return strongInstant ? -0.8 : 0;
+}
+
+function estimatePlayedCardVikings(cardToPlay) {
+  const effect = cardToPlay.play || {};
+  let gain = effect.gainFlat || 0;
+  if (effect.gainTag) gain += countTag(effect.gainTag);
+  if (effect.gainMonster) gain += countMonsterType(effect.gainMonster);
+  if (effect.gainCardType) gain += countCardType(effect.gainCardType) * (effect.gainMultiplier || 1);
+  if (effect.gainUniqueTags) gain += uniqueTags();
+  if (effect.gainUniqueMonsterTypes) gain += TYPES.filter((type) => countMonsterType(type) > 0).length;
+  if (effect.gainMajority) gain += majorityCount();
+  if (effect.gainCardMajority) gain += majorityCardCount();
+  if (effect.gainMixedSet) gain += Math.min(...effect.gainMixedSet.map(countGameIcon)) * (effect.value || 1);
+  if (effect.gainWorlds) gain += state.savedWorlds.length;
+  if (effect.losePerMonster) gain -= countMonsterType(effect.losePerMonster);
+  if (effect.losePerTag) gain -= countTag(effect.losePerTag);
+  if (effect.losePerCardType) gain -= countCardType(effect.losePerCardType);
+  if (effect.losePerWorld) gain -= state.savedWorlds.length;
+  return Math.max(0, gain);
+}
+
+function estimateTurnFights(playedCards) {
+  let fights = 1 + countOngoingExtraFight();
+  for (const playedCard of playedCards) {
+    const instant = CARD_UI[playedCard.id]?.instant || {};
+    if (instant.extraFight) fights += instant.extraFight;
+    if (instant.restrictedExtraFight) fights += 1;
+  }
+  return Math.min(3, fights);
+}
+
+function visibleAccessibleMonsters() {
+  const options = [];
+  state.battlefield.forEach((lane, laneIndex) => {
+    ["left", "right"].forEach((side) => lane[side].forEach((monsterCard, monsterIndex) => {
+      if (isMonsterAccessible(laneIndex, side, monsterIndex)) options.push(monsterCard);
+    }));
+  });
+  return options;
+}
+
+function estimateCombatOpportunity(vikings, fights, monsterValueFn) {
+  const options = visibleAccessibleMonsters().map((monsterCard) => ({
+    card: monsterCard, cost: monsterCost(monsterCard), value: monsterValueFn(monsterCard),
+  })).filter((option) => option.cost <= vikings).sort((a, b) => b.value - a.value);
+  let remaining = vikings;
+  let total = 0;
+  let chosen = 0;
+  for (const option of options) {
+    if (chosen >= fights || option.cost > remaining) continue;
+    remaining -= option.cost;
+    total += Math.max(0, option.value);
+    chosen += 1;
+  }
+  return total * 0.32;
+}
+
+function evaluateReservedTurn(reservedCard, cardValueFn, monsterValueFn) {
+  const playedCards = state.hand.filter((cardInHand) => cardInHand.id !== reservedCard.id);
+  const generated = playedCards.reduce((sum, cardToPlay) => sum + estimatePlayedCardVikings(cardToPlay), 0);
+  const projectedVikings = state.vikings + generated;
+  const reserveCost = valhallaCost(reservedCard);
+  const affordable = projectedVikings >= reserveCost;
+  const afterReserve = affordable ? projectedVikings - reserveCost : projectedVikings + 2;
+  const fights = estimateTurnFights(playedCards);
+  const immediateValue = playedCards.reduce((sum, cardToPlay) => sum + estimatePlayedCardVikings(cardToPlay) * 0.45, 0);
+  const combatValue = estimateCombatOpportunity(afterReserve, fights, monsterValueFn);
+  const affordability = affordable ? 1.2 : -Math.min(5, reserveCost - projectedVikings + 2);
+  return {
+    card: reservedCard, generated, projectedVikings, reserveCost, affordable, fights,
+    value: cardValueFn(reservedCard) + immediateValue + combatValue + affordability,
+  };
+}
+
+function chooseAutomaPlan(deckId) {
+  const player = activeAutoma();
+  if (!player) return "";
+  let candidates;
+  if (deckId === "tyr") {
+    const signals = tyrStrategySignals();
+    candidates = [
+      { name: "Destiny engine", value: signals.destiny * 2 + Number(signals.armour) * 2 },
+      { name: "Beast / Gleipnir", value: signals.monsterCounts.Beast * 2 + Number(signals.gleipnir) * 4 },
+      { name: `${signals.dominantType} concentration`, value: signals.monsterCounts[signals.dominantType] * 2.4 + Number(signals.oath) * 3 },
+    ];
+  } else {
+    const signals = heimdallStrategySignals();
+    candidates = [
+      { name: "Equipment", value: signals.swords * 2 },
+      { name: "Glory", value: signals.glory * 2 },
+      { name: "Undead", value: signals.undead * 1.5 + signals.undeadEngine * 3 },
+      { name: "Events", value: signals.events * 2 },
+    ];
+  }
+  candidates.sort((a, b) => b.value - a.value);
+  const current = candidates.find((candidate) => candidate.name === player.strategyPlan);
+  if (!current || candidates[0].value >= current.value + 2.5) player.strategyPlan = candidates[0].name;
+  return player.strategyPlan;
+}
+
+function heimdallAutomaChooseCard() {
+  const plan = chooseAutomaPlan("heimdall");
+  const candidates = state.hand.filter((cardInHand) => cardInHand.type !== "God")
+    .map((cardInHand) => evaluateReservedTurn(cardInHand, heimdallCardValue, heimdallMonsterValue))
+    .sort((a, b) => b.value - a.value);
+  if (!candidates.length) return;
+  state.reservedId = candidates[0].card.id;
+  addLog(`Heimdall plan: ${plan}. Reserves ${candidates[0].card.name} (${candidates[0].value.toFixed(1)}, +${candidates[0].generated} Vikings projected).`);
+  playThree();
+}
+
+function heimdallAutomaResolveReserve() {
+  const reserved = state.hand[0];
+  const cost = valhallaCost(reserved);
+  const value = heimdallCardValue(reserved);
+  const canBuy = state.vikings >= cost;
+  const shouldBanish = !canBuy || (value < 1.5 && state.vikings < 3 && state.availableWorlds.length > 0);
+  if (shouldBanish) {
+    addLog(`Heimdall Automa banishes ${reserved.name}: resources are more valuable now.`);
+    banishReserved();
+  } else {
+    addLog(`Heimdall Automa sends ${reserved.name} to Valhalla for ${cost}.`);
+    sendReservedToValhalla();
+  }
+}
+
+function heimdallMonsterValue(monsterCard) {
+  const cost = monsterCost(monsterCard);
+  const signals = heimdallStrategySignals();
+  let value = scoreMonster(monsterCard) + monsterCard.tags.length * 0.8 - cost * 1.35;
+  if (monsterCard.type === "Undead") value += signals.undeadEngine * 2.5;
+  if (monsterCard.tags.includes("Equipment")) value += 1 + signals.swords * 0.3;
+  if (monsterCard.tags.includes("Glory")) value += 1 + signals.glory * 0.25;
+  if (signals.squareFocus && monsterHasSquareIcon(monsterCard)) value += signals.squareFocus;
+  return value;
+}
+
+function heimdallAutomaFight() {
+  const options = [];
+  state.battlefield.forEach((lane, laneIndex) => {
+    ["left", "right"].forEach((side) => lane[side].forEach((monsterCard, monsterIndex) => {
+      if (isMonsterAccessible(laneIndex, side, monsterIndex) && canUseFightOn(monsterCard) && state.vikings >= monsterCost(monsterCard)) {
+        options.push({ laneIndex, side, monsterIndex, card: monsterCard, value: heimdallMonsterValue(monsterCard) });
+      }
+    }));
+  });
+  options.sort((a, b) => b.value - a.value);
+  if (!options.length || options[0].value < 0.5) {
+    addLog("Heimdall Automa passes the Monster phase: no efficient target.");
+    return passMonster();
+  }
+  const choice = options[0];
+  addLog(`Heimdall Automa targets ${choice.card.name} (${choice.value.toFixed(1)}).`);
+  fightMonster(choice.laneIndex, choice.side, choice.monsterIndex);
+}
+
+function heimdallWorldValue(worldCard) {
+  const cost = worldCost(worldCard);
+  const usefulIcons = worldCard.tags.filter((tag) => ["Equipment", "Glory"].includes(tag)).length;
+  let value = worldCard.vp + usefulIcons * 1.2 - cost * 1.4;
+  if (cost <= 2) value += 3;
+  value += automaExpensiveWorldPenalty(cost);
+  return value;
+}
+
+function automaExpensiveWorldPenalty(cost) {
+  if (cost <= 2) return 0;
+  if (cost >= 4 && state.vikings < 8) return -4;
+  if (state.vikings - cost < 2) return -2;
+  return 0;
+}
+
+function heimdallAutomaWorld() {
+  const options = state.availableWorlds.map((worldCard, index) => ({
+    index, card: worldCard, cost: worldCost(worldCard), value: heimdallWorldValue(worldCard),
+  })).filter((option) => state.vikings >= option.cost).sort((a, b) => b.value - a.value);
+  if (!options.length || options[0].value < 1) {
+    addLog("Heimdall Automa passes World protection: cost is too high.");
+    return passWorld();
+  }
+  const choice = options[0];
+  addLog(`Heimdall Automa protects ${choice.card.name} for ${choice.cost} (${choice.value.toFixed(1)}).`);
+  protectWorld(choice.index);
+}
+
+function runTyrAutomaAction() {
+  const automa = activeAutoma();
+  if (!automa || automa.deckId !== "tyr") return;
+  if (state.phase === "choose") return tyrAutomaChooseCard();
+  if (state.phase === "reserve") return tyrAutomaResolveReserve();
+  if (state.phase === "monster") return tyrAutomaFight();
+  if (state.phase === "world") return tyrAutomaWorld();
+}
+
+function tyrStrategySignals() {
+  const monsterCounts = Object.fromEntries(TYPES.map((type) => [type, countMonsterType(type)]));
+  const has = (id) => state.valhalla.some((cardInValhalla) => cardInValhalla.id === id);
+  const dominantType = TYPES.reduce((best, type) => monsterCounts[type] > monsterCounts[best] ? type : best, "Giant");
+  return {
+    monsterCounts, dominantType, destiny: countTag("Destiny"),
+    gleipnir: has("tyr-gleipnir"), oath: has("tyr-oath"), armour: has("tyr-armour"),
+  };
+}
+
+function tyrCardValue(cardToEvaluate) {
+  const signals = tyrStrategySignals();
+  const early = state.round <= 3;
+  const late = state.round >= 5;
+  let value = 2 - cardToEvaluate.cost * 0.45 + scoreCard(cardToEvaluate) * 0.17;
+  if (early && ["tyr-death", "tyr-stone", "tyr-thing", "tyr-oath"].includes(cardToEvaluate.id)) value += 3.2;
+  if (late && ["tyr-armour", "tyr-hermod", "tyr-vidar", "tyr-duel"].includes(cardToEvaluate.id)) value += 3;
+  if (cardToEvaluate.tag === "Destiny") value += 1 + signals.destiny * 0.55;
+  if (["tyr-stone", "tyr-armour", "tyr-hermod"].includes(cardToEvaluate.id)) value += signals.destiny * 0.7;
+  if (cardToEvaluate.id === "tyr-gleipnir") value += 1.5 + signals.monsterCounts.Beast * 0.7;
+  if (cardToEvaluate.id === "tyr-oath") value += Math.max(...Object.values(signals.monsterCounts)) * 0.8;
+  if (["tyr-vidar", "tyr-duel"].includes(cardToEvaluate.id)) value += late ? Math.max(...Object.values(signals.monsterCounts)) : -1.5;
+  value += automaValhallaEffectBias(cardToEvaluate);
+  if (cardToEvaluate.type === "God") value = -100;
+  return value;
+}
+
+function tyrAutomaChooseCard() {
+  const plan = chooseAutomaPlan("tyr");
+  const candidates = state.hand.filter((cardInHand) => cardInHand.type !== "God")
+    .map((cardInHand) => evaluateReservedTurn(cardInHand, tyrCardValue, tyrMonsterValue))
+    .sort((a, b) => b.value - a.value);
+  if (!candidates.length) return;
+  state.reservedId = candidates[0].card.id;
+  addLog(`Tyr plan: ${plan}. Reserves ${candidates[0].card.name} (${candidates[0].value.toFixed(1)}, +${candidates[0].generated} Vikings projected).`);
+  playThree();
+}
+
+function tyrAutomaResolveReserve() {
+  const reserved = state.hand[0];
+  const cost = valhallaCost(reserved);
+  const value = tyrCardValue(reserved);
+  if (state.vikings < cost || (value < 1.5 && state.vikings < 3 && state.availableWorlds.length)) {
+    addLog(`Tyr Automa banishes ${reserved.name}: it needs Vikings for the shared board.`);
+    banishReserved();
+  } else {
+    addLog(`Tyr Automa sends ${reserved.name} to Valhalla for ${cost}.`);
+    sendReservedToValhalla();
+  }
+}
+
+function tyrMonsterValue(monsterCard) {
+  const signals = tyrStrategySignals();
+  const cost = monsterCost(monsterCard);
+  let value = scoreMonster(monsterCard) + monsterCard.tags.length * 0.7 - cost * 1.3;
+  value += signals.monsterCounts[monsterCard.type] * 2.2;
+  if (monsterCard.type === signals.dominantType) value += 1.5;
+  if (monsterCard.type === "Beast" && signals.gleipnir) value += 3;
+  if (state.temp.tyrPower) value += signals.monsterCounts[monsterCard.type] * 0.7;
+  if (monsterCard.tags.includes("Destiny")) value += 0.7 + signals.destiny * 0.2;
+  return value;
+}
+
+function tyrAutomaFight() {
+  const options = [];
+  state.battlefield.forEach((lane, laneIndex) => {
+    ["left", "right"].forEach((side) => lane[side].forEach((monsterCard, monsterIndex) => {
+      if (isMonsterAccessible(laneIndex, side, monsterIndex) && canUseFightOn(monsterCard) && state.vikings >= monsterCost(monsterCard)) {
+        const followUps = visibleAccessibleMonsters().filter((other) => other !== monsterCard && other.type === monsterCard.type && monsterCost(other) + monsterCost(monsterCard) <= state.vikings);
+        const sequenceBonus = state.temp.combatLeft > 1 && followUps.length ? Math.max(...followUps.map(tyrMonsterValue)) * 0.45 : 0;
+        options.push({ laneIndex, side, monsterIndex, card: monsterCard, value: tyrMonsterValue(monsterCard) + sequenceBonus, sequenceBonus });
+      }
+    }));
+  });
+  options.sort((a, b) => b.value - a.value);
+  if (!options.length || options[0].value < 0.4) {
+    addLog("Tyr Automa passes the Monster phase: no efficient target.");
+    return passMonster();
+  }
+  const choice = options[0];
+  addLog(`Tyr Automa targets ${choice.card.name} (${choice.card.type}, ${choice.value.toFixed(1)}${choice.sequenceBonus ? ", same-type sequence" : ""}).`);
+  fightMonster(choice.laneIndex, choice.side, choice.monsterIndex);
+}
+
+function tyrWorldValue(worldCard) {
+  const cost = worldCost(worldCard);
+  let value = worldCard.vp - cost * 1.35 + (cost <= 2 ? 3 : 0);
+  if (worldCard.tags.includes("Destiny")) value += 1.5 + countTag("Destiny") * 0.25;
+  value += automaExpensiveWorldPenalty(cost);
+  return value;
+}
+
+function tyrAutomaWorld() {
+  const options = state.availableWorlds.map((worldCard, index) => ({
+    index, card: worldCard, cost: worldCost(worldCard), value: tyrWorldValue(worldCard),
+  })).filter((option) => state.vikings >= option.cost).sort((a, b) => b.value - a.value);
+  if (!options.length || options[0].value < 1) {
+    addLog("Tyr Automa passes World protection: cost is too high.");
+    return passWorld();
+  }
+  const choice = options[0];
+  addLog(`Tyr Automa protects ${choice.card.name} for ${choice.cost} (${choice.value.toFixed(1)}).`);
+  protectWorld(choice.index);
+}
+
 function shuffle(items) {
   const copy = [...items];
   for (let i = copy.length - 1; i > 0; i -= 1) {
@@ -1804,6 +2219,9 @@ els.playerSetup.addEventListener("change", (event) => {
   const playerIndex = Number(slot.dataset.playerSlot);
   if (event.target.matches("[data-player-controller]")) playerSetup[playerIndex].controller = event.target.value;
   if (event.target.matches("[data-player-deck]")) {
+    const previousDeck = playerSetup[playerIndex].deckId;
+    const swapPlayer = playerSetup.find((player, index) => index !== playerIndex && player.deckId === event.target.value);
+    if (swapPlayer) swapPlayer.deckId = previousDeck;
     playerSetup[playerIndex].deckId = event.target.value;
     if (playerIndex === 0) selectedDeckId = event.target.value;
     renderDeckChoices();
