@@ -243,7 +243,7 @@ const monsters = [
   monster("Nair", "Undead", ["Equipment"], 3, 1),
   monster("Nair", "Undead", [], 3, { perMonster: "Beast", value: 1 }),
   monster("Skoll", "Beast", ["Elite"], 6, { maxIcons: 3 }),
-  monster("Sea Serpent", "Beast", [], 5, { perAnyMonster: 2 }),
+  monster("Sea Serpent", "Beast", [], 5, { perWorld: 3 }),
   monster("Sea Serpent", "Beast", [], 5, { perMonster: "Undead", value: 2 }),
   monster("Nidhogg", "Beast", ["Elite"], 8, { maxIcons: 4 }),
   monster("Thrymr", "Giant", ["Elite"], 6, 9),
@@ -350,7 +350,6 @@ const els = {
   valhallaBtn: document.querySelector("#valhallaBtn"),
   banishBtn: document.querySelector("#banishBtn"),
   newGameBtn: document.querySelector("#newGameBtn"),
-  rulesBtn: document.querySelector("#rulesBtn"),
   closeRulesBtn: document.querySelector("#closeRulesBtn"),
   referenceDialog: document.querySelector("#referenceDialog"),
   roundStat: document.querySelector("#roundStat"),
@@ -1289,18 +1288,20 @@ function renderFinalScore() {
   if (isMultiplayer()) {
     const results = multiplayerFinalScores();
     els.finalScoreBreakdown.innerHTML = `
-      <div class="section-head compact"><div><p class="eyebrow">Final Scores</p><h2>${results[0]?.deckName || "Game Over"}</h2></div></div>
-      <div class="multiplayer-final-list">
-        ${results.map((result, rank) => `
-          <article class="multiplayer-final-row ${rank === 0 ? "winner" : ""}">
-            <div class="final-player"><span>${rank + 1}</span><strong>Player ${result.playerIndex + 1}</strong><small>${result.deckName}</small></div>
-            <div><strong>${result.breakdown.cards}</strong><small>Cards</small></div>
-            <div><strong>${result.breakdown.monsters}</strong><small>Monsters</small></div>
-            <div><strong>${result.breakdown.worlds}</strong><small>Worlds</small></div>
-            <div><strong>${result.breakdown.hero}</strong><small>Hero</small></div>
-            <div class="final-total"><strong>${result.total}</strong><small>Total VP</small></div>
-          </article>
-        `).join("")}
+      <div class="section-head compact"><div><p class="eyebrow">Game Over</p><h2>Final Scores</h2></div></div>
+      <div class="multiplayer-score-table-wrap">
+        <table class="multiplayer-score-table">
+          <thead><tr><th scope="col">God</th><th scope="col" title="Cards">CAR</th><th scope="col" title="Monsters">MON</th><th scope="col" title="Worlds">WOR</th><th scope="col" title="Hero Power">HER</th><th scope="col" title="Total">TOT</th></tr></thead>
+          <tbody>
+            ${results.map((result, rank) => `
+              <tr class="${rank === 0 ? "winner" : ""}">
+                <th scope="row">${result.deckName}</th>
+                <td>${result.breakdown.cards}</td><td>${result.breakdown.monsters}</td><td>${result.breakdown.worlds}</td><td>${result.breakdown.hero}</td>
+                <td class="final-total">${result.total}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
       </div>
     `;
     return;
@@ -1459,7 +1460,10 @@ function renderLists() {
   for (const trophy of state.trophies) {
     els.trophies.appendChild(mini(trophy.name, `${iconHtml(trophy.type)} ${trophy.tags.map(iconHtml).join("")} ${monsterScoreHtml(trophy)}`));
   }
-  for (const savedWorld of state.savedWorlds) els.trophies.appendChild(mini(savedWorld.name, `World ${savedWorld.vp} VP`));
+  for (const savedWorld of state.savedWorlds) {
+    const worldTags = savedWorld.tags.map(iconHtml).join("");
+    els.trophies.appendChild(mini(savedWorld.name, `${worldTags} ${iconHtml("World")} ${savedWorld.vp} VP`));
+  }
 }
 
 function iconCounterHtml() {
@@ -2263,7 +2267,6 @@ els.confirmResetScoresBtn.addEventListener("click", resetHighScores);
 els.scoresStatsBtn.addEventListener("click", openScoresAndStatistics);
 els.closeScoresStatsBtn.addEventListener("click", () => els.scoresStatsDialog.close());
 els.closeDeckBtn.addEventListener("click", () => els.deckDialog.close());
-els.rulesBtn.addEventListener("click", () => els.referenceDialog.showModal());
 els.closeRulesBtn.addEventListener("click", () => els.referenceDialog.close());
 els.exileViewerBtn.addEventListener("click", openExileViewer);
 els.closeExileBtn.addEventListener("click", () => els.exileDialog.close());

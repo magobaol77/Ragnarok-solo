@@ -390,6 +390,71 @@ h2 {
   font-weight: 800;
 }
 
+.multiplayer-score-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.multiplayer-score-table {
+  width: 100%;
+  min-width: 390px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: rgba(255, 255, 255, .48);
+}
+
+.multiplayer-score-table th,
+.multiplayer-score-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.multiplayer-score-table thead th {
+  color: var(--muted);
+  background: rgba(88, 76, 55, .09);
+  font-size: .72rem;
+  text-transform: uppercase;
+}
+
+.multiplayer-score-table th:first-child {
+  width: 34%;
+  text-align: left;
+}
+
+.multiplayer-score-table th:not(:first-child),
+.multiplayer-score-table td {
+  width: 13.2%;
+}
+
+.multiplayer-score-table tbody th {
+  font-size: .92rem;
+}
+
+.multiplayer-score-table tbody td {
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.multiplayer-score-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.multiplayer-score-table tbody tr.winner > * {
+  background: rgba(216, 164, 43, .14);
+}
+
+.multiplayer-score-table tbody tr.winner th {
+  box-shadow: inset 4px 0 0 var(--gold);
+}
+
+.multiplayer-score-table .final-total {
+  color: var(--red);
+  font-size: 1.15rem;
+  background: rgba(216, 164, 43, .2);
+}
+
 .choice-dialog {
   width: min(520px, calc(100vw - 24px));
 }
@@ -1512,6 +1577,11 @@ figcaption {
 
   .player-slot select:last-child {
     grid-column: 2;
+  }
+
+  .multiplayer-score-table th,
+  .multiplayer-score-table td {
+    padding: 7px 4px;
   }
 
   .high-score-row {
