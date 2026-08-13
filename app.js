@@ -1456,7 +1456,7 @@ function renderLists() {
   const trophyVp = state.trophies.reduce((sum, trophy) => sum + scoreMonster(trophy), 0);
   els.trophyTitle.textContent = `${trophyVp} VP`;
   els.trophies.innerHTML = state.trophies.length || state.savedWorlds.length ? "" : `<div class="mini-card">No Monsters</div>`;
-  for (const trophy of state.trophies.slice(-8)) {
+  for (const trophy of state.trophies) {
     els.trophies.appendChild(mini(trophy.name, `${iconHtml(trophy.type)} ${trophy.tags.map(iconHtml).join("")} ${monsterScoreHtml(trophy)}`));
   }
   for (const savedWorld of state.savedWorlds) els.trophies.appendChild(mini(savedWorld.name, `World ${savedWorld.vp} VP`));
