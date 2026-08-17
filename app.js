@@ -4,33 +4,33 @@ const HIGH_SCORES_KEY = "ragnarok-solo-completed-games-v1";
 
 const heimdallDeck = [
   card("veille", "Eternal Vigil", "Event", "Glory", 3, "1 x Giant", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Giant", value: 1 }),
-  card("rig", "Rig", "Character", "Warrior", 2, "4 x Equipment", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { perTag: "Equipment", value: 4 }),
+  card("rig", "Rig", "Character", "Warrior", 3, "4 x Equipment", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { perTag: "Equipment", value: 4 }),
   card("dents", "Golden Teeth", "Item", "Artefact", 1, "1 x Undead", "Gain 1 Viking per Undead Monster.", { gainMonster: "Undead" }, { perMonster: "Undead", value: 1 }),
   card("yeux", "Piercing Eyes", "Event", "Glory", 1, "1 x different icons", "You may fight any visible Monster.", { fightAny: true }, { uniqueTags: 1 }),
   card("combat", "Fight to the Death", "Event", null, 2, "2 x Elite", "Gain 3 Vikings minus Elite icons among Monsters.", { gainFlat: 3, losePerMonster: "Elite" }, { perMonster: "Elite", value: 2 }),
-  card("meres", "The Nine Mothers", "Character", "Destiny", 5, "9 VP", "Gain 1 Viking per Event in Valhalla.", { gainCardType: "Event" }, { fixed: 9 }),
+  card("meres", "The Nine Mothers", "Character", "Destiny", 5, "6 VP", "Gain 1 Viking per Event in Valhalla.", { gainCardType: "Event" }, { fixed: 6 }),
   card("bifrost", "Bifrost", "Item", null, 0, "1 x Event", "Gain 1 Viking, then 1 Viking per Glory.", { gainFlat: 1, gainTag: "Glory" }, { perCardType: "Event", value: 1 }),
-  card("evel", "Ragnarok's Awakening", "Event", "Glory", 3, "4 VP", "Gain 1 Viking per different square icon.", { gainUniqueTags: true }, { fixed: 4 }),
+  card("evel", "Ragnarok's Awakening", "Event", "Glory", 3, "3 VP", "Gain 1 Viking per different square icon.", { gainUniqueTags: true }, { fixed: 3 }),
   card("epee", "Resonating Sword", "Item", "Equipment", 3, "1 x Beast", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Beast", value: 1 }),
-  card("gulltopp", "Gulltopp", "Character", "Animal", 1, "2 VP", "Undead costs -1 this turn.", { discountTypes: ["Undead"] }, { fixed: 2 }),
-  card("gjall", "Gjallarhorn", "Item", "Equipment", 2, "3 x Glory", "No immediate effect.", {}, { perTag: "Glory", value: 3 }),
-  card("gardien", "Guardian of the Worlds", "Event", null, 4, "3 x Worlds", "Gain 1 Viking, then 1 Viking per Character in Valhalla.", { gainFlat: 1, gainCardType: "Character" }, { perWorld: 3 }),
+  card("gulltopp", "Gulltopp", "Character", "Animal", 2, "2 VP", "Undead costs -1 this turn.", { discountTypes: ["Undead"] }, { fixed: 2 }),
+  card("gjall", "Gjallarhorn", "Item", "Equipment", 4, "3 x Glory", "No immediate effect.", {}, { perTag: "Glory", value: 3 }),
+  card("gardien", "Guardian of the Worlds", "Event", null, 4, "3 x Worlds", "Gain 1 Viking per Character in Valhalla.", { gainCardType: "Character" }, { perWorld: 3 }),
   card("heimdall", "Heimdall", "God", null, 0, "2 x different square icons", "God card: gain 1 Viking and all square icons cost -1 this round.", { god: true, allTagDiscount: true, gainFlat: 1 }, { uniqueTags: 2 }),
 ];
 
 const tyrDeck = [
   card("tyr-pact", "Pact of Binding", "Event", "Destiny", 4, "2 x Event", "Gain 1 Viking per different Monster type.", { gainUniqueMonsterTypes: true }, { perCardType: "Event", value: 2 }),
-  card("tyr-gleipnir", "Gleipnir", "Item", "Artefact", 2, "1 x Beast", "Fight 1 additional Beast.", { restrictedExtraFight: "Beast" }, { perMonster: "Beast", value: 1 }),
-  card("tyr-hand", "Severed Hand", "Event", "Destiny", 2, "5 VP", "Gain 1 Viking, then 1 Viking per Equipment icon.", { gainFlat: 1, gainTag: "Equipment" }, { fixed: 5 }),
+  card("tyr-gleipnir", "Gleipnir", "Item", "Artefact", 2, "1 x Beast", "Fight 1 additional Monster.", { extraFight: 1 }, { perMonster: "Beast", value: 1 }),
+  card("tyr-hand", "Severed Hand", "Event", "Destiny", 3, "5 VP", "No immediate effect.", {}, { fixed: 5 }),
   card("tyr-sword", "Sword of Tyr", "Item", "Equipment", 1, "1 x Giant", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Giant", value: 1 }),
-  card("tyr-death", "Fight to the Death", "Event", null, 2, "1 x Undead", "No immediate effect.", {}, { perMonster: "Undead", value: 1 }),
+  card("tyr-death", "Fight to the Death", "Event", null, 2, "1 x Undead", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Undead", value: 1 }),
   card("tyr-stone", "Oath Stone", "Item", "Artefact", 2, "2 x Artefact", "Gain 1 Viking per Destiny icon.", { gainTag: "Destiny" }, { perTag: "Artefact", value: 2 }),
-  card("tyr-duel", "Loyal Duel", "Event", null, 1, "1 x majority Monster type", "Gain 1 Viking.", { gainFlat: 1 }, { maxMonsterType: 1 }),
-  card("tyr-armour", "Armour of Tyr", "Item", "Equipment", 3, "2 x Worlds", "Gain 1 Viking, then 1 Viking per Destiny icon.", { gainFlat: 1, gainTag: "Destiny" }, { perWorld: 2 }),
-  card("tyr-thing", "Assembly of the Thing", "Event", "Destiny", 1, "", "No immediate effect.", {}, {}),
+  card("tyr-duel", "Loyal Duel", "Event", null, 2, "1 x majority Monster type", "Gain 1 Viking.", { gainFlat: 1 }, { maxMonsterType: 1 }),
+  card("tyr-armour", "Armour of Tyr", "Item", "Equipment", 2, "2 x Worlds", "Gain 1 Viking, then 1 Viking per Destiny icon.", { gainFlat: 1, gainTag: "Destiny" }, { perWorld: 2 }),
+  card("tyr-thing", "Assembly of the Thing", "Event", "Destiny", 0, "", "Gain 1 Viking, then 1 Viking per Equipment icon.", { gainFlat: 1, gainTag: "Equipment" }, {}),
   card("tyr-hermod", "Hermod", "Character", null, 2, "3 x Destiny", "Gain 1 Viking per Item card in Valhalla.", { gainCardType: "Item" }, { perTag: "Destiny", value: 3 }),
   card("tyr-oath", "Oath of Tyr", "Event", "Destiny", 3, "3 VP", "Gain 3 Vikings minus Artefact icons.", { gainFlat: 3, losePerTag: "Artefact" }, { fixed: 3 }),
-  card("tyr-vidar", "Vidar", "Character", null, 3, "2 x majority Monster type", "Gain 1 Viking per different Monster type.", { gainUniqueMonsterTypes: true }, { maxMonsterType: 2 }),
+  card("tyr-vidar", "Vidar", "Character", null, 3, "2 x different Monster types", "Gain 1 Viking per different Monster type.", { gainUniqueMonsterTypes: true }, { uniqueMonsterTypes: 2 }),
   card("tyr", "Tyr", "God", null, 0, "2 x majority Monster type", "God card: gain 1 Viking and activate Tyr's combat power this round.", { god: true, tyrPower: true, gainFlat: 1 }, { maxMonsterType: 2 }),
 ];
 
@@ -50,52 +50,68 @@ const friggDeck = [
   card("frigg", "Frigg", "God", null, 0, "4 x majority card type", "God card: gain 2 Vikings or play 1 banished card in Valhalla for free.", { god: true, friggChoice: true }, { maxCardType: 4 }),
 ];
 
+const friggAlternativeDeck = [
+  card("frigg-alt-weaving", "Weaving the Future", "Event", "Destiny", 1, "", "Each time you banish a card, gain 1 additional Viking.", {}, {}),
+  card("frigg-alt-belt", "Hlin's Belt", "Item", "Artefact", 0, "1 x majority card type", "You may fight any visible Monster.", { fightAny: true }, { maxCardType: 1 }),
+  card("frigg-alt-hlin", "Hlin", "Character", null, 2, "4 x Artefact", "Gain 1 Viking, then 1 Viking per Artefact icon.", { gainFlat: 1, gainTag: "Artefact" }, { perTag: "Artefact", value: 4 }),
+  card("frigg-alt-prophecy", "Prophecy", "Event", "Destiny", 2, "3 VP", "Gain 1 Viking.", { gainFlat: 1 }, { fixed: 3 }),
+  card("frigg-alt-council", "Council of Queens", "Event", null, 3, "3 x Item", "Gain 1 Viking per Character card in Valhalla.", { gainCardType: "Character" }, { perCardType: "Item", value: 3 }),
+  card("frigg-alt-blessing", "Blessing", "Event", null, 4, "3 x majority card type", "Gain 1 Viking, then 1 Viking per card of your majority color.", { gainFlat: 1, gainCardMajority: true }, { maxCardType: 3 }),
+  card("frigg-alt-veil", "Veil of Destiny", "Item", "Destiny", 4, "3 x Character", "Gain 1 Viking per Event card in Valhalla.", { gainCardType: "Event" }, { perCardType: "Character", value: 3 }),
+  card("frigg-alt-fulla", "Fulla", "Character", null, 0, "", "Each time you banish a card, gain 1 additional Viking.", {}, {}),
+  card("frigg-alt-gna", "Gna", "Character", null, 3, "3 x Event", "Gain 1 Viking per Item card in Valhalla.", { gainCardType: "Item" }, { perCardType: "Event", value: 3 }),
+  card("frigg-alt-ring", "Odin's Ring", "Item", "Artefact", 4, "3 x Destiny", "Gain 1 Viking, then 1 Viking per Destiny icon.", { gainFlat: 1, gainTag: "Destiny" }, { perTag: "Destiny", value: 3 }),
+  card("frigg-alt-key", "Palace Key", "Item", "Artefact", 2, "", "Gain 1 Viking.", { gainFlat: 1 }, {}),
+  card("frigg-alt-eir", "Eir", "Character", "Destiny", 2, "4 VP", "Gain 1 Viking, then 1 Viking per banished card.", { gainFlat: 1, gainBanished: true }, { fixed: 4 }),
+  card("frigg-alternative", "Frigg Alternative", "God", null, 0, "4 x majority card type", "God card: play 1 banished card in Valhalla for free, or draw 2 cards, discard 2 cards, and gain 1 Viking.", { god: true, friggAlternativePower: true }, { maxCardType: 4 }),
+];
+
 const thorDeck = [
-  card("thor-magni", "Magni & Modi", "Character", "Warrior", 2, "2 x Undead", "Discount 1 on Undead.", { discountTypes: ["Undead"] }, { perMonster: "Undead", value: 2 }),
-  card("thor-lightning", "Lightning", "Event", null, 3, "2 x Monster set", "Discount 1 on Beasts, Undead, and Giants.", { discountTypes: ["Beast", "Undead", "Giant"] }, { monsterSets: 2 }),
+  card("thor-magni", "Magni & Modi", "Character", "Warrior", 2, "2 x Undead", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Undead", value: 2 }),
+  card("thor-lightning", "Lightning", "Event", null, 1, "2 x Monster set", "Gain 1 Viking, then 1 Viking per different Monster type.", { gainFlat: 1, gainUniqueMonsterTypes: true }, { monsterSets: 2 }),
   card("thor-tanngnjostr", "Tanngnjostr", "Character", "Animal", 1, "1 x Giant", "Gain 1 Viking per Giant. Discount 1 on Giants.", { discountTypes: ["Giant"], gainMonster: "Giant" }, { perMonster: "Giant", value: 1 }),
-  card("thor-belt", "Megingjord", "Item", "Equipment", 2, "3 x Warrior", "Gain 1 Viking.", { gainFlat: 1 }, { perTag: "Warrior", value: 3 }),
+  card("thor-belt", "Megingjord", "Item", "Equipment", 2, "3 x Warrior", "No immediate effect.", {}, { perTag: "Warrior", value: 3 }),
   card("thor-thrud", "Thrud", "Character", null, 4, "4 x Equipment", "Gain 3 Vikings minus Equipment icons.", { gainFlat: 3, losePerTag: "Equipment" }, { perTag: "Equipment", value: 4 }),
   card("thor-char", "Char", "Item", null, 4, "6 VP", "You may fight any visible Monster. Gain 1 Viking, then 1 Viking per Warrior icon.", { fightAny: true, gainFlat: 1, gainTag: "Warrior" }, { fixed: 6 }),
   card("thor-tanngrisnir", "Tanngrisnir", "Character", "Animal", 1, "1 x Beast", "Gain 1 Viking per Beast. Discount 1 on Beasts.", { discountTypes: ["Beast"], gainMonster: "Beast" }, { perMonster: "Beast", value: 1 }),
-  card("thor-mjolnir", "Mjolnir", "Item", "Equipment", 3, "2 x Elite", "Gain 1 Viking, then 1 Viking per different Monster type.", { gainFlat: 1, gainUniqueMonsterTypes: true }, { perMonster: "Elite", value: 2 }),
+  card("thor-mjolnir", "Mjolnir", "Item", "Equipment", 3, "2 x Elite", "No immediate effect.", {}, { perMonster: "Elite", value: 2 }),
   card("thor-sif", "Sif", "Character", null, 3, "3 VP", "Fight 1 additional Monster. Gain 1 Viking, then 1 Viking per Equipment icon.", { extraFight: 1, gainFlat: 1, gainTag: "Equipment" }, { fixed: 3 }),
-  card("thor-goats", "Resurrection of the Goats", "Event", null, 0, "2 x Animal", "Gain 1 Viking, then 1 Viking per Animal icon.", { gainFlat: 1, gainTag: "Animal" }, { perTag: "Animal", value: 2 }),
-  card("thor-death", "Fight to the Death", "Event", "Warrior", 0, "1 x Elite", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Elite", value: 1 }),
-  card("thor-gloves", "Jarngreipr", "Item", "Equipment", 2, "", "Gain 1 Viking per Elite. Discount 1 on Elite Monsters.", { discountTypes: ["Elite"], gainMonster: "Elite" }, {}),
+  card("thor-goats", "Resurrection of the Goats", "Event", null, 2, "2 x Animal", "Gain 1 Viking, then 1 Viking per Animal icon.", { gainFlat: 1, gainTag: "Animal" }, { perTag: "Animal", value: 2 }),
+  card("thor-death", "Fight to the Death", "Event", "Warrior", 0, "1 x World", "Gain 1 Viking.", { gainFlat: 1 }, { perWorld: 1 }),
+  card("thor-gloves", "Jarngreipr", "Item", "Equipment", 1, "", "Gain 1 Viking per Elite. Discount 1 on Elite Monsters.", { discountTypes: ["Elite"], gainMonster: "Elite" }, {}),
   card("thor", "Thor", "God", null, 0, "3 x Elite", "God card: gain 2 Vikings and activate Thor's power this round.", { god: true, gainFlat: 2, thorPower: true }, { perMonster: "Elite", value: 3 }),
 ];
 
 const odinDeck = [
   card("odin-helmet", "Odin's Helmet", "Item", null, 0, "", "Discount 1 on Event cards.", { discountCardTypes: ["Event"] }, {}),
-  card("odin-voyage", "Journey through the Nine Worlds", "Event", null, 4, "4 x Glory", "Fight 1 additional Monster. Gain 2 Vikings minus Worlds.", { extraFight: 1, gainFlat: 2, losePerWorld: true }, { perTag: "Glory", value: 4 }),
+  card("odin-voyage", "Journey through the Nine Worlds", "Event", null, 5, "4 x Glory", "Fight 1 additional Monster. Gain 2 Vikings minus Worlds.", { extraFight: 1, gainFlat: 2, losePerWorld: true }, { perTag: "Glory", value: 4 }),
   card("odin-gungnir", "Gungnir", "Item", "Artefact", 1, "1 x Giant", "Discount 1 on Giants. Gain 1 Viking per Animal icon.", { discountTypes: ["Giant"], gainTag: "Animal" }, { perMonster: "Giant", value: 1 }),
-  card("odin-sleipnir", "Sleipnir", "Character", "Animal", 2, "2 x Artefact", "Discount 1 on Glory icons. Gain 3 Vikings minus Artefact icons.", { discountTypes: ["Glory"], gainFlat: 3, losePerTag: "Artefact" }, { perTag: "Artefact", value: 2 }),
+  card("odin-sleipnir", "Sleipnir", "Character", "Animal", 2, "2 x Artefact", "Discount 1 on Glory icons. Gain 3 Vikings minus Animal icons.", { discountTypes: ["Glory"], gainFlat: 3, losePerTag: "Animal" }, { perTag: "Artefact", value: 2 }),
   card("odin-runes", "Wisdom of the Runes", "Event", null, 1, "3 VP", "Discount 1 on Elite Monsters. Gain Vikings equal to your majority icon count.", { discountTypes: ["Elite"], gainMajority: true }, { fixed: 3 }),
   card("odin-draupnir", "Draupnir", "Item", "Artefact", 2, "", "Discount 1 on Beasts and Undead. Gain 1 Viking, then 1 Viking per World.", { discountTypes: ["Beast", "Undead"], gainFlat: 1, gainWorlds: true }, {}),
   card("odin-heidrun", "Heidrun", "Character", "Animal", 5, "3 x Animal", "Discount 1 on Artefact icons. Gain 1 Viking, then 1 Viking per Animal icon.", { discountTypes: ["Artefact"], gainFlat: 1, gainTag: "Animal" }, { perTag: "Animal", value: 3 }),
-  card("odin-wolves", "Geri & Freki", "Character", "Animal", 2, "2 x Beast", "Discount 1 on Beasts.", { discountTypes: ["Beast"] }, { perMonster: "Beast", value: 2 }),
+  card("odin-wolves", "Geri & Freki", "Character", "Animal", 3, "2 x Beast", "Discount 1 on Beasts.", { discountTypes: ["Beast"] }, { perMonster: "Beast", value: 2 }),
   card("odin-death", "Fight to the Death", "Event", "Glory", 1, "2 VP", "Discount 1 on Giants. Gain 1 Viking.", { discountTypes: ["Giant"], gainFlat: 1 }, { fixed: 2 }),
   card("odin-throne", "Hlidskjalf Throne", "Item", "Glory", 4, "2 x Event", "Discount 1 on Animal icons. Gain 1 Viking per Character card.", { discountTypes: ["Animal"], gainCardType: "Character" }, { perCardType: "Event", value: 2 }),
   card("odin-ravens", "Hugin & Munin", "Character", "Animal", 2, "5 VP", "Discount 1 on Undead. Gain 1 Viking.", { discountTypes: ["Undead"], gainFlat: 1 }, { fixed: 5 }),
   card("odin-mimir", "Mimir's Well", "Event", null, 3, "2 x Worlds", "Discount 1 on Worlds. Gain 1 Viking, then 1 Viking per Artefact icon.", { worldDiscount: 1, gainFlat: 1, gainTag: "Artefact" }, { perWorld: 2 }),
-  card("odin", "Odin", "God", null, 0, "4 x Worlds", "God card: gain 1 Viking and draw and play 1 additional card this turn.", { god: true, gainFlat: 1, odinPower: true }, { perWorld: 4 }),
+  card("odin", "Odin", "God", null, 0, "4 x Worlds", "God card: draw and play 1 additional card this turn.", { god: true, odinPower: true }, { perWorld: 4 }),
 ];
 
 const freyaDeck = [
-  card("freya-song", "Song of the Valkyries", "Event", null, 3, "3 x Warrior", "Gain 1 Viking per Warrior icon.", { gainTag: "Warrior" }, { perTag: "Warrior", value: 3 }),
+  card("freya-song", "Song of the Valkyries", "Event", null, 4, "3 x Warrior", "Gain 1 Viking per Warrior icon.", { gainTag: "Warrior" }, { perTag: "Warrior", value: 3 }),
   card("freya-hildr", "Hildr", "Character", "Warrior", 2, "2 x Monster set", "Discount 1 on Event cards.", { discountCardTypes: ["Event"] }, { monsterSets: 2 }),
-  card("freya-cat-a", "Cat", "Character", "Animal", 1, "", "Discount 1 on Character, Item, and Event cards.", { discountCardTypes: ["Character", "Item", "Event"] }, {}),
-  card("freya-char", "Char", "Item", null, 2, "4 x Glory", "Gain 1 Viking, then 1 Viking per Animal icon.", { gainFlat: 1, gainTag: "Animal" }, { perTag: "Glory", value: 4 }),
+  card("freya-cat-a", "Cat", "Character", "Animal", 2, "", "Discount 1 on Character, Item, and Event cards.", { discountCardTypes: ["Character", "Item", "Event"] }, {}),
+  card("freya-char", "Char", "Item", null, 3, "4 x Glory", "Gain 1 Viking, then 1 Viking per Animal icon.", { gainFlat: 1, gainTag: "Animal" }, { perTag: "Glory", value: 4 }),
   card("freya-cat-b", "Cat", "Character", "Animal", 0, "1 x Beast", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { perMonster: "Beast", value: 1 }),
   card("freya-gunnr", "Gunnr", "Character", "Warrior", 2, "", "Discount 1 on Beasts and Undead.", { discountTypes: ["Beast", "Undead"] }, {}),
   card("freya-seal", "Sessrumnir Seal", "Item", null, 1, "3 VP", "Gain 1 Viking per Character card.", { discountCardTypes: ["Character"], gainCardType: "Character" }, { fixed: 3 }),
-  card("freya-tears", "Golden Tears", "Event", null, 4, "3 x Monster set", "Discount 1 on Giants.", { discountTypes: ["Giant"] }, { monsterSets: 3 }),
-  card("freya-brynhildr", "Brynhildr", "Character", "Warrior", 4, "2 x Event", "Gain 2 Vikings per Event card. Discount 1 on Giants and Beasts.", { discountTypes: ["Giant", "Beast"], gainCardType: "Event", gainMultiplier: 2 }, { perCardType: "Event", value: 2 }),
+  card("freya-tears", "Golden Tears", "Event", null, 4, "2 x Monster set", "Discount 1 on Giants.", { discountTypes: ["Giant"] }, { monsterSets: 2 }),
+  card("freya-brynhildr", "Brynhildr", "Character", "Warrior", 4, "4 VP", "Gain 2 Vikings per Event card. Discount 1 on Giants and Beasts.", { discountTypes: ["Giant", "Beast"], gainCardType: "Event", gainMultiplier: 2 }, { fixed: 4 }),
   card("freya-skuld", "Skuld", "Character", "Warrior", 3, "2 VP", "Gain 1 Viking per Animal icon. Discount 1 on Giants and Undead.", { discountTypes: ["Giant", "Undead"], gainTag: "Animal" }, { fixed: 2 }),
   card("freya-cloak", "Fjadrhamr", "Item", null, 3, "2 x Character", "Discount 1 on Beasts.", { discountTypes: ["Beast"] }, { perCardType: "Character", value: 2 }),
-  card("freya-necklace", "Brisingamen", "Item", null, 0, "1 x Giant", "Gain 2 Vikings minus Item cards.", { gainFlat: 2, losePerCardType: "Item" }, { perMonster: "Giant", value: 1 }),
-  card("freya", "Freya", "God", null, 0, "4 x Monster set", "God card: gain 2 Vikings and activate Freya's cumulative power.", { god: true, gainFlat: 2, freyaPower: true }, { monsterSets: 4 }),
+  card("freya-necklace", "Brisingamen", "Item", null, 0, "1 x Giant", "Gain 2 Vikings minus Character cards.", { gainFlat: 2, losePerCardType: "Character" }, { perMonster: "Giant", value: 1 }),
+  card("freya", "Freya", "God", null, 0, "5 x Monster set", "God card: gain 2 Vikings and activate Freya's cumulative power: 1 Character discounts every Monster by 1, 2 Characters let you fight any Monster, and 3 Characters grant 1 additional fight.", { god: true, gainFlat: 2, freyaPower: true }, { monsterSets: 5 }),
 ];
 
 const CARD_UI = {
@@ -110,17 +126,17 @@ const CARD_UI = {
   epee: { ongoing: { discount: ["Giant", "Beast"] }, instant: { gain: 1 } },
   gulltopp: { ongoing: { discount: ["Undead"] }, instant: null },
   gjall: { ongoing: { cardDiscount: ["Event"] }, instant: null },
-  gardien: { ongoing: { worldDiscount: 1 }, instant: { gain: 1, gainCardType: "Character" } },
+  gardien: { ongoing: { worldDiscount: 1 }, instant: { gainCardType: "Character" } },
   heimdall: { ongoing: null, instant: { gain: 1, heimdallPower: true, allTagDiscount: true } },
   "tyr-pact": { ongoing: null, instant: { gainUniqueMonsterTypes: true } },
-  "tyr-gleipnir": { ongoing: { cardDiscount: ["Event"] }, instant: { restrictedExtraFight: "Beast" } },
-  "tyr-hand": { ongoing: null, instant: { gain: 1, gainTag: "Equipment" } },
+  "tyr-gleipnir": { ongoing: { cardDiscount: ["Event"] }, instant: { extraFight: true } },
+  "tyr-hand": { ongoing: null, instant: null },
   "tyr-sword": { ongoing: null, instant: { gain: 1 } },
-  "tyr-death": { ongoing: { discount: ["Equipment", "Artefact"] }, instant: null },
+  "tyr-death": { ongoing: { discount: ["Equipment", "Artefact"] }, instant: { gain: 1 } },
   "tyr-stone": { ongoing: { discount: ["Destiny"] }, instant: { gainTag: "Destiny" } },
   "tyr-duel": { ongoing: null, instant: { gain: 1 } },
   "tyr-armour": { ongoing: { worldDiscount: 1 }, instant: { gain: 1, gainTag: "Destiny" } },
-  "tyr-thing": { ongoing: { cardDiscount: ["Character", "Item"] }, instant: null },
+  "tyr-thing": { ongoing: { cardDiscount: ["Character", "Item"] }, instant: { gain: 1, gainTag: "Equipment" } },
   "tyr-hermod": { ongoing: null, instant: { gainCardType: "Item" } },
   "tyr-oath": { ongoing: { extraFight: 1 }, instant: { gain: 3, minusTag: "Artefact" } },
   "tyr-vidar": { ongoing: { fightAny: true }, instant: { gainUniqueMonsterTypes: true } },
@@ -138,14 +154,27 @@ const CARD_UI = {
   "frigg-key": { ongoing: { discount: ["Giant", "Undead"] }, instant: { gain: 1 } },
   "frigg-eir": { ongoing: { discount: ["Beast"] }, instant: { gain: 1, gainMixedSet: ["Character", "Item", "Event"], value: 2 } },
   frigg: { ongoing: null, instant: { friggChoice: true } },
-  "thor-magni": { ongoing: { discount: ["Undead"] }, instant: null },
-  "thor-lightning": { ongoing: { discount: ["Beast", "Undead", "Giant"] }, instant: null },
+  "frigg-alt-weaving": { ongoing: { exileBonus: 1 }, instant: null },
+  "frigg-alt-belt": { ongoing: { discount: ["Artefact"] }, instant: { fightAny: true } },
+  "frigg-alt-hlin": { ongoing: null, instant: { gain: 1, gainTag: "Artefact" } },
+  "frigg-alt-prophecy": { ongoing: { extraFight: 1 }, instant: { gain: 1 } },
+  "frigg-alt-council": { ongoing: { discount: ["Beast"] }, instant: { gainCardType: "Character" } },
+  "frigg-alt-blessing": { ongoing: null, instant: { gain: 1, gainCardMajority: true } },
+  "frigg-alt-veil": { ongoing: { discount: ["Undead"] }, instant: { gainCardType: "Event" } },
+  "frigg-alt-fulla": { ongoing: { exileBonus: 1 }, instant: null },
+  "frigg-alt-gna": { ongoing: { discount: ["Giant"] }, instant: { gainCardType: "Item" } },
+  "frigg-alt-ring": { ongoing: null, instant: { gain: 1, gainTag: "Destiny" } },
+  "frigg-alt-key": { ongoing: { discount: ["Giant", "Undead"] }, instant: { gain: 1 } },
+  "frigg-alt-eir": { ongoing: { discount: ["Beast"] }, instant: { gain: 1, gainBanished: true } },
+  "frigg-alternative": { ongoing: null, instant: { friggAlternativePower: true } },
+  "thor-magni": { ongoing: { discount: ["Undead"] }, instant: { gain: 1 } },
+  "thor-lightning": { ongoing: { discount: ["Beast", "Undead", "Giant"] }, instant: { gain: 1, gainUniqueMonsterTypes: true } },
   "thor-tanngnjostr": { ongoing: { discount: ["Giant"] }, instant: { gainMonster: "Giant" } },
-  "thor-belt": { ongoing: null, instant: { gain: 1 } },
+  "thor-belt": { ongoing: null, instant: null },
   "thor-thrud": { ongoing: null, instant: { gain: 3, minusTag: "Equipment" } },
   "thor-char": { ongoing: { fightAny: true }, instant: { gain: 1, gainTag: "Warrior" } },
   "thor-tanngrisnir": { ongoing: { discount: ["Beast"] }, instant: { gainMonster: "Beast" } },
-  "thor-mjolnir": { ongoing: null, instant: { gain: 1, gainUniqueMonsterTypes: true } },
+  "thor-mjolnir": { ongoing: null, instant: null },
   "thor-sif": { ongoing: { extraFight: 1 }, instant: { gain: 1, gainTag: "Equipment" } },
   "thor-goats": { ongoing: null, instant: { gain: 1, gainTag: "Animal" } },
   "thor-death": { ongoing: null, instant: { gain: 1 } },
@@ -154,7 +183,7 @@ const CARD_UI = {
   "odin-helmet": { ongoing: { cardDiscount: ["Event"] }, instant: null },
   "odin-voyage": { ongoing: { extraFight: 1 }, instant: { gain: 2, minusWorlds: true } },
   "odin-gungnir": { ongoing: { discount: ["Giant"] }, instant: { gainTag: "Animal" } },
-  "odin-sleipnir": { ongoing: { discount: ["Glory"] }, instant: { gain: 3, minusTag: "Artefact" } },
+  "odin-sleipnir": { ongoing: { discount: ["Glory"] }, instant: { gain: 3, minusTag: "Animal" } },
   "odin-runes": { ongoing: { discount: ["Elite"] }, instant: { gainMajority: true } },
   "odin-draupnir": { ongoing: { discount: ["Beast", "Undead"] }, instant: { gain: 1, gainWorlds: true } },
   "odin-heidrun": { ongoing: { discount: ["Artefact"] }, instant: { gain: 1, gainTag: "Animal" } },
@@ -163,7 +192,7 @@ const CARD_UI = {
   "odin-throne": { ongoing: { discount: ["Animal"] }, instant: { gainCardType: "Character" } },
   "odin-ravens": { ongoing: { discount: ["Undead"] }, instant: { gain: 1 } },
   "odin-mimir": { ongoing: { worldDiscount: 1 }, instant: { gain: 1, gainTag: "Artefact" } },
-  odin: { ongoing: null, instant: { gain: 1, odinPower: true } },
+  odin: { ongoing: null, instant: { odinPower: true } },
   "freya-song": { ongoing: null, instant: { gainTag: "Warrior" } },
   "freya-hildr": { ongoing: { cardDiscount: ["Event"] }, instant: null },
   "freya-cat-a": { ongoing: { cardDiscount: ["Event", "Character", "Item"] }, instant: null },
@@ -175,7 +204,7 @@ const CARD_UI = {
   "freya-brynhildr": { ongoing: { discount: ["Giant", "Beast"] }, instant: { gainCardType: "Event", multiplier: 2 } },
   "freya-skuld": { ongoing: { discount: ["Giant", "Undead"] }, instant: { gainTag: "Animal" } },
   "freya-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
-  "freya-necklace": { ongoing: null, instant: { gain: 2, minusCardType: "Item" } },
+  "freya-necklace": { ongoing: null, instant: { gain: 2, minusCardType: "Character" } },
   freya: { ongoing: null, instant: { gain: 2, freyaPower: true } },
 };
 
@@ -210,17 +239,27 @@ const DECKS = {
     startingVikings: 4,
     available: true,
   },
+  "frigg-alternative": {
+    id: "frigg-alternative",
+    name: "FRIGG ALTERNATIVE",
+    subtitle: "Alternative exile recovery and a reusable mulligan.",
+    cards: friggAlternativeDeck,
+    image: "assets/frigg-deck.jpg",
+    recap: "assets/frigg-recap.jpg",
+    startingVikings: 3,
+    available: true,
+  },
   thor: {
     id: "thor", name: "Thor", subtitle: "Elite combat and Event synergy.", cards: thorDeck,
     image: "assets/thor-deck.jpg", recap: "assets/thor-recap.jpg", startingVikings: 2, available: true,
   },
   odin: {
     id: "odin", name: "Odin", subtitle: "World scoring and knowledge of the deck.", cards: odinDeck,
-    image: "assets/odin-deck.jpg", recap: "assets/odin-recap.jpg", startingVikings: 3, available: true,
+    image: "assets/odin-deck.jpg", recap: "assets/odin-recap.jpg", startingVikings: 4, available: true,
   },
   freya: {
     id: "freya", name: "Freya", subtitle: "Warrior icons and cumulative combat bonuses.", cards: freyaDeck,
-    image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 3, available: true,
+    image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 5, available: true,
   },
 };
 
@@ -347,6 +386,8 @@ const els = {
   phaseTitle: document.querySelector("#phaseTitle"),
   advanceBtn: document.querySelector("#advanceBtn"),
   mulliganBtn: document.querySelector("#mulliganBtn"),
+  odinDrawBtn: document.querySelector("#odinDrawBtn"),
+  friggAltPowerBtn: document.querySelector("#friggAltPowerBtn"),
   valhallaBtn: document.querySelector("#valhallaBtn"),
   banishBtn: document.querySelector("#banishBtn"),
   newGameBtn: document.querySelector("#newGameBtn"),
@@ -364,7 +405,11 @@ const els = {
   highScoresList: document.querySelector("#highScoresList"),
   completedGamesCount: document.querySelector("#completedGamesCount"),
   friggChoiceDialog: document.querySelector("#friggChoiceDialog"),
+  friggChoiceEyebrow: document.querySelector("#friggChoiceEyebrow"),
+  friggChoiceTitle: document.querySelector("#friggChoiceTitle"),
   friggVikingsBtn: document.querySelector("#friggVikingsBtn"),
+  friggAltDrawBtn: document.querySelector("#friggAltDrawBtn"),
+  friggAltDiscardBtn: document.querySelector("#friggAltDiscardBtn"),
   friggExileChoices: document.querySelector("#friggExileChoices"),
   resetScoresBtn: document.querySelector("#resetScoresBtn"),
   resetScoresDialog: document.querySelector("#resetScoresDialog"),
@@ -400,7 +445,7 @@ function world(name, criteria, cost, vp, tags = []) {
 }
 
 function newGame() {
-  const supportedAutomaDecks = ["heimdall", "tyr", "freya", "thor", "odin", "frigg"];
+  const supportedAutomaDecks = ["heimdall", "tyr", "freya", "thor", "odin", "frigg", "frigg-alternative"];
   const unsupportedAutoma = playerSetup.find((player) => player.controller === "automa" && !supportedAutomaDecks.includes(player.deckId));
   if (selectedPlayerCount > 1 && unsupportedAutoma) {
     renderPlayerSetup(`No Automa is available for ${DECKS[unsupportedAutoma.deckId].name} yet. Choose Heimdall or Tyr, or set this seat to Human.`);
@@ -558,6 +603,11 @@ function blankTemp() {
     heimdallPower: 0,
     tyrPower: 0,
     thorPower: 0,
+    freyaPowerActive: false,
+    freyaPowerLevel: 0,
+    freyaMonsterDiscount: 0,
+    friggAlternativeStarted: false,
+    friggDiscardIds: [],
     godActive: false,
   };
 }
@@ -571,16 +621,85 @@ function drawToFour() {
     }
     state.hand.push(state.deck.pop());
   }
-  if (state.deckId === "odin" && state.hand.some((cardInHand) => cardInHand.id === "odin") && !state.odinBonusDrawn) {
-    if (!state.deck.length && state.discard.length) {
-      state.deck = shuffle(state.discard);
-      state.discard = [];
-      addLog("Discard reshuffled into the deck.");
-    }
-    if (state.deck.length) state.hand.push(state.deck.pop());
-    state.odinBonusDrawn = true;
-    addLog("Odin was drawn: draw 1 additional card before choosing.");
+}
+
+function hasPendingOdinDraw() {
+  return state.deckId === "odin" && state.phase === "choose" && state.hand.length === 4 &&
+    state.hand.some((cardInHand) => cardInHand.id === "odin") && !state.odinBonusDrawn;
+}
+
+function drawOdinBonusCard() {
+  if (!hasPendingOdinDraw()) return false;
+  if (!state.deck.length && state.discard.length) {
+    state.deck = shuffle(state.discard);
+    state.discard = [];
+    addLog("Discard reshuffled into the deck.");
   }
+  if (state.deck.length) state.hand.push(state.deck.pop());
+  state.odinBonusDrawn = true;
+  addLog("Odin kept in hand: drew 1 additional card before choosing.");
+  return true;
+}
+
+function drawOneCard() {
+  if (!state.deck.length && state.discard.length) {
+    state.deck = shuffle(state.discard);
+    state.discard = [];
+    addLog("Discard reshuffled into the deck.");
+  }
+  return state.deck.pop() || null;
+}
+
+function hasPendingFriggAlternativePower() {
+  return state.deckId === "frigg-alternative" && state.phase === "choose" &&
+    !state.temp.friggAlternativeStarted && state.hand.some((cardInHand) => cardInHand.id === "frigg-alternative");
+}
+
+function startFriggAlternativePower() {
+  if (!hasPendingFriggAlternativePower()) return;
+  const godCardIndex = state.hand.findIndex((cardInHand) => cardInHand.id === "frigg-alternative");
+  const [godCard] = state.hand.splice(godCardIndex, 1);
+  state.reservedId = null;
+  state.playedThisTurn = [godCard];
+  state.temp = blankTemp();
+  state.temp.godActive = true;
+  state.temp.friggAlternativeStarted = true;
+  state.pendingFriggChoice = "alternative";
+  addLog("Frigg Alternative is played first: choose exile recovery or draw 2 and discard 2.");
+  render();
+}
+
+function startFriggAlternativeDraw() {
+  if (state.pendingFriggChoice !== "alternative") return;
+  for (let i = 0; i < 2; i += 1) {
+    const drawnCard = drawOneCard();
+    if (drawnCard) state.hand.push(drawnCard);
+  }
+  state.temp.friggDiscardIds = [];
+  state.pendingFriggChoice = "alternative-discard";
+  addLog("Frigg Alternative drew 2 cards: choose 2 cards to discard.");
+  render();
+}
+
+function toggleFriggAlternativeDiscard(cardId) {
+  if (state.pendingFriggChoice !== "alternative-discard") return;
+  const selected = state.temp.friggDiscardIds;
+  const index = selected.indexOf(cardId);
+  if (index >= 0) selected.splice(index, 1);
+  else if (selected.length < 2) selected.push(cardId);
+  render();
+}
+
+function confirmFriggAlternativeDiscard() {
+  if (state.pendingFriggChoice !== "alternative-discard" || state.temp.friggDiscardIds.length !== 2) return;
+  const discarded = state.hand.filter((cardInHand) => state.temp.friggDiscardIds.includes(cardInHand.id));
+  state.hand = state.hand.filter((cardInHand) => !state.temp.friggDiscardIds.includes(cardInHand.id));
+  state.discard.push(...discarded);
+  state.vikings += 1;
+  state.temp.friggDiscardIds = [];
+  state.pendingFriggChoice = false;
+  addLog(`Frigg Alternative discarded ${discarded.map((cardInHand) => cardInHand.name).join(" and ")}: +1 Viking.`);
+  render();
 }
 
 function setupBattlefield() {
@@ -601,7 +720,7 @@ function drawMonsters(amount) {
 }
 
 function selectReserve(id) {
-  if (state.phase !== "choose") return;
+  if (state.phase !== "choose" || hasPendingOdinDraw()) return;
   const selectedCard = state.hand.find((handCard) => handCard.id === id);
   if (!selectedCard || selectedCard.type === "God") return;
   state.reservedId = id;
@@ -624,11 +743,14 @@ function playThree() {
   const reserved = state.hand.find((c) => c.id === state.reservedId);
   const played = state.hand.filter((c) => c.id !== state.reservedId);
   state.hand = [reserved];
-  state.playedThisTurn = played;
-  state.temp = blankTemp();
+  if (state.temp.friggAlternativeStarted) state.playedThisTurn.push(...played);
+  else {
+    state.playedThisTurn = played;
+    state.temp = blankTemp();
+  }
   for (const playedCard of played) resolvePlayEffect(playedCard);
   state.phase = "reserve";
-  addLog(`Played: ${played.map((c) => c.name).join(", ")}.`);
+  addLog(`Played: ${state.playedThisTurn.map((c) => c.name).join(", ")}.`);
   render();
 }
 
@@ -642,12 +764,19 @@ function resolvePlayEffect(playedCard) {
     }
     if (effect.tyrPower) state.temp.tyrPower += 1;
     if (effect.thorPower) state.temp.thorPower += 1;
-    if (effect.freyaPower) resolveFreyaPower();
+    if (effect.freyaPower) {
+      state.temp.freyaPowerActive = true;
+      resolveFreyaPower();
+    }
     if (effect.friggChoice) state.pendingFriggChoice = true;
+    if (effect.friggAlternativePower) {
+      state.pendingFriggChoice = "alternative";
+    }
     if (effect.allTagDiscount) addLog("Heimdall active: square icons cost -1 this round.");
     if (effect.tyrPower) addLog("Tyr active: Monsters cost -1 per defeated Monster of the same type this round.");
     if (effect.thorPower) addLog("Thor active: Elite Monsters cost -1 per Equipment icon this round.");
     if (effect.friggChoice) addLog("Frigg active: choose 2 Vikings or a free card from exile.");
+    if (effect.friggAlternativePower) addLog("Frigg Alternative active: choose exile recovery or draw 2 and discard 2.");
   }
   if (effect.fightAny && instant.fightAny) state.temp.fightAny = true;
   if (effect.extraFight && instant.extraFight) state.temp.combatLeft += effect.extraFight;
@@ -676,6 +805,7 @@ function resolvePlayEffect(playedCard) {
   if (effect.losePerCardType) gain -= countCardType(effect.losePerCardType);
   if (effect.losePerWorld) gain -= state.savedWorlds.length;
   if (effect.gainWorlds) gain += state.savedWorlds.length;
+  if (effect.gainBanished) gain += state.banished.length;
   gain = Math.max(0, gain);
   if (gain) {
     state.vikings += gain;
@@ -685,11 +815,18 @@ function resolvePlayEffect(playedCard) {
 
 function resolveFreyaPower() {
   const characters = countCardType("Character");
-  if (characters >= 1) state.temp.fightAny = true;
-  if (characters >= 2) state.temp.combatLeft += 1;
-  if (characters >= 3) state.vikings += 1;
-  const access = characters >= 1 ? "fight any Monster" : "no tier unlocked";
-  addLog(`Freya active with ${characters} Character card${characters === 1 ? "" : "s"}: ${access}${characters >= 2 ? ", +1 fight" : ""}${characters >= 3 ? ", +1 Viking" : ""}.`);
+  const previousLevel = state.temp.freyaPowerLevel || 0;
+  const currentLevel = Math.min(3, characters);
+  if (previousLevel < 1 && currentLevel >= 1) state.temp.freyaMonsterDiscount = 1;
+  if (previousLevel < 2 && currentLevel >= 2) state.temp.fightAny = true;
+  if (previousLevel < 3 && currentLevel >= 3) state.temp.combatLeft += 1;
+  state.temp.freyaPowerLevel = currentLevel;
+  const gained = [
+    previousLevel < 1 && currentLevel >= 1 ? "all Monsters cost -1" : "",
+    previousLevel < 2 && currentLevel >= 2 ? "fight any Monster" : "",
+    previousLevel < 3 && currentLevel >= 3 ? "+1 fight" : "",
+  ].filter(Boolean).join(", ");
+  addLog(`Freya active with ${characters} Character card${characters === 1 ? "" : "s"}${gained ? `: ${gained}` : ": no new tier"}.`);
 }
 
 function sendReservedToValhalla() {
@@ -708,6 +845,7 @@ function sendReservedToValhalla() {
   }
   state.vikings -= cost;
   state.valhalla.push(reserved);
+  if (state.temp.freyaPowerActive && reserved.type === "Character") resolveFreyaPower();
   state.hand = [];
   state.phase = "monster";
   state.temp.combatLeft += countOngoingExtraFight();
@@ -955,7 +1093,7 @@ function valhallaCost(cardToBuy) {
 }
 
 function monsterCost(monsterToFight) {
-  let discount = state.temp.discounts[monsterToFight.type] || 0;
+  let discount = (state.temp.discounts[monsterToFight.type] || 0) + (state.temp.freyaMonsterDiscount || 0);
   for (const tag of monsterToFight.tags) discount += state.temp.discounts[tag] || 0;
   discount += countOngoingDiscount(monsterToFight.type);
   for (const tag of monsterToFight.tags) discount += countOngoingDiscount(tag);
@@ -1203,6 +1341,7 @@ function scoreCard(cardToScore) {
   if (score.maxIcons) total += Math.max(0, ...TAGS.map(countTag)) * score.maxIcons;
   if (score.maxCardType) total += majorityCardCount() * score.maxCardType;
   if (score.maxMonsterType) total += Math.max(0, ...["Giant", "Beast", "Undead"].map(countMonsterType)) * score.maxMonsterType;
+  if (score.uniqueMonsterTypes) total += ["Giant", "Beast", "Undead"].filter((type) => countMonsterType(type) > 0).length * score.uniqueMonsterTypes;
   if (score.monsterSets) total += Math.min(...["Giant", "Beast", "Undead"].map(countMonsterType)) * score.monsterSets;
   return total;
 }
@@ -1243,6 +1382,11 @@ function render() {
   els.advanceBtn.disabled = state.phase !== "choose" || !state.reservedId;
   els.mulliganBtn.disabled = state.phase !== "choose" || state.mulliganUsed || state.hand.length !== 4;
   els.mulliganBtn.textContent = state.mulliganUsed ? "Mulligan Used" : "Mulligan";
+  els.odinDrawBtn.hidden = !hasPendingOdinDraw();
+  els.odinDrawBtn.disabled = !hasPendingOdinDraw();
+  els.friggAltPowerBtn.hidden = !hasPendingFriggAlternativePower();
+  els.friggAltPowerBtn.disabled = !hasPendingFriggAlternativePower();
+  if (hasPendingFriggAlternativePower()) els.advanceBtn.disabled = true;
   els.valhallaBtn.disabled = state.phase !== "reserve" || reserved?.type === "God" || state.pendingFriggChoice;
   els.valhallaBtn.hidden = state.phase === "reserve" && reserved?.type === "God";
   els.banishBtn.disabled = state.phase !== "reserve" || state.pendingFriggChoice;
@@ -1259,17 +1403,27 @@ function renderFriggChoice() {
     if (els.friggChoiceDialog.open) els.friggChoiceDialog.close();
     return;
   }
+  const isDiscarding = state.pendingFriggChoice === "alternative-discard";
   const availableCards = state.banished
     .map((cardInExile, index) => ({ cardInExile, index }))
     .filter(({ cardInExile }) => cardInExile.type !== "God");
-  els.friggExileChoices.innerHTML = availableCards.length
-    ? availableCards.map(({ cardInExile, index }) => `<button class="exile-choice game-card type-${cardInExile.type.toLowerCase()}" type="button" data-frigg-exile="${index}">${cardHtml(cardInExile, cardInExile.cost)}</button>`).join("")
-    : `<div class="empty-slot compact">No eligible cards in exile</div>`;
+  const isAlternative = state.pendingFriggChoice === "alternative" || isDiscarding;
+  els.friggChoiceEyebrow.textContent = isAlternative ? "Frigg Alternative Power" : "Frigg Power";
+  els.friggChoiceTitle.textContent = isDiscarding ? "Choose exactly 2 cards to discard" : isAlternative ? "Choose one effect" : "Choose one effect";
+  els.friggVikingsBtn.hidden = isAlternative;
+  els.friggAltDrawBtn.hidden = !isAlternative || isDiscarding;
+  els.friggAltDiscardBtn.hidden = !isDiscarding;
+  els.friggAltDiscardBtn.disabled = !isDiscarding || state.temp.friggDiscardIds.length !== 2;
+  els.friggExileChoices.innerHTML = isDiscarding
+    ? state.hand.map((cardInHand) => `<button class="exile-choice game-card type-${cardInHand.type.toLowerCase()} ${state.temp.friggDiscardIds.includes(cardInHand.id) ? "selected" : ""}" type="button" data-frigg-discard="${cardInHand.id}">${cardHtml(cardInHand, cardInHand.cost)}</button>`).join("")
+    : availableCards.length
+      ? availableCards.map(({ cardInExile, index }) => `<button class="exile-choice game-card type-${cardInExile.type.toLowerCase()}" type="button" data-frigg-exile="${index}">${cardHtml(cardInExile, cardInExile.cost)}</button>`).join("")
+      : `<div class="empty-slot compact">No eligible cards in exile</div>`;
   if (!els.friggChoiceDialog.open) els.friggChoiceDialog.showModal();
 }
 
 function resolveFriggVikings() {
-  if (!state?.pendingFriggChoice) return;
+  if (!state?.pendingFriggChoice || state.pendingFriggChoice === "alternative") return;
   state.vikings += 2;
   state.pendingFriggChoice = false;
   addLog("Frigg: +2 Vikings.");
@@ -1300,7 +1454,10 @@ function renderFinalScore() {
           <thead><tr><th scope="col">God</th><th scope="col" title="Cards">CAR</th><th scope="col" title="Monsters">MON</th><th scope="col" title="Worlds">WOR</th><th scope="col" title="Hero Power">HER</th><th scope="col" title="Total">TOT</th></tr></thead>
           <tbody>
             ${results.map((result, rank) => `
-              <tr class="${rank === 0 ? "winner" : ""}">
+              <tr class="${rank === 0 ? "winner" : ""}"
+                data-square-icons="${TAGS.map((tag) => result.iconStats.square[tag]).join(",")}"
+                data-monster-types="${["Giant", "Beast", "Undead"].map((type) => result.iconStats.monsters[type]).join(",")}"
+                data-card-colors="${["Character", "Item", "Event"].map((type) => result.iconStats.cards[type]).join(",")}">
                 <th scope="row">${result.deckName}</th>
                 <td>${result.breakdown.cards}</td><td>${result.breakdown.monsters}</td><td>${result.breakdown.worlds}</td><td>${result.breakdown.hero}</td>
                 <td class="final-total">${result.total}</td>
@@ -1335,6 +1492,11 @@ function multiplayerFinalScores() {
       playerIndex: player.index,
       deckName: player.deckName,
       breakdown,
+      iconStats: {
+        square: Object.fromEntries(TAGS.map((tag) => [tag, countTag(tag)])),
+        monsters: Object.fromEntries(["Giant", "Beast", "Undead"].map((type) => [type, countMonsterType(type)])),
+        cards: Object.fromEntries(["Character", "Item", "Event"].map((type) => [type, countCardType(type)])),
+      },
       total: breakdown.cards + breakdown.monsters + breakdown.worlds + breakdown.hero,
     };
   }).sort((a, b) => b.total - a.total || a.playerIndex - b.playerIndex);
@@ -1736,6 +1898,7 @@ function instantHtml(cardToRender) {
   if (instant.minusCardType) parts.push(`<span class="effect-chip"><span class="minus-plain">-${iconHtml(instant.minusCardType)}</span></span>`);
   if (instant.minusWorlds) parts.push(`<span class="effect-chip"><span class="minus-plain">-${iconHtml("World")}</span></span>`);
   if (instant.gainWorlds) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x${iconHtml("World")}</span>`);
+  if (instant.gainBanished) parts.push(`<span class="effect-chip">${vikingSymbolHtml()}x<span class="criterion-symbol banished-card" aria-label="Banished cards"></span></span>`);
   if (instant.fightAny) parts.push(`<span class="effect-chip image-chip" title="Fight any visible Monster">${iconHtml("FightAny")}</span>`);
   if (instant.extraFight) parts.push(`<span class="effect-chip image-chip" title="+1 fight">${iconHtml("FightPlusOne")}</span>`);
   if (instant.heimdallPower) parts.push(`<span class="effect-chip image-chip" title="Heimdall power">${iconHtml("HeimdallPower")}</span>`);
@@ -1745,6 +1908,7 @@ function instantHtml(cardToRender) {
   if (instant.freyaPower) parts.push(`<span class="effect-chip image-chip" title="Freya power">${iconHtml("FreyaPower")}</span>`);
   if (instant.restrictedExtraFight) parts.push(`<span class="effect-chip image-chip" title="+1 fight against this type">${iconHtml("FightPlusOne")}${iconHtml(instant.restrictedExtraFight)}</span>`);
   if (instant.friggChoice) parts.push(`<span class="effect-chip" title="Frigg power">${vikingGainHtml(2)} OR ${friggPowerIconHtml()}</span>`);
+  if (instant.friggAlternativePower) parts.push(`<span class="effect-chip" title="Play from exile, or draw 2, discard 2, and gain 1 Viking">${friggPowerIconHtml()} OR +2/-2 ${vikingSymbolHtml()}</span>`);
   else if (instant.allTagDiscount) parts.push(`<span class="effect-chip rainbow-chip">ALL</span>`);
   return parts.join("");
 }
@@ -1788,6 +1952,7 @@ function scoreHtml(cardToRender) {
   if (score.maxIcons) return `<span class="score-badge">${score.maxIcons}x ${iconHtml("SquareMax")}</span>`;
   if (score.maxCardType) return `<span class="score-badge">${score.maxCardType}x ${maxCardIconHtml()}</span>`;
   if (score.maxMonsterType) return `<span class="score-badge">${score.maxMonsterType}x ${iconHtml("MonsterMax")}</span>`;
+  if (score.uniqueMonsterTypes) return `<span class="score-badge">${score.uniqueMonsterTypes}x ${iconHtml("MonsterDiff")}</span>`;
   if (score.monsterSets) return `<span class="score-badge">${score.monsterSets}x ${iconHtml("MonsterSet")}</span>`;
   return "";
 }
@@ -1870,7 +2035,7 @@ function runAutomaAction() {
   if (automa?.deckId === "freya") return runFreyaAutomaAction();
   if (automa?.deckId === "thor") return runThorAutomaAction();
   if (automa?.deckId === "odin") return runOdinAutomaAction();
-  if (automa?.deckId === "frigg") return runFriggAutomaAction();
+  if (["frigg", "frigg-alternative"].includes(automa?.deckId)) return runFriggAutomaAction();
 }
 
 function runHeimdallAutomaAction() {
@@ -1934,10 +2099,20 @@ function heimdallShouldMulligan() {
 
 function automaValhallaEffectBias(cardToEvaluate) {
   const instant = CARD_UI[cardToEvaluate.id]?.instant;
-  if (!instant) return 1.4;
+  const turnsLeft = Math.max(0, state.maxRounds - state.round);
+  const earlyWeight = turnsLeft / Math.max(1, state.maxRounds - 1);
+  if (!instant) return 1.4 + earlyWeight * 1.4;
+
+  const effect = cardToEvaluate.play || {};
+  const currentVikings = estimatePlayedCardVikings(cardToEvaluate);
   const strongInstant = instant.gainMajority || instant.gainUniqueTags || instant.gainUniqueMonsterTypes ||
     instant.extraFight || instant.restrictedExtraFight || instant.fightAny || instant.friggChoice;
-  return strongInstant ? -0.8 : 0;
+  const scalableIncome = effect.gainTag || effect.gainMonster || effect.gainCardType || effect.gainUniqueTags ||
+    effect.gainUniqueMonsterTypes || effect.gainMajority || effect.gainCardMajority || effect.gainMixedSet || effect.gainWorlds;
+  let bias = -currentVikings * 0.35;
+  if (strongInstant) bias -= 0.8 + earlyWeight * 0.8;
+  if (scalableIncome) bias -= earlyWeight * (1.2 + Math.min(2.4, currentVikings * 0.3));
+  return bias;
 }
 
 function estimatePlayedCardVikings(cardToPlay) {
@@ -2006,9 +2181,13 @@ function evaluateReservedTurn(reservedCard, cardValueFn, monsterValueFn) {
   const immediateValue = playedCards.reduce((sum, cardToPlay) => sum + estimatePlayedCardVikings(cardToPlay) * 0.45, 0);
   const combatValue = estimateCombatOpportunity(afterReserve, fights, monsterValueFn);
   const affordability = affordable ? 1.2 : -Math.min(5, reserveCost - projectedVikings + 2);
+  const deckQualityBias = automaValhallaEffectBias(reservedCard);
+  const plannedValue = !affordable && state.deckId !== "frigg"
+    ? immediateValue + combatValue + affordability + deckQualityBias - scoreCard(reservedCard) - estimatePlayedCardVikings(reservedCard)
+    : cardValueFn(reservedCard) + deckQualityBias + immediateValue + combatValue + affordability;
   return {
     card: reservedCard, generated, projectedVikings, reserveCost, affordable, fights,
-    value: cardValueFn(reservedCard) + immediateValue + combatValue + affordability,
+    value: plannedValue,
   };
 }
 
@@ -2177,7 +2356,11 @@ function tyrCardValue(cardToEvaluate) {
   if (["tyr-stone", "tyr-armour", "tyr-hermod"].includes(cardToEvaluate.id)) value += signals.destiny * 0.7;
   if (cardToEvaluate.id === "tyr-gleipnir") value += 1.5 + signals.monsterCounts.Beast * 0.7;
   if (cardToEvaluate.id === "tyr-oath") value += Math.max(...Object.values(signals.monsterCounts)) * 0.8;
-  if (["tyr-vidar", "tyr-duel"].includes(cardToEvaluate.id)) value += late ? Math.max(...Object.values(signals.monsterCounts)) : -1.5;
+  if (cardToEvaluate.id === "tyr-duel") value += late ? Math.max(...Object.values(signals.monsterCounts)) : -1.5;
+  if (cardToEvaluate.id === "tyr-vidar") {
+    const differentMonsterTypes = Object.values(signals.monsterCounts).filter((count) => count > 0).length;
+    value += late ? differentMonsterTypes * 1.4 : -1.5;
+  }
   const ongoing = CARD_UI[cardToEvaluate.id]?.ongoing;
   if (ongoing) {
     const usefulTurns = Math.max(0, turnsLeft);
@@ -2339,13 +2522,14 @@ function freyaCardValue(cardToEvaluate) {
   const cost = valhallaCost(cardToEvaluate);
   let value = currentVp - cost * 0.8 - instantVikings * 0.9;
   const earlyPriority = ["freya-cat-a", "freya-seal", "freya-gunnr"];
-  const secondaryEarly = ["freya-hildr", "freya-skuld", "freya-tears"];
+  const secondaryEarly = ["freya-hildr", "freya-cloak", "freya-skuld", "freya-tears"];
   if (state.round <= 2 && earlyPriority.includes(cardToEvaluate.id)) value += 4;
   if (state.round <= 3 && secondaryEarly.includes(cardToEvaluate.id)) value += 2;
   if (cardToEvaluate.type === "Character" && signals.characters < 3) value += 3.5 + signals.characters * 0.8;
   if (cardToEvaluate.id === "freya-seal" && signals.characters > 0) value -= signals.characters * 1.25;
+  if (["freya-skuld", "freya-char"].includes(cardToEvaluate.id)) value -= turnsLeft * 0.55 + signals.warriors * 0.35;
+  if (["freya-hildr", "freya-cloak"].includes(cardToEvaluate.id)) value += instantVikings === 0 ? 1.2 : 0;
   if (cardToEvaluate.id === "freya-song") value += signals.warriors * 1.1;
-  if (cardToEvaluate.id === "freya-brynhildr") value += signals.events * 0.9;
   if (["freya-cloak", "freya-tears", "freya-hildr"].includes(cardToEvaluate.id) && state.round >= 5) value += 2.5;
   const ongoing = CARD_UI[cardToEvaluate.id]?.ongoing;
   if (ongoing) {
@@ -2373,11 +2557,24 @@ function freyaAutomaChooseCard() {
     return useMulligan();
   }
   const candidates = state.hand.filter((cardInHand) => cardInHand.type !== "God")
-    .map((cardInHand) => evaluateReservedTurn(cardInHand, freyaCardValue, freyaMonsterValue))
+    .map((cardInHand) => {
+      const candidate = evaluateReservedTurn(cardInHand, freyaCardValue, freyaMonsterValue);
+      if (!candidate.affordable) {
+        const futureVikings = estimatePlayedCardVikings(cardInHand) + (state.maxRounds - state.round) * (["freya-seal", "freya-skuld", "freya-char"].includes(cardInHand.id) ? 0.8 : 0.2);
+        candidate.value = -scoreCard(cardInHand) - futureVikings;
+        candidate.plannedBanish = true;
+      }
+      return candidate;
+    })
     .sort((a, b) => b.value - a.value);
   if (!candidates.length) return;
+  if (automaDelay === 0) {
+    addLog(`ANALYSIS Freya R${state.round} hand: ${state.hand.map((cardInHand) => `${cardInHand.name} [${cardInHand.id}]`).join(" | ")}.`);
+    addLog(`ANALYSIS Freya reserve values: ${candidates.map((candidate) => `${candidate.card.name} [${candidate.card.id}] ${candidate.value.toFixed(1)}`).join(" | ")}.`);
+    addLog(`ANALYSIS Freya engine: ${countCardType("Character")} blue | ${countCardType("Event")} red | ${countCardType("Item")} yellow | ${state.vikings} Vikings.`);
+  }
   state.reservedId = candidates[0].card.id;
-  addLog(`Freya plan: Character power / Monster sets. Reserves ${candidates[0].card.name} (${candidates[0].value.toFixed(1)}, +${candidates[0].generated} Vikings projected).`);
+  addLog(`Freya plan: Character power / Monster sets. Reserves ${candidates[0].card.name} (${candidates[0].value.toFixed(1)}, +${candidates[0].generated} Vikings projected${candidates[0].plannedBanish ? ", planned banish" : ""}).`);
   playThree();
 }
 
@@ -2392,6 +2589,7 @@ function freyaAutomaResolveReserve() {
   const blueMilestone = reserved.type === "Character" && countCardType("Character") < 3;
   const shouldPreserveCombat = buyingBlocksCombat && !blueMilestone && (state.round < state.maxRounds || cardVp <= 3);
   const terminalNoPoints = state.round === state.maxRounds && cardVp <= 0;
+  if (automaDelay === 0) addLog(`ANALYSIS Freya Valhalla choice: ${state.vikings} Vikings; ${reserved.name} costs ${cost}, scores ${cardVp}; banish gives +2.`);
   if (state.vikings < cost || terminalNoPoints || shouldPreserveCombat || (value < 0 && state.vikings < 3)) {
     addLog(`Freya Automa banishes ${reserved.name}: board resources are worth more.`);
     banishReserved();
@@ -2411,7 +2609,8 @@ function freyaMonsterValue(monsterCard) {
   const minimum = Math.min(...Object.values(signals.monsterCounts));
   const completesSet = signals.monsterCounts[monsterCard.type] === minimum;
   const turnsLeft = state.maxRounds - state.round;
-  let engineValue = completesSet ? 3.5 : 0.8;
+  let engineValue = completesSet ? 4.5 : 0.8;
+  if (cost <= 3) engineValue += 1.6;
   if (monsterCard.tags.includes("Warrior")) engineValue += 1 + signals.warriors * 0.25;
   engineValue *= state.round === state.maxRounds ? 0 : Math.min(1, turnsLeft / 3);
   return marginalVp + engineValue - cost * 0.68;
@@ -2419,14 +2618,28 @@ function freyaMonsterValue(monsterCard) {
 
 function freyaAutomaFight() {
   const options = [];
+  const visibleOptions = [];
+  const accessibleCosts = visibleAccessibleMonsters().filter(canUseFightOn).map(monsterCost).sort((a, b) => a - b);
+  const cheapestWorld = state.availableWorlds.length ? Math.min(...state.availableWorlds.map(worldCost)) : Infinity;
   state.battlefield.forEach((lane, laneIndex) => {
     ["left", "right"].forEach((side) => lane[side].forEach((monsterCard, monsterIndex) => {
+      if (isMonsterAccessible(laneIndex, side, monsterIndex) && canUseFightOn(monsterCard)) {
+        visibleOptions.push(`${monsterCard.name} (${monsterCard.type}) C${monsterCost(monsterCard)} V${freyaMonsterValue(monsterCard).toFixed(1)}`);
+      }
       if (isMonsterAccessible(laneIndex, side, monsterIndex) && canUseFightOn(monsterCard) && state.vikings >= monsterCost(monsterCard)) {
-        options.push({ laneIndex, side, monsterIndex, card: monsterCard, value: freyaMonsterValue(monsterCard) });
+        const cost = monsterCost(monsterCard);
+        const remaining = state.vikings - cost;
+        const otherAffordable = accessibleCosts.some((otherCost) => otherCost <= remaining && otherCost !== cost) || accessibleCosts.filter((otherCost) => otherCost === cost).length > 1 && cost <= remaining;
+        let sequenceValue = 0;
+        if (state.temp.combatLeft > 1 && otherAffordable) sequenceValue += 2.5;
+        if (remaining >= cheapestWorld) sequenceValue += 2;
+        if (remaining === 0 && state.round < state.maxRounds) sequenceValue -= 3;
+        options.push({ laneIndex, side, monsterIndex, card: monsterCard, value: freyaMonsterValue(monsterCard) + sequenceValue });
       }
     }));
   });
   options.sort((a, b) => b.value - a.value);
+  if (automaDelay === 0) addLog(`ANALYSIS Freya fight ${state.temp.combatLeft}/${state.vikings}V: ${visibleOptions.join(" | ") || "none"}.`);
   if (!options.length || options[0].value < -0.25) {
     addLog("Freya Automa passes the Monster phase: no efficient target.");
     return passMonster();
@@ -2449,6 +2662,10 @@ function freyaAutomaWorld() {
   const options = state.availableWorlds.map((worldCard, index) => ({
     index, card: worldCard, cost: worldCost(worldCard), value: freyaWorldValue(worldCard),
   })).filter((option) => state.vikings >= option.cost).sort((a, b) => b.value - a.value);
+  if (automaDelay === 0) {
+    const visibleWorlds = state.availableWorlds.map((worldCard) => `${worldCard.name} C${worldCost(worldCard)} ${worldCard.vp}VP V${freyaWorldValue(worldCard).toFixed(1)}`).join(" | ");
+    addLog(`ANALYSIS Freya worlds ${state.vikings}V: ${visibleWorlds || "none"}.`);
+  }
   if (!options.length || options[0].value < 0) {
     addLog("Freya Automa passes World protection: cost is too high.");
     return passWorld();
@@ -2686,6 +2903,10 @@ function odinAutomaChooseCard() {
     addLog("Odin Automa uses its mulligan: the hand has no economic or World engine.");
     return useMulligan();
   }
+  if (drawOdinBonusCard()) {
+    render();
+    return;
+  }
   const candidates = state.hand.filter((cardInHand) => cardInHand.type !== "God")
     .map((cardInHand) => evaluateReservedTurn(cardInHand, odinCardValue, odinMonsterValue))
     .sort((a, b) => b.value - a.value);
@@ -2702,8 +2923,12 @@ function odinAutomaResolveReserve() {
   const monsterCosts = visibleAccessibleMonsters().filter(canUseFightOn).map(monsterCost).sort((a, b) => a - b);
   const combatReserve = monsterCosts[0] ?? 0;
   const buyingBlocksCombat = combatReserve > 0 && state.vikings >= combatReserve && state.vikings - cost < combatReserve;
+  const bestCombatValue = Math.max(0, ...visibleAccessibleMonsters()
+    .filter((monsterCard) => canUseFightOn(monsterCard) && state.vikings >= monsterCost(monsterCard))
+    .map(odinMonsterValue));
+  const combatJustifiesSacrifice = bestCombatValue > Math.max(3, cardVp * 0.75);
   const terminalNoPoints = state.round === state.maxRounds && cardVp <= 0;
-  if (state.vikings < cost || terminalNoPoints || (buyingBlocksCombat && state.round < state.maxRounds)) {
+  if (state.vikings < cost || terminalNoPoints || (buyingBlocksCombat && combatJustifiesSacrifice && state.round < state.maxRounds)) {
     addLog(`Odin Automa banishes ${reserved.name}: Vikings are needed to open or protect a World.`);
     banishReserved();
   } else {
@@ -2719,9 +2944,15 @@ function odinMonsterValue(monsterCard) {
   const marginalVp = totalVp() - before;
   state.trophies.pop();
   const turnsLeft = state.maxRounds - state.round;
-  let engineValue = monsterCard.tags.includes("Animal") ? 1.6 : 0.7;
-  engineValue *= state.round === state.maxRounds ? 0 : Math.min(1, turnsLeft / 3);
-  return marginalVp + engineValue - cost * 0.7;
+  const engineTime = state.round === state.maxRounds ? 0 : Math.min(1, turnsLeft / 3);
+  let engineValue = 0.4;
+  if (monsterCard.tags.includes("Animal")) engineValue += 2.6;
+  if (monsterCard.tags.includes("Artefact")) engineValue += 1.8;
+  engineValue *= engineTime;
+  const noEngineIcon = monsterCard.tags.length === 0;
+  const expensiveBlankPenalty = noEngineIcon && cost >= 4 ? 1.8 : 0;
+  const drainsResourcesPenalty = noEngineIcon && cost >= Math.max(4, state.vikings - 1) ? 1.5 : 0;
+  return marginalVp + engineValue - cost * 0.7 - expensiveBlankPenalty - drainsResourcesPenalty;
 }
 
 function odinAutomaFight() {
@@ -2730,7 +2961,15 @@ function odinAutomaFight() {
     ["left", "right"].forEach((side) => lane[side].forEach((monsterCard, monsterIndex) => {
       if (isMonsterAccessible(laneIndex, side, monsterIndex) && canUseFightOn(monsterCard) && state.vikings >= monsterCost(monsterCard)) {
         const opensWorld = lane[side].length === 1;
-        const worldBonus = opensWorld ? 5 + (state.vikings - monsterCost(monsterCard) >= 2 ? 2 : 0) : 0;
+        const cost = monsterCost(monsterCard);
+        let worldBonus = 0;
+        if (opensWorld) {
+          state.trophies.push(monsterCard);
+          const freedWorldCost = worldCost(lane.world);
+          state.trophies.pop();
+          const canProtectFreedWorld = state.vikings - cost >= freedWorldCost;
+          worldBonus = canProtectFreedWorld ? 5 + (state.vikings - cost - freedWorldCost >= 2 ? 2 : 0) : 0.8;
+        }
         options.push({ laneIndex, side, monsterIndex, card: monsterCard, opensWorld, value: odinMonsterValue(monsterCard) + worldBonus });
       }
     }));
@@ -2751,7 +2990,13 @@ function odinWorldValue(worldCard) {
   state.savedWorlds.push(worldCard);
   const marginalVp = totalVp() - before;
   state.savedWorlds.pop();
-  return marginalVp - cost * 0.62 + (cost <= 2 ? 2 : 0) + automaExpensiveWorldPenalty(cost) * 0.6;
+  const turnsLeft = state.maxRounds - state.round;
+  const engineTime = state.round === state.maxRounds ? 0 : Math.min(1, turnsLeft / 3);
+  let engineValue = 1.5;
+  if (worldCard.tags.includes("Animal")) engineValue += 2.6;
+  if (worldCard.tags.includes("Artefact")) engineValue += 1.8;
+  engineValue *= engineTime;
+  return marginalVp + engineValue - cost * 0.62 + (cost <= 2 ? 2 : 0) + automaExpensiveWorldPenalty(cost) * 0.6;
 }
 
 function odinAutomaWorld() {
@@ -2769,18 +3014,24 @@ function odinAutomaWorld() {
 
 function runFriggAutomaAction() {
   const automa = activeAutoma();
-  if (!automa || automa.deckId !== "frigg") return;
+  if (!automa || !["frigg", "frigg-alternative"].includes(automa.deckId)) return;
   if (state.pendingFriggChoice) return friggAutomaResolvePower();
+  if (hasPendingFriggAlternativePower()) return startFriggAlternativePower();
   if (state.phase === "choose") return friggAutomaChooseCard();
   if (state.phase === "reserve") return friggAutomaResolveReserve();
   if (state.phase === "monster") return friggAutomaFight();
   if (state.phase === "world") return friggAutomaWorld();
 }
 
+function friggBaseId(cardOrId) {
+  const id = typeof cardOrId === "string" ? cardOrId : cardOrId?.id || "";
+  return id.replace(/^frigg-alt-/, "frigg-").replace("frigg-alternative", "frigg");
+}
+
 function friggStrategySignals() {
   const cardCounts = Object.fromEntries(["Character", "Item", "Event"].map((type) => [type, countCardType(type)]));
   const majorityType = ["Character", "Item", "Event"].reduce((best, type) => cardCounts[type] > cardCounts[best] ? type : best, "Character");
-  const has = (id) => state.valhalla.some((cardInValhalla) => cardInValhalla.id === id);
+  const has = (id) => state.valhalla.some((cardInValhalla) => friggBaseId(cardInValhalla) === id);
   return {
     cardCounts,
     majorityType,
@@ -2797,15 +3048,16 @@ function friggCardValue(cardToEvaluate) {
   const currentVp = scoreCard(cardToEvaluate);
   const instantVikings = estimatePlayedCardVikings(cardToEvaluate);
   const cost = valhallaCost(cardToEvaluate);
+  const baseId = friggBaseId(cardToEvaluate);
   let value = currentVp - cost * 0.8 - instantVikings * 0.9;
-  if (state.round <= 3 && ["frigg-weaving", "frigg-fulla"].includes(cardToEvaluate.id)) value += 5 + turnsLeft * 0.5;
-  if (state.round <= 3 && ["frigg-belt", "frigg-key"].includes(cardToEvaluate.id)) value += 2.5;
+  if (state.round <= 3 && ["frigg-weaving", "frigg-fulla"].includes(baseId)) value += 5 + turnsLeft * 0.5;
+  if (state.round <= 3 && ["frigg-belt", "frigg-key"].includes(baseId)) value += 2.5;
   if (cardToEvaluate.type === signals.majorityType && signals.majority < 3) value += 1.8;
-  if (cardToEvaluate.id === "frigg-belt") value += signals.artefacts * 0.7;
-  if (cardToEvaluate.id === "frigg-ring") value += signals.destiny * 1.1;
-  if (cardToEvaluate.id === "frigg-blessing") value += state.round >= 5 ? signals.majority * 1.4 : -1;
-  if (cardToEvaluate.id === "frigg-council") value += state.round >= 5 ? signals.cardCounts.Item * 1.3 : -1;
-  if (cardToEvaluate.id === "frigg-gna") value += state.round >= 5 ? signals.cardCounts.Event * 1.2 : 0;
+  if (baseId === "frigg-belt") value += signals.artefacts * 0.7;
+  if (baseId === "frigg-ring") value += signals.destiny * 1.1;
+  if (baseId === "frigg-blessing") value += state.round >= 5 ? signals.majority * 1.4 : -1;
+  if (baseId === "frigg-council") value += state.round >= 5 ? signals.cardCounts.Item * 1.3 : -1;
+  if (baseId === "frigg-gna") value += state.round >= 5 ? signals.cardCounts.Event * 1.2 : 0;
   const ongoing = CARD_UI[cardToEvaluate.id]?.ongoing;
   if (ongoing) {
     if (ongoing.exileBonus) value += turnsLeft * 1.15;
@@ -2818,26 +3070,38 @@ function friggCardValue(cardToEvaluate) {
 }
 
 function friggExilePriority(cardToEvaluate) {
+  const baseId = friggBaseId(cardToEvaluate);
   const tierA = ["frigg-council", "frigg-veil"];
   const tierB = ["frigg-blessing", "frigg-gna", "frigg-prophecy"];
-  if (state.round <= 3 && tierA.includes(cardToEvaluate.id)) return 5 + cardToEvaluate.cost;
-  if (state.round <= 3 && tierB.includes(cardToEvaluate.id)) return 3 + cardToEvaluate.cost * 0.5;
+  if (state.deckId === "frigg-alternative") {
+    if (tierA.includes(baseId)) return 8 + cardToEvaluate.cost;
+    if (tierB.includes(baseId)) return 6 + cardToEvaluate.cost * 0.5;
+    if (["frigg-ring", "frigg-eir", "frigg-hlin"].includes(baseId)) return 3 + cardToEvaluate.cost * 0.35;
+  }
+  if (state.round <= 3 && tierA.includes(baseId)) return 5 + cardToEvaluate.cost;
+  if (state.round <= 3 && tierB.includes(baseId)) return 3 + cardToEvaluate.cost * 0.5;
   return 0;
 }
 
 function friggShouldMulligan() {
-  if (state.mulliganUsed || state.hand.length !== 4 || state.round > 2) return false;
-  const engine = state.hand.some((cardInHand) => ["frigg-weaving", "frigg-fulla"].includes(cardInHand.id));
-  const usefulCheap = state.hand.some((cardInHand) => ["frigg-belt", "frigg-key"].includes(cardInHand.id));
+  if (state.mulliganUsed || state.hand.length !== 4) return false;
+  if (state.deckId === "frigg-alternative") {
+    return !state.hand.some((cardInHand) => cardInHand.id === "frigg-alternative");
+  }
+  if (state.round > 2) return false;
+  const engine = state.hand.some((cardInHand) => ["frigg-weaving", "frigg-fulla"].includes(friggBaseId(cardInHand)));
+  const usefulCheap = state.hand.some((cardInHand) => ["frigg-belt", "frigg-key"].includes(friggBaseId(cardInHand)));
   return !engine && !usefulCheap && state.hand.reduce((sum, cardInHand) => sum + estimatePlayedCardVikings(cardInHand), 0) <= 3;
 }
 
 function friggAutomaChooseCard() {
   if (friggShouldMulligan()) {
-    addLog("Frigg Automa uses its mulligan: the hand cannot start an exile or card-majority engine.");
+    addLog(state.deckId === "frigg-alternative"
+      ? "Frigg Alternative Automa uses its mulligan to search for Frigg."
+      : "Frigg Automa uses its mulligan: the hand cannot start an exile or card-majority engine.");
     return useMulligan();
   }
-  const earlyExile = state.round <= 3;
+  const earlyExile = state.round <= 3 || (state.deckId === "frigg-alternative" && state.banished.length === 0 && state.round < state.maxRounds);
   const candidates = state.hand.filter((cardInHand) => cardInHand.type !== "God")
     .map((cardInHand) => {
       const candidate = evaluateReservedTurn(cardInHand, friggCardValue, friggMonsterValue);
@@ -2851,6 +3115,12 @@ function friggAutomaChooseCard() {
 }
 
 function friggAutomaResolvePower() {
+  if (state.pendingFriggChoice === "alternative-discard") {
+    const discardChoices = [...state.hand].sort((a, b) => friggCardValue(a) - friggCardValue(b)).slice(0, 2);
+    state.temp.friggDiscardIds = discardChoices.map((cardInHand) => cardInHand.id);
+    addLog(`Frigg Alternative Automa discards ${discardChoices.map((cardInHand) => cardInHand.name).join(" and ")}.`);
+    return confirmFriggAlternativeDiscard();
+  }
   const candidates = state.banished.map((cardInExile, index) => ({
     index,
     card: cardInExile,
@@ -2860,6 +3130,10 @@ function friggAutomaResolvePower() {
   if (best) {
     addLog(`Frigg Automa recalls ${best.card.name} from exile (${best.value.toFixed(1)}).`);
     return resolveFriggExile(best.index);
+  }
+  if (state.pendingFriggChoice === "alternative") {
+    addLog("Frigg Alternative Automa draws 2 cards because exile is empty.");
+    return startFriggAlternativeDraw();
   }
   addLog("Frigg Automa chooses 2 Vikings: no eligible card is in exile.");
   resolveFriggVikings();
@@ -2871,11 +3145,11 @@ function friggAutomaResolveReserve() {
   const cardVp = scoreCard(reserved);
   const exilePriority = friggExilePriority(reserved);
   const engineOnline = friggStrategySignals().exileEngine > 0;
-  const shouldBuildExile = state.round <= 3 && exilePriority > 0;
+  const shouldBuildExile = exilePriority > 0 && (state.round <= 3 || (state.deckId === "frigg-alternative" && state.banished.length === 0 && state.round < state.maxRounds));
   const terminalNoPoints = state.round === state.maxRounds && cardVp <= 0;
   const monsterCosts = visibleAccessibleMonsters().filter(canUseFightOn).map(monsterCost).sort((a, b) => a - b);
   const buyingBlocksCombat = monsterCosts[0] > 0 && state.vikings >= monsterCosts[0] && state.vikings - cost < monsterCosts[0];
-  if (state.vikings < cost || terminalNoPoints || shouldBuildExile || (buyingBlocksCombat && !["frigg-weaving", "frigg-fulla"].includes(reserved.id))) {
+  if (state.vikings < cost || terminalNoPoints || shouldBuildExile || (buyingBlocksCombat && !["frigg-weaving", "frigg-fulla"].includes(friggBaseId(reserved)))) {
     addLog(`Frigg Automa banishes ${reserved.name}${engineOnline ? " with its exile bonus" : " for future recovery"}.`);
     banishReserved();
   } else {
@@ -2965,6 +3239,10 @@ els.playerSetup.addEventListener("change", (event) => {
   renderPlayerSetup();
 });
 els.mulliganBtn.addEventListener("click", useMulligan);
+els.odinDrawBtn.addEventListener("click", () => {
+  if (drawOdinBonusCard()) render();
+});
+els.friggAltPowerBtn.addEventListener("click", startFriggAlternativePower);
 els.valhallaBtn.addEventListener("click", sendReservedToValhalla);
 els.banishBtn.addEventListener("click", banishReserved);
 els.battlefield.addEventListener("click", (event) => {
@@ -2988,9 +3266,13 @@ els.menuDeckViewerBtn.addEventListener("click", openDeckViewer);
 els.monsterDeckViewerBtn.addEventListener("click", openMonsterDeckViewer);
 els.worldDeckViewerBtn.addEventListener("click", openWorldDeckViewer);
 els.friggVikingsBtn.addEventListener("click", resolveFriggVikings);
+els.friggAltDrawBtn.addEventListener("click", startFriggAlternativeDraw);
+els.friggAltDiscardBtn.addEventListener("click", confirmFriggAlternativeDiscard);
 els.friggExileChoices.addEventListener("click", (event) => {
   const target = event.target.closest("[data-frigg-exile]");
-  if (target) resolveFriggExile(Number(target.dataset.friggExile));
+  if (target) return resolveFriggExile(Number(target.dataset.friggExile));
+  const discardTarget = event.target.closest("[data-frigg-discard]");
+  if (discardTarget) toggleFriggAlternativeDiscard(discardTarget.dataset.friggDiscard);
 });
 els.friggChoiceDialog.addEventListener("cancel", (event) => event.preventDefault());
 els.resetScoresBtn.addEventListener("click", openResetScoresConfirmation);

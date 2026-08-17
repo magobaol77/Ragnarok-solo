@@ -63,6 +63,8 @@
               </div>
               <div class="choice-actions hand-actions">
                 <button id="mulliganBtn" class="secondary-btn" type="button">Mulligan</button>
+                <button id="odinDrawBtn" class="secondary-btn" type="button" hidden>Keep Hand · Draw +1</button>
+                <button id="friggAltPowerBtn" class="secondary-btn" type="button" hidden>Play Frigg First</button>
                 <button id="advanceBtn" class="primary-btn" type="button">Play Other 3</button>
               </div>
             </div>
@@ -166,16 +168,18 @@
     <dialog id="friggChoiceDialog" class="choice-dialog">
       <div class="dialog-head">
         <div>
-          <p class="eyebrow">Frigg Power</p>
-          <h2>Choose one effect</h2>
+          <p id="friggChoiceEyebrow" class="eyebrow">Frigg Power</p>
+          <h2 id="friggChoiceTitle">Choose one effect</h2>
         </div>
       </div>
       <div class="frigg-power-actions">
         <button id="friggVikingsBtn" class="primary-btn" type="button">Gain 2 Vikings</button>
+        <button id="friggAltDrawBtn" class="primary-btn" type="button" hidden>Draw 2 · Discard 2 · +1 Viking</button>
         <div>
           <p class="eyebrow">Play from exile for free</p>
           <div id="friggExileChoices" class="exile-choice-list"></div>
         </div>
+        <button id="friggAltDiscardBtn" class="primary-btn" type="button" hidden>Discard Selected Cards</button>
       </div>
     </dialog>
 
@@ -247,6 +251,6 @@
       </div>
     </dialog>
 
-    <script src="app.js?v=20260813-frigg-always-recall"></script>
+    <script src="app.js?v=20260814-brynhildr-four-vp"></script>
   </body>
 </html>
