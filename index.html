@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ragnarok Solo</title>
     <meta name="description" content="Solo prototype web app for Ragnarok.">
-    <link rel="stylesheet" href="styles.css?v=20260813-compact-final-score">
+    <link rel="stylesheet" href="styles.css?v=20260911-viking-history">
   </head>
   <body>
     <main class="app-shell">
@@ -154,6 +154,7 @@
         </div>
         <button id="closeDeckBtn" class="ghost-btn" type="button" title="Close">X</button>
       </div>
+      <div id="deckDialogMeta" class="deck-dialog-meta"></div>
       <div id="deckViewer" class="deck-viewer"></div>
     </dialog>
 
@@ -191,7 +192,8 @@
         </div>
         <button id="closeScoresStatsBtn" class="ghost-btn" type="button" title="Close">X</button>
       </div>
-      <section class="high-scores" aria-label="High scores">
+      <nav id="statsTabs" class="stats-tabs" aria-label="Statistics views"></nav>
+      <section id="highScoresSection" class="high-scores" aria-label="High scores">
         <div class="section-head compact">
           <h2>High Scores</h2>
           <div class="choice-actions">
@@ -201,7 +203,7 @@
         </div>
         <div id="highScoresList" class="high-score-list"></div>
       </section>
-      <section class="deck-statistics" aria-label="Deck statistics">
+      <section id="deckStatisticsSection" class="deck-statistics is-hidden" aria-label="Deck statistics">
         <div class="section-head compact">
           <div>
             <p class="eyebrow">Statistics</p>
@@ -251,6 +253,6 @@
       </div>
     </dialog>
 
-    <script src="app.js?v=20260814-brynhildr-four-vp"></script>
+    <script src="app.js?v=20260911-viking-history"></script>
   </body>
 </html>

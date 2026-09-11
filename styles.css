@@ -390,6 +390,10 @@ h2 {
   font-weight: 800;
 }
 
+.score-breakdown-grid .vikings-generated-score {
+  grid-column: 1 / -1;
+}
+
 .multiplayer-score-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
@@ -398,7 +402,7 @@ h2 {
 
 .multiplayer-score-table {
   width: 100%;
-  min-width: 390px;
+  min-width: 440px;
   border-collapse: collapse;
   table-layout: fixed;
   background: rgba(255, 255, 255, .48);
@@ -476,6 +480,96 @@ h2 {
 .scores-dialog .deck-statistics {
   margin-top: 18px;
 }
+
+.stats-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px 0 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.stats-tabs button {
+  flex: 0 0 auto;
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: #f3ead8;
+  color: var(--ink);
+  font-weight: 850;
+}
+
+.stats-tabs button.selected {
+  border-color: #9f302b;
+  background: #9f302b;
+  color: white;
+}
+
+.deck-performance-head {
+  display: grid;
+  gap: 10px;
+}
+
+.deck-performance-head h2 {
+  margin: 0;
+}
+
+.deck-performance-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.deck-performance-metrics div {
+  display: grid;
+  gap: 3px;
+  padding: 10px;
+  background: #fffaf0;
+  border-right: 1px solid var(--line);
+}
+
+.deck-performance-metrics div:last-child { border-right: 0; }
+.deck-performance-metrics strong { font-size: 1.25rem; }
+.deck-performance-metrics span { color: var(--muted); font-size: .75rem; font-weight: 750; }
+
+.card-play-ranking {
+  display: grid;
+  gap: 5px;
+  margin-top: 14px;
+}
+
+.ranking-head,
+.card-ranking-row {
+  display: grid;
+  align-items: center;
+  gap: 8px;
+}
+
+.ranking-head {
+  grid-template-columns: 1fr auto;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ranking-head span { color: var(--muted); font-size: .76rem; }
+
+.card-ranking-row {
+  grid-template-columns: 28px minmax(140px, 1.2fr) minmax(90px, 1fr) 54px;
+  min-height: 42px;
+  padding: 5px 4px;
+  border-bottom: 1px solid rgba(110, 98, 72, .24);
+}
+
+.ranking-position { color: var(--muted); font-weight: 850; text-align: center; }
+.ranking-card { display: grid; gap: 2px; min-width: 0; }
+.ranking-card strong { overflow-wrap: anywhere; }
+.ranking-card small { color: var(--muted); }
+.ranking-bar { height: 8px; border-radius: 4px; overflow: hidden; background: #dfd7c7; }
+.ranking-bar i { display: block; height: 100%; background: #b64037; }
+.card-ranking-row > b { text-align: right; }
 
 .confirm-dialog > p {
   color: var(--muted);
@@ -1496,6 +1590,19 @@ dialog::backdrop {
   margin-bottom: 12px;
 }
 
+.deck-dialog-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  min-height: 0;
+  margin: -4px 0 10px;
+  color: var(--muted);
+  font-size: .8rem;
+}
+
+.deck-dialog-meta:empty { display: none; }
+.deck-dialog-meta strong { color: var(--red); font-size: 1.15rem; }
+
 .reference-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1591,6 +1698,23 @@ figcaption {
   .high-score-row time {
     display: none;
   }
+
+  .deck-performance-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .deck-performance-metrics div {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .deck-performance-metrics div:last-child { border-bottom: 0; }
+
+  .card-ranking-row {
+    grid-template-columns: 24px minmax(0, 1fr) 48px;
+  }
+
+  .ranking-bar { display: none; }
 
   .reserved-band {
     grid-template-columns: 1fr;
