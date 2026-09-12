@@ -19,7 +19,7 @@ const heimdallDeck = [
 ];
 
 const heimdallTwoDeck = heimdallDeck.map((deckCard) => {
-  if (deckCard.id === "combat") return card("heimdall2-combat", "Fight to the Death", "Event", null, 2, "2 x Elite", "Gain 2 Vikings minus Elite Monsters.", { gainFlat: 2, losePerMonster: "Elite" }, { perMonster: "Elite", value: 2 });
+  if (deckCard.id === "combat") return card("heimdall2-combat", "Fight to the Death", "Event", null, 2, "2 x Elite", "Gain 3 Vikings minus Elite Monsters.", { gainFlat: 3, losePerMonster: "Elite" }, { perMonster: "Elite", value: 2 });
   if (deckCard.id === "gardien") return card("heimdall2-gardien", "Guardian of the Worlds", "Event", null, 2, "1 x World", "Gain 1 Viking per Character in Valhalla.", { gainCardType: "Character" }, { perWorld: 1 });
   if (deckCard.id === "heimdall") return card("heimdall-2", "Heimdall 2", "God", null, 0, "2 x different square icons", "God card: gain 1 Viking and all square icons cost -1 this round.", { god: true, allTagDiscount: true, gainFlat: 1 }, { uniqueTags: 2 });
   return deckCard;
@@ -85,7 +85,7 @@ const friggThreeDeck = [
   card("frigg3-council", "Council of Queens", "Event", null, 3, "3 x Item", "Gain 1 Viking per banished card.", { gainBanished: true }, { perCardType: "Item", value: 3 }),
   card("frigg3-blessing", "Blessing", "Event", null, 4, "3 x majority card type", "Gain 1 Viking, then 1 Viking per card of your majority color.", { gainFlat: 1, gainCardMajority: true }, { maxCardType: 3 }),
   card("frigg3-veil", "Veil of Destiny", "Item", "Destiny", 4, "3 x Character", "Gain 1 Viking per banished card.", { gainBanished: true }, { perCardType: "Character", value: 3 }),
-  card("frigg3-fulla", "Fulla", "Character", null, 0, "", "Discount 1 on Item cards.", { discountCardTypes: ["Item"] }, {}),
+  card("frigg3-fulla", "Fulla", "Character", null, 0, "", "Discount 1 on Artefact icons.", { discountTypes: ["Artefact"] }, {}),
   card("frigg3-gna", "Gna", "Character", null, 3, "3 x Event", "Gain 1 Viking per banished card.", { gainBanished: true }, { perCardType: "Event", value: 3 }),
   card("frigg3-ring", "Odin's Ring", "Item", "Artefact", 4, "3 x Destiny", "Gain 1 Viking, then 1 Viking per Destiny icon.", { gainFlat: 1, gainTag: "Destiny" }, { perTag: "Destiny", value: 3 }),
   card("frigg3-key", "Palace Key", "Item", "Artefact", 2, "", "Reactivate your Mulligan.", { resetMulligan: true }, {}),
@@ -110,7 +110,7 @@ const thorDeck = [
 ];
 
 const thorTwoDeck = [
-  card("thor2-magni", "Magni & Modi", "Character", "Warrior", 2, "2 x Undead", "Gain 1 Viking and reactivate your Mulligan.", { gainFlat: 1, resetMulligan: true }, { perMonster: "Undead", value: 2 }),
+  card("thor2-magni", "Magni & Modi", "Character", "Warrior", 2, "2 x Undead", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Undead", value: 2 }),
   thorDeck.find((deckCard) => deckCard.id === "thor-lightning"),
   thorDeck.find((deckCard) => deckCard.id === "thor-tanngnjostr"),
   thorDeck.find((deckCard) => deckCard.id === "thor-belt"),
@@ -142,7 +142,9 @@ const odinDeck = [
 ];
 
 const odinTwoDeck = [
-  ...odinDeck.filter((deckCard) => deckCard.type !== "God"),
+  ...odinDeck.filter((deckCard) => deckCard.type !== "God" && !["odin-sleipnir", "odin-heidrun"].includes(deckCard.id)),
+  card("odin2-sleipnir", "Sleipnir", "Character", "Animal", 2, "2 x Artefact", "Discount 1 on Glory icons. Gain 2 Vikings minus Animal icons.", { discountTypes: ["Glory"], gainFlat: 2, losePerTag: "Animal" }, { perTag: "Artefact", value: 2 }),
+  card("odin2-heidrun", "Heidrun", "Character", "Animal", 5, "3 x Animal", "Discount 1 on Artefact icons. Gain 1 Viking per Animal icon.", { discountTypes: ["Artefact"], gainTag: "Animal" }, { perTag: "Animal", value: 3 }),
   card("odin-2", "Odin 2", "God", null, 0, "4 x Worlds", "God card: discard 1 card, then draw 2 cards. Play Odin first.", { god: true, odinTwoPower: true }, { perWorld: 4 }),
 ];
 
@@ -163,7 +165,7 @@ const freyaDeck = [
 ];
 
 const freyaTwoDeck = [
-  card("freya2-song", "Song of the Valkyries", "Event", null, 4, "2 x Warrior", "Gain 1 Viking per Warrior icon.", { gainTag: "Warrior" }, { perTag: "Warrior", value: 2 }),
+  card("freya2-song", "Song of the Valkyries", "Event", null, 4, "2 x Warrior", "Discount 1 on Warrior icons. Gain 1 Viking per Warrior icon.", { discountTypes: ["Warrior"], gainTag: "Warrior" }, { perTag: "Warrior", value: 2 }),
   freyaDeck.find((deckCard) => deckCard.id === "freya-hildr"),
   card("freya2-cat-a", "Cat", "Character", "Animal", 2, "", "Gain 1 Viking. Discount 1 on Item and Event cards.", { gainFlat: 1, discountCardTypes: ["Item", "Event"] }, {}),
   freyaDeck.find((deckCard) => deckCard.id === "freya-char"),
@@ -192,7 +194,7 @@ const CARD_UI = {
   gjall: { ongoing: { cardDiscount: ["Event"] }, instant: null },
   gardien: { ongoing: { worldDiscount: 1 }, instant: { gainCardType: "Character" } },
   heimdall: { ongoing: null, instant: { gain: 1, heimdallPower: true, allTagDiscount: true } },
-  "heimdall2-combat": { ongoing: null, instant: { gain: 2, minus: "Elite" } },
+  "heimdall2-combat": { ongoing: null, instant: { gain: 3, minus: "Elite" } },
   "heimdall2-gardien": { ongoing: { worldDiscount: 1 }, instant: { gainCardType: "Character" } },
   "heimdall-2": { ongoing: null, instant: { gain: 1, heimdallPower: true, allTagDiscount: true } },
   "tyr-pact": { ongoing: null, instant: { gainUniqueMonsterTypes: true } },
@@ -242,7 +244,7 @@ const CARD_UI = {
   "frigg3-council": { ongoing: { discount: ["Beast"] }, instant: { gainBanished: true } },
   "frigg3-blessing": { ongoing: null, instant: { gain: 1, gainCardMajority: true } },
   "frigg3-veil": { ongoing: { discount: ["Undead"] }, instant: { gainBanished: true } },
-  "frigg3-fulla": { ongoing: { cardDiscount: ["Item"] }, instant: null },
+  "frigg3-fulla": { ongoing: { discount: ["Artefact"] }, instant: null },
   "frigg3-gna": { ongoing: { discount: ["Giant"] }, instant: { gainBanished: true } },
   "frigg3-ring": { ongoing: null, instant: { gain: 1, gainTag: "Destiny" } },
   "frigg3-key": { ongoing: { discount: ["Giant", "Undead"] }, instant: { resetMulligan: true } },
@@ -261,7 +263,7 @@ const CARD_UI = {
   "thor-death": { ongoing: null, instant: { gain: 1 } },
   "thor-gloves": { ongoing: { discount: ["Elite"] }, instant: { gainMonster: "Elite" } },
   thor: { ongoing: null, instant: { gain: 2, thorPower: true } },
-  "thor2-magni": { ongoing: { discount: ["Undead"] }, instant: { gain: 1, resetMulligan: true } },
+  "thor2-magni": { ongoing: { discount: ["Undead"] }, instant: { gain: 1 } },
   "thor2-char": { ongoing: { fightAny: true }, instant: { gainTag: "Warrior" } },
   "thor2-mjolnir": { ongoing: null, instant: { gain: 3, minus: "Elite" } },
   "thor2-goats": { ongoing: null, instant: { gain: 1, gainTag: "Animal" } },
@@ -273,6 +275,8 @@ const CARD_UI = {
   "odin-runes": { ongoing: { discount: ["Elite"] }, instant: { gainMajority: true } },
   "odin-draupnir": { ongoing: { discount: ["Beast", "Undead"] }, instant: { gain: 1, gainWorlds: true } },
   "odin-heidrun": { ongoing: { discount: ["Artefact"] }, instant: { gain: 1, gainTag: "Animal" } },
+  "odin2-sleipnir": { ongoing: { discount: ["Glory"] }, instant: { gain: 2, minusTag: "Animal" } },
+  "odin2-heidrun": { ongoing: { discount: ["Artefact"] }, instant: { gainTag: "Animal" } },
   "odin-wolves": { ongoing: { discount: ["Beast"] }, instant: null },
   "odin-death": { ongoing: { discount: ["Giant"] }, instant: { gain: 1 } },
   "odin-throne": { ongoing: { discount: ["Animal"] }, instant: { gainCardType: "Character" } },
@@ -293,7 +297,7 @@ const CARD_UI = {
   "freya-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
   "freya-necklace": { ongoing: null, instant: { gain: 2, minusCardType: "Character" } },
   freya: { ongoing: null, instant: { gain: 2, freyaPower: true } },
-  "freya2-song": { ongoing: null, instant: { gainTag: "Warrior" } },
+  "freya2-song": { ongoing: { discount: ["Warrior"] }, instant: { gainTag: "Warrior" } },
   "freya2-cat-a": { ongoing: { cardDiscount: ["Item", "Event"] }, instant: { gain: 1 } },
   "freya2-cat-b": { ongoing: null, instant: { gainMajority: true } },
   "freya2-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
@@ -368,7 +372,7 @@ const DECKS = {
   },
   "odin-2": {
     id: "odin-2", name: "Odin 2", subtitle: "Alternative hand filtering and World scoring.", cards: odinTwoDeck,
-    image: "assets/odin-deck.jpg", recap: "assets/odin-recap.jpg", startingVikings: 4, available: true,
+    image: "assets/odin-deck.jpg", recap: "assets/odin-recap.jpg", startingVikings: 3, available: true,
   },
   freya: {
     id: "freya", name: "Freya", subtitle: "Warrior icons and cumulative combat bonuses.", cards: freyaDeck,
@@ -376,7 +380,7 @@ const DECKS = {
   },
   "freya-2": {
     id: "freya-2", name: "FREYA 2", subtitle: "Alternative Character milestones and combat tempo.", cards: freyaTwoDeck,
-    image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 3, available: true,
+    image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 5, available: true,
   },
 };
 
@@ -3157,7 +3161,13 @@ function odinStrategySignals() {
   };
 }
 
+function odinCanonicalId(cardOrId) {
+  const id = typeof cardOrId === "string" ? cardOrId : cardOrId?.id || "";
+  return id.replace(/^odin2-/, "odin-").replace("odin-2", "odin");
+}
+
 function odinCardValue(cardToEvaluate) {
+  const cardId = odinCanonicalId(cardToEvaluate);
   const signals = odinStrategySignals();
   const turnsLeft = state.maxRounds - state.round;
   const currentVp = scoreCard(cardToEvaluate);
@@ -3166,17 +3176,17 @@ function odinCardValue(cardToEvaluate) {
   let value = currentVp - cost * 0.8 - instantVikings * 0.95;
   const bestOpeners = ["odin-helmet", "odin-draupnir", "odin-ravens"];
   const secondaryOpeners = ["odin-gungnir", "odin-sleipnir", "odin-runes", "odin-death"];
-  if (state.round <= 3 && bestOpeners.includes(cardToEvaluate.id)) value += 3.8;
-  if (state.round <= 3 && secondaryOpeners.includes(cardToEvaluate.id)) value += 2;
-  if (["odin-gungnir", "odin-heidrun"].includes(cardToEvaluate.id)) {
+  if (state.round <= 3 && bestOpeners.includes(cardId)) value += 3.8;
+  if (state.round <= 3 && secondaryOpeners.includes(cardId)) value += 2;
+  if (["odin-gungnir", "odin-heidrun"].includes(cardId)) {
     value -= signals.animals * 1.15;
-    if (state.round >= 6 && cardToEvaluate.id === "odin-heidrun") value += signals.animals * 1.8;
+    if (state.round >= 6 && cardId === "odin-heidrun") value += signals.animals * 1.8;
   }
-  if (cardToEvaluate.id === "odin-mimir") value += state.round >= 4 ? signals.worlds * 1.8 + turnsLeft * 0.8 : -1;
-  if (cardToEvaluate.id === "odin-throne") value += state.round >= 5 ? signals.events * 1.3 : -1;
-  if (cardToEvaluate.id === "odin-wolves") value += state.round >= 5 ? signals.beasts * 1.3 : 0;
-  if (cardToEvaluate.id === "odin-sleipnir") value += signals.artefacts * 0.8;
-  if (cardToEvaluate.id === "odin-voyage") value += state.round >= 5 ? signals.glory * 1.4 : 0;
+  if (cardId === "odin-mimir") value += state.round >= 4 ? signals.worlds * 1.8 + turnsLeft * 0.8 : -1;
+  if (cardId === "odin-throne") value += state.round >= 5 ? signals.events * 1.3 : -1;
+  if (cardId === "odin-wolves") value += state.round >= 5 ? signals.beasts * 1.3 : 0;
+  if (cardId === "odin-sleipnir") value += signals.artefacts * 0.8;
+  if (cardId === "odin-voyage") value += state.round >= 5 ? signals.glory * 1.4 : 0;
   const ongoing = CARD_UI[cardToEvaluate.id]?.ongoing;
   if (ongoing) {
     if (ongoing.cardDiscount) value += turnsLeft * 0.65;
@@ -3192,7 +3202,7 @@ function odinCardValue(cardToEvaluate) {
 function odinShouldMulligan() {
   if (state.mulliganUsed || state.hand.length !== 4 || state.round > 2) return false;
   const openers = ["odin-helmet", "odin-draupnir", "odin-ravens", "odin-gungnir", "odin-sleipnir", "odin-runes", "odin-death"];
-  const hasOpener = state.hand.some((cardInHand) => openers.includes(cardInHand.id));
+  const hasOpener = state.hand.some((cardInHand) => openers.includes(odinCanonicalId(cardInHand)));
   const playableVikings = state.hand.reduce((sum, cardInHand) => sum + estimatePlayedCardVikings(cardInHand), 0);
   return !hasOpener && playableVikings <= 3;
 }
