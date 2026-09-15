@@ -273,6 +273,49 @@ h2 {
   grid-column: 1 / -1;
 }
 
+.deck-stats-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.deck-stats-table {
+  width: 100%;
+  min-width: 570px;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, .48);
+}
+
+.deck-stats-table th,
+.deck-stats-table td {
+  padding: 9px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.deck-stats-table thead th {
+  color: var(--muted);
+  background: rgba(88, 76, 55, .09);
+  font-size: .72rem;
+  text-transform: uppercase;
+}
+
+.deck-stats-table th:first-child { text-align: left; }
+.deck-stats-table tbody tr:last-child > * { border-bottom: 0; }
+
+.deck-detail-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--red);
+  font: inherit;
+  font-weight: 900;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
 .deck-stat-list {
   display: grid;
   border-top: 1px solid var(--line);

@@ -1476,36 +1476,42 @@ function recordCompletedGame() {
 }
 
 function renderHighScores() {
-  const games = loadCompletedGames().sort((a, b) => b.score - a.score || b.completedAt.localeCompare(a.completedAt));
+  const games = loadCompletedGames();
   els.completedGamesCount.textContent = `${games.length} ${games.length === 1 ? "game" : "games"}`;
   renderStatsTabs();
   renderDeckStatistics(games);
-  if (!games.length) {
-    els.highScoresList.innerHTML = `<div class="empty-slot compact">No completed games yet</div>`;
-    return;
-  }
-  els.highScoresList.innerHTML = games.slice(0, 10).map((game, index) => `
-    <div class="high-score-row">
-      <span class="high-score-rank">${index + 1}</span>
-      <strong>${escapeHtml(String(game.deckName))}</strong>
-      <time datetime="${escapeHtml(String(game.completedAt))}">${formatScoreDate(game.completedAt)}</time>
-      <b>${Number(game.score) || 0} VP</b>
-    </div>
-  `).join("");
 }
 
 function renderStatsTabs() {
-  els.statsTabs.innerHTML = `
-    <button type="button" data-stats-view="high-scores" class="${selectedStatsDeckId ? "" : "selected"}">High Scores</button>
-    ${Object.values(DECKS).map((deck) => `<button type="button" data-stats-deck="${deck.id}" class="${selectedStatsDeckId === deck.id ? "selected" : ""}">${escapeHtml(deck.name)}</button>`).join("")}
-  `;
-  els.highScoresSection.classList.toggle("is-hidden", Boolean(selectedStatsDeckId));
-  els.deckStatisticsSection.classList.toggle("is-hidden", !selectedStatsDeckId);
+  els.statsTabs.classList.toggle("is-hidden", !selectedStatsDeckId);
+  els.statsTabs.innerHTML = selectedStatsDeckId
+    ? `<button type="button" data-stats-view="overview">Back to all decks</button>`
+    : "";
+  els.highScoresSection.classList.add("is-hidden");
+  els.deckStatisticsSection.classList.remove("is-hidden");
 }
 
 function renderDeckStatistics(games) {
   if (!selectedStatsDeckId) {
-    els.deckStatistics.innerHTML = "";
+    els.deckStatistics.innerHTML = `
+      <div class="deck-stats-table-wrap">
+        <table class="deck-stats-table">
+          <thead><tr><th>Deck</th><th>Games</th><th>Avg VP</th><th>Avg Vikings</th><th>Max</th><th>Min</th></tr></thead>
+          <tbody>${Object.values(DECKS).map((deck) => {
+            const deckGames = games.filter((game) => game.deckId === deck.id || game.deckName === deck.name);
+            const scores = deckGames.map((game) => Number(game.score) || 0);
+            const vikingGames = deckGames.filter((game) => Number.isFinite(Number(game.vikingsGenerated)));
+            const averageVp = scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : null;
+            const averageVikings = vikingGames.length ? vikingGames.reduce((sum, game) => sum + Number(game.vikingsGenerated), 0) / vikingGames.length : null;
+            return `<tr>
+              <th scope="row"><button type="button" class="deck-detail-link" data-stats-deck="${deck.id}">${escapeHtml(deck.name)}</button></th>
+              <td>${deckGames.length}</td><td>${averageVp === null ? "-" : averageVp.toFixed(1)}</td>
+              <td>${averageVikings === null ? "-" : averageVikings.toFixed(1)}</td>
+              <td>${scores.length ? Math.max(...scores) : "-"}</td><td>${scores.length ? Math.min(...scores) : "-"}</td>
+            </tr>`;
+          }).join("")}</tbody>
+        </table>
+      </div>`;
     return;
   }
   const deck = DECKS[selectedStatsDeckId];
@@ -3613,10 +3619,16 @@ els.cancelResetScoresBtn.addEventListener("click", () => els.resetScoresDialog.c
 els.confirmResetScoresBtn.addEventListener("click", resetHighScores);
 els.scoresStatsBtn.addEventListener("click", openScoresAndStatistics);
 els.statsTabs.addEventListener("click", (event) => {
-  const highScoresTarget = event.target.closest("[data-stats-view='high-scores']");
+  const highScoresTarget = event.target.closest("[data-stats-view='overview']");
   const deckTarget = event.target.closest("[data-stats-deck]");
   if (!highScoresTarget && !deckTarget) return;
   selectedStatsDeckId = deckTarget ? deckTarget.dataset.statsDeck : null;
+  renderHighScores();
+});
+els.deckStatistics.addEventListener("click", (event) => {
+  const deckTarget = event.target.closest("[data-stats-deck]");
+  if (!deckTarget) return;
+  selectedStatsDeckId = deckTarget.dataset.statsDeck;
   renderHighScores();
 });
 els.closeScoresStatsBtn.addEventListener("click", () => els.scoresStatsDialog.close());

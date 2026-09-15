@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ragnarok Solo</title>
     <meta name="description" content="Solo prototype web app for Ragnarok.">
-    <link rel="stylesheet" href="styles.css?v=20260911-viking-history">
+    <link rel="stylesheet" href="styles.css?v=20260915-deck-statistics">
   </head>
   <body>
     <main class="app-shell">
@@ -40,7 +40,7 @@
           <button id="menuDeckViewerBtn" class="secondary-btn" type="button">View Full Deck</button>
           <button id="monsterDeckViewerBtn" class="secondary-btn" type="button">View Monster Deck</button>
           <button id="worldDeckViewerBtn" class="secondary-btn" type="button">View World Deck</button>
-          <button id="scoresStatsBtn" class="secondary-btn" type="button">High Scores &amp; Statistics</button>
+          <button id="scoresStatsBtn" class="secondary-btn" type="button">Deck Statistics</button>
         </div>
         <p id="setupStatus" class="setup-status is-hidden" role="status"></p>
       </section>
@@ -188,26 +188,21 @@
       <div class="dialog-head">
         <div>
           <p class="eyebrow">History</p>
-          <h2>High Scores &amp; Statistics</h2>
+          <h2>Deck Statistics</h2>
         </div>
         <button id="closeScoresStatsBtn" class="ghost-btn" type="button" title="Close">X</button>
       </div>
-      <nav id="statsTabs" class="stats-tabs" aria-label="Statistics views"></nav>
-      <section id="highScoresSection" class="high-scores" aria-label="High scores">
-        <div class="section-head compact">
-          <h2>High Scores</h2>
-          <div class="choice-actions">
-            <span id="completedGamesCount" class="pill">0 games</span>
-            <button id="resetScoresBtn" class="danger-btn compact-btn" type="button">Reset Scores</button>
-          </div>
-        </div>
-        <div id="highScoresList" class="high-score-list"></div>
-      </section>
-      <section id="deckStatisticsSection" class="deck-statistics is-hidden" aria-label="Deck statistics">
+      <nav id="statsTabs" class="stats-tabs is-hidden" aria-label="Statistics navigation"></nav>
+      <section id="highScoresSection" class="is-hidden" aria-hidden="true"><div id="highScoresList"></div></section>
+      <section id="deckStatisticsSection" class="deck-statistics" aria-label="Deck statistics">
         <div class="section-head compact">
           <div>
             <p class="eyebrow">Statistics</p>
             <h2>Deck Performance</h2>
+          </div>
+          <div class="choice-actions">
+            <span id="completedGamesCount" class="pill">0 games</span>
+            <button id="resetScoresBtn" class="danger-btn compact-btn" type="button">Reset Data</button>
           </div>
         </div>
         <div id="deckStatistics" class="deck-stat-list"></div>
@@ -217,14 +212,14 @@
     <dialog id="resetScoresDialog" class="confirm-dialog">
       <div class="dialog-head">
         <div>
-          <p class="eyebrow">High Scores</p>
-          <h2>Reset all scores?</h2>
+          <p class="eyebrow">Statistics</p>
+          <h2>Reset all data?</h2>
         </div>
       </div>
       <p>This permanently removes every completed game and all deck statistics from this browser.</p>
       <div class="confirm-actions">
         <button id="cancelResetScoresBtn" class="secondary-btn" type="button">Cancel</button>
-        <button id="confirmResetScoresBtn" class="danger-btn" type="button">Reset Scores</button>
+        <button id="confirmResetScoresBtn" class="danger-btn" type="button">Reset Data</button>
       </div>
     </dialog>
 
@@ -253,6 +248,6 @@
       </div>
     </dialog>
 
-    <script src="app.js?v=20260912-freya2-heimdall2-adjustments"></script>
+    <script src="app.js?v=20260915-deck-statistics"></script>
   </body>
 </html>
