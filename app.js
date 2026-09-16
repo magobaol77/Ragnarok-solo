@@ -2152,7 +2152,7 @@ function ongoingHtml(cardToRender) {
   if (ongoing.rainbow) parts.push(`<span class="effect-chip rainbow-chip" title="Rainbow icon">ALL</span>`);
   if (ongoing.heimdallPower) parts.push(`<span class="effect-chip image-chip" title="Heimdall power">${iconHtml("HeimdallPower")}</span>`);
   if (ongoing.tyrPower) parts.push(`<span class="effect-chip image-chip" title="Tyr power">${iconHtml("TyrPower")}</span>`);
-  if (ongoing.exileBonus) parts.push(`<span class="effect-chip" title="+1 Viking whenever you banish a card">${exileBonusIconHtml()}</span>`);
+  if (ongoing.exileBonus) parts.push(`<span class="effect-chip" title="+${ongoing.exileBonus} Viking${ongoing.exileBonus === 1 ? "" : "s"} whenever you banish a card">${exileBonusIconHtml(ongoing.exileBonus)}</span>`);
   else if (ongoing.allTagDiscount) parts.push(`<span class="effect-chip rainbow-chip" title="All square icons">ALL</span>`);
   return parts.join("");
 }
@@ -2206,8 +2206,8 @@ function odinPowerIconHtml() {
   return `<span class="odin-eye-icon" aria-label="Odin power"><span></span></span>`;
 }
 
-function exileBonusIconHtml() {
-  return `<span class="exile-bonus-icon"><span class="banished-card-mini"></span>${vikingSymbolHtml()}<b>+1</b></span>`;
+function exileBonusIconHtml(amount = 1) {
+  return `<span class="exile-bonus-icon"><span class="banished-card-mini"></span>${vikingSymbolHtml()}<b>+${amount}</b></span>`;
 }
 
 function maxCardIconHtml() {
@@ -2419,7 +2419,7 @@ function estimatePlayedCardVikings(cardToPlay) {
   if (effect.gainMonster) gain += countMonsterType(effect.gainMonster);
   if (effect.gainCardType) gain += countCardType(effect.gainCardType) * (effect.gainMultiplier || 1);
   if (effect.gainUniqueTags) gain += uniqueTags();
-  if (effect.gainUniqueMonsterTypes) gain += TYPES.filter((type) => countMonsterType(type) > 0).length;
+  if (effect.gainUniqueMonsterTypes) gain += ["Giant", "Beast", "Undead"].filter((type) => countMonsterType(type) > 0).length;
   if (effect.gainMajority) gain += majorityCount();
   if (effect.gainCardMajority) gain += majorityCardCount();
   if (effect.gainMixedSet) gain += Math.min(...effect.gainMixedSet.map(countGameIcon)) * (effect.value || 1);
@@ -3386,7 +3386,7 @@ function friggCardValue(cardToEvaluate) {
   if (baseId === "frigg-gna") value += state.round >= 5 ? signals.cardCounts.Event * 1.2 : 0;
   const ongoing = CARD_UI[cardToEvaluate.id]?.ongoing;
   if (ongoing) {
-    if (ongoing.exileBonus) value += turnsLeft * 1.15;
+    if (ongoing.exileBonus) value += turnsLeft * 1.15 * ongoing.exileBonus;
     if (ongoing.discount) value += turnsLeft * 0.6;
     if (ongoing.extraFight || ongoing.fightAny) value += turnsLeft * 0.75;
   }
