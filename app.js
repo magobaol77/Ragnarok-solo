@@ -26,9 +26,9 @@ const heimdallTwoDeck = heimdallDeck.map((deckCard) => {
 });
 
 const tyrDeck = [
-  card("tyr-pact", "Pact of Binding", "Event", "Destiny", 4, "2 x Event", "Gain 1 Viking per different Monster type.", { gainUniqueMonsterTypes: true }, { perCardType: "Event", value: 2 }),
+  card("tyr-pact", "Pact of Binding", "Event", "Destiny", 5, "2 x Event", "Gain 1 Viking per different Monster type.", { gainUniqueMonsterTypes: true }, { perCardType: "Event", value: 2 }),
   card("tyr-gleipnir", "Gleipnir", "Item", "Artefact", 2, "1 x Beast", "Fight 1 additional Monster.", { extraFight: 1 }, { perMonster: "Beast", value: 1 }),
-  card("tyr-hand", "Severed Hand", "Event", "Destiny", 3, "5 VP", "No immediate effect.", {}, { fixed: 5 }),
+  card("tyr-hand", "Severed Hand", "Event", "Destiny", 3, "3 VP", "No immediate effect.", {}, { fixed: 3 }),
   card("tyr-sword", "Sword of Tyr", "Item", "Equipment", 1, "1 x Giant", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Giant", value: 1 }),
   card("tyr-death", "Fight to the Death", "Event", null, 2, "1 x Undead", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Undead", value: 1 }),
   card("tyr-stone", "Oath Stone", "Item", "Artefact", 2, "2 x Artefact", "Gain 1 Viking per Destiny icon.", { gainTag: "Destiny" }, { perTag: "Artefact", value: 2 }),
@@ -78,7 +78,7 @@ const friggAlternativeDeck = [
 ];
 
 const friggThreeDeck = [
-  card("frigg3-weaving", "Weaving the Future", "Event", "Destiny", 1, "", "Each time you banish a card, gain 2 additional Vikings.", {}, {}),
+  card("frigg3-weaving", "Weaving the Future", "Event", "Destiny", 1, "", "Each time you banish a card, gain 1 additional Viking.", {}, {}),
   card("frigg3-belt", "Hlin's Belt", "Item", "Artefact", 2, "2 x majority square icon", "You may fight any visible Monster.", { fightAny: true }, { maxIcons: 2 }),
   card("frigg3-hlin", "Hlin", "Character", null, 2, "4 x Artefact", "Gain 1 Viking, then 1 Viking per Artefact icon.", { gainFlat: 1, gainTag: "Artefact" }, { perTag: "Artefact", value: 4 }),
   card("frigg3-prophecy", "Prophecy", "Event", "Destiny", 2, "3 VP", "Gain 1 Viking.", { gainFlat: 1 }, { fixed: 3 }),
@@ -142,7 +142,8 @@ const odinDeck = [
 ];
 
 const odinTwoDeck = [
-  ...odinDeck.filter((deckCard) => deckCard.type !== "God" && !["odin-sleipnir", "odin-heidrun"].includes(deckCard.id)),
+  ...odinDeck.filter((deckCard) => deckCard.type !== "God" && !["odin-gungnir", "odin-sleipnir", "odin-heidrun"].includes(deckCard.id)),
+  card("odin2-gungnir", "Gungnir", "Item", "Artefact", 1, "1 x Giant", "Discount 1 on Giants. Gain 1 Viking, then 1 Viking per Glory icon.", { discountTypes: ["Giant"], gainFlat: 1, gainTag: "Glory" }, { perMonster: "Giant", value: 1 }),
   card("odin2-sleipnir", "Sleipnir", "Character", "Animal", 2, "2 x Artefact", "Discount 1 on Glory icons. Gain 2 Vikings minus Animal icons.", { discountTypes: ["Glory"], gainFlat: 2, losePerTag: "Animal" }, { perTag: "Artefact", value: 2 }),
   card("odin2-heidrun", "Heidrun", "Character", "Animal", 5, "3 x Animal", "Discount 1 on Artefact icons. Gain 1 Viking per Animal icon.", { discountTypes: ["Artefact"], gainTag: "Animal" }, { perTag: "Animal", value: 3 }),
   card("odin-2", "Odin 2", "God", null, 0, "4 x Worlds", "God card: discard 1 card, then draw 2 cards. Play Odin first.", { god: true, odinTwoPower: true }, { perWorld: 4 }),
@@ -156,7 +157,7 @@ const freyaDeck = [
   card("freya-cat-b", "Cat", "Character", "Animal", 0, "1 x Beast", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { perMonster: "Beast", value: 1 }),
   card("freya-gunnr", "Gunnr", "Character", "Warrior", 2, "", "Gain 1 Viking. Discount 1 on Beasts and Undead.", { gainFlat: 1, discountTypes: ["Beast", "Undead"] }, {}),
   card("freya-seal", "Sessrumnir Seal", "Item", null, 1, "3 VP", "Gain 1 Viking per Character card.", { discountCardTypes: ["Character"], gainCardType: "Character" }, { fixed: 3 }),
-  card("freya-tears", "Golden Tears", "Event", null, 4, "3 x Monster set", "Gain 1 Viking. Discount 1 on Giants.", { gainFlat: 1, discountTypes: ["Giant"] }, { monsterSets: 3 }),
+  card("freya-tears", "Golden Tears", "Event", null, 4, "3 x Monster set", "Gain 1 Viking per Item card. Discount 1 on Giants.", { gainCardType: "Item", discountTypes: ["Giant"] }, { monsterSets: 3 }),
   card("freya-brynhildr", "Brynhildr", "Character", "Warrior", 4, "4 VP", "Gain 2 Vikings per Event card. Discount 1 on Giants and Beasts.", { discountTypes: ["Giant", "Beast"], gainCardType: "Event", gainMultiplier: 2 }, { fixed: 4 }),
   card("freya-skuld", "Skuld", "Character", "Warrior", 3, "2 VP", "Gain 1 Viking per Animal icon. Discount 1 on Giants and Undead.", { discountTypes: ["Giant", "Undead"], gainTag: "Animal" }, { fixed: 2 }),
   card("freya-cloak", "Fjadrhamr", "Item", null, 3, "2 x Character", "Discount 1 on Beasts.", { discountTypes: ["Beast"] }, { perCardType: "Character", value: 2 }),
@@ -166,13 +167,13 @@ const freyaDeck = [
 
 const freyaTwoDeck = [
   card("freya2-song", "Song of the Valkyries", "Event", null, 3, "2 x Warrior", "Discount 1 on Warrior icons. Gain 1 Viking per Warrior icon.", { discountTypes: ["Warrior"], gainTag: "Warrior" }, { perTag: "Warrior", value: 2 }),
-  freyaDeck.find((deckCard) => deckCard.id === "freya-hildr"),
+  card("freya2-hildr", "Hildr", "Character", "Warrior", 2, "2 x Monster set", "Discount 1 on Event cards. Gain 1 Viking.", { discountCardTypes: ["Event"], gainFlat: 1 }, { monsterSets: 2 }),
   card("freya2-cat-a", "Cat", "Character", "Animal", 3, "3 x Item", "Discount 1 on Item cards. Gain 2 Vikings.", { gainFlat: 2, discountCardTypes: ["Item"] }, { perCardType: "Item", value: 3 }),
   freyaDeck.find((deckCard) => deckCard.id === "freya-char"),
   card("freya2-cat-b", "Cat", "Character", "Animal", 1, "1 x majority Monster type", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { maxMonsterType: 1 }),
   freyaDeck.find((deckCard) => deckCard.id === "freya-gunnr"),
   freyaDeck.find((deckCard) => deckCard.id === "freya-seal"),
-  card("freya2-tears", "Golden Tears", "Event", null, 3, "3 x Monster set", "Gain 1 Viking. Discount 1 on Giants.", { gainFlat: 1, discountTypes: ["Giant"] }, { monsterSets: 3 }),
+  card("freya2-tears", "Golden Tears", "Event", null, 3, "3 x Monster set", "Gain 1 Viking per Item card. Discount 1 on Giants.", { gainCardType: "Item", discountTypes: ["Giant"] }, { monsterSets: 3 }),
   freyaDeck.find((deckCard) => deckCard.id === "freya-brynhildr"),
   freyaDeck.find((deckCard) => deckCard.id === "freya-skuld"),
   card("freya2-cloak", "Fjadrhamr", "Item", null, 3, "4 x Event", "Discount 1 on Beasts.", { discountTypes: ["Beast"] }, { perCardType: "Event", value: 4 }),
@@ -237,7 +238,7 @@ const CARD_UI = {
   "frigg-alt-key": { ongoing: { discount: ["Giant", "Undead"] }, instant: { gain: 1 } },
   "frigg-alt-eir": { ongoing: { discount: ["Beast"] }, instant: { gain: 1, gainBanished: true } },
   "frigg-alternative": { ongoing: null, instant: { friggAlternativePower: true } },
-  "frigg3-weaving": { ongoing: { exileBonus: 2 }, instant: null },
+  "frigg3-weaving": { ongoing: { exileBonus: 1 }, instant: null },
   "frigg3-belt": { ongoing: { discount: ["Artefact"] }, instant: { fightAny: true } },
   "frigg3-hlin": { ongoing: null, instant: { gain: 1, gainTag: "Artefact" } },
   "frigg3-prophecy": { ongoing: { extraFight: 1 }, instant: { gain: 1 } },
@@ -274,6 +275,7 @@ const CARD_UI = {
   "odin-helmet": { ongoing: { cardDiscount: ["Event"] }, instant: null },
   "odin-voyage": { ongoing: { extraFight: 1 }, instant: { gain: 2, minusWorlds: true } },
   "odin-gungnir": { ongoing: { discount: ["Giant"] }, instant: { gainTag: "Animal" } },
+  "odin2-gungnir": { ongoing: { discount: ["Giant"] }, instant: { gain: 1, gainTag: "Glory" } },
   "odin-sleipnir": { ongoing: { discount: ["Glory"] }, instant: { gain: 3, minusTag: "Animal" } },
   "odin-runes": { ongoing: { discount: ["Elite"] }, instant: { gainMajority: true } },
   "odin-draupnir": { ongoing: { discount: ["Beast", "Undead"] }, instant: { gain: 1, gainWorlds: true } },
@@ -294,16 +296,17 @@ const CARD_UI = {
   "freya-cat-b": { ongoing: null, instant: { gainMajority: true } },
   "freya-gunnr": { ongoing: { discount: ["Beast", "Undead"] }, instant: { gain: 1 } },
   "freya-seal": { ongoing: { cardDiscount: ["Character"] }, instant: { gainCardType: "Character" } },
-  "freya-tears": { ongoing: { discount: ["Giant"] }, instant: { gain: 1 } },
+  "freya-tears": { ongoing: { discount: ["Giant"] }, instant: { gainCardType: "Item" } },
   "freya-brynhildr": { ongoing: { discount: ["Giant", "Beast"] }, instant: { gainCardType: "Event", multiplier: 2 } },
   "freya-skuld": { ongoing: { discount: ["Giant", "Undead"] }, instant: { gainTag: "Animal" } },
   "freya-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
   "freya-necklace": { ongoing: null, instant: { gain: 2, minusCardType: "Character" } },
   freya: { ongoing: null, instant: { gain: 2, freyaPower: true } },
   "freya2-song": { ongoing: { discount: ["Warrior"] }, instant: { gainTag: "Warrior" } },
+  "freya2-hildr": { ongoing: { cardDiscount: ["Event"] }, instant: { gain: 1 } },
   "freya2-cat-a": { ongoing: { cardDiscount: ["Item"] }, instant: { gain: 2 } },
   "freya2-cat-b": { ongoing: null, instant: { gainMajority: true } },
-  "freya2-tears": { ongoing: { discount: ["Giant"] }, instant: { gain: 1 } },
+  "freya2-tears": { ongoing: { discount: ["Giant"] }, instant: { gainCardType: "Item" } },
   "freya2-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
   "freya2-necklace": { ongoing: null, instant: { gain: 3, minusCardType: "Character" } },
   "freya-2": { ongoing: null, instant: { freyaPower: true } },
@@ -360,7 +363,7 @@ const DECKS = {
   },
   "frigg-3": {
     id: "frigg-3", name: "FRIGG 3", subtitle: "Alternative exile engine and post-play card conversion.", cards: friggThreeDeck,
-    image: "assets/frigg-deck.jpg", recap: "assets/frigg-recap.jpg", startingVikings: 3, available: true,
+    image: "assets/frigg-deck.jpg", recap: "assets/frigg-recap.jpg", startingVikings: 2, available: true,
   },
   thor: {
     id: "thor", name: "Thor", subtitle: "Elite combat and Event synergy.", cards: thorDeck,
@@ -376,7 +379,7 @@ const DECKS = {
   },
   "odin-2": {
     id: "odin-2", name: "Odin 2", subtitle: "Alternative hand filtering and World scoring.", cards: odinTwoDeck,
-    image: "assets/odin-deck.jpg", recap: "assets/odin-recap.jpg", startingVikings: 3, available: true,
+    image: "assets/odin-deck.jpg", recap: "assets/odin-recap.jpg", startingVikings: 4, available: true,
   },
   freya: {
     id: "freya", name: "Freya", subtitle: "Warrior icons and cumulative combat bonuses.", cards: freyaDeck,
