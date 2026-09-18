@@ -126,7 +126,7 @@ const thorTwoDeck = [
 ];
 
 const odinDeck = [
-  card("odin-helmet", "Odin's Helmet", "Item", null, 0, "", "Discount 1 on Event cards.", { discountCardTypes: ["Event"] }, {}),
+  card("odin-helmet", "Odin's Helmet", "Item", null, 0, "", "Discount 1 on Event cards. Gain 1 Viking.", { discountCardTypes: ["Event"], gainFlat: 1 }, {}),
   card("odin-voyage", "Journey through the Nine Worlds", "Event", null, 5, "4 x Glory", "Fight 1 additional Monster. Gain 2 Vikings minus Worlds.", { extraFight: 1, gainFlat: 2, losePerWorld: true }, { perTag: "Glory", value: 4 }),
   card("odin-gungnir", "Gungnir", "Item", "Artefact", 1, "1 x Giant", "Discount 1 on Giants. Gain 1 Viking per Animal icon.", { discountTypes: ["Giant"], gainTag: "Animal" }, { perMonster: "Giant", value: 1 }),
   card("odin-sleipnir", "Sleipnir", "Character", "Animal", 2, "2 x Artefact", "Discount 1 on Glory icons. Gain 3 Vikings minus Animal icons.", { discountTypes: ["Glory"], gainFlat: 3, losePerTag: "Animal" }, { perTag: "Artefact", value: 2 }),
@@ -178,7 +178,7 @@ const freyaTwoDeck = [
   freyaDeck.find((deckCard) => deckCard.id === "freya-skuld"),
   card("freya2-cloak", "Fjadrhamr", "Item", null, 3, "4 x Event", "Discount 1 on Beasts.", { discountTypes: ["Beast"] }, { perCardType: "Event", value: 4 }),
   card("freya2-necklace", "Brisingamen", "Item", null, 1, "1 x Character", "Gain 3 Vikings minus Character cards.", { gainFlat: 3, losePerCardType: "Character" }, { perCardType: "Character", value: 1 }),
-  card("freya-2", "Freya 2", "God", null, 0, "5 x Monster set", "God card: cumulative Character power: 1 Character gains 1 Viking, 2 Characters grant 1 additional fight, and 3 Characters let you fight any Monster.", { god: true, freyaTwoPower: true }, { monsterSets: 5 }),
+  card("freya-2", "Freya 2", "God", null, 0, "5 x Monster set", "God card: gain 1 Viking, then activate the cumulative Character power: 1 Character gains 1 additional Viking, 2 Characters grant 1 additional fight, and 3 Characters let you fight any Monster.", { god: true, gainFlat: 1, freyaTwoPower: true }, { monsterSets: 5 }),
 ];
 
 const CARD_UI = {
@@ -272,7 +272,7 @@ const CARD_UI = {
   "thor2-mjolnir": { ongoing: null, instant: { gain: 2, minus: "Elite" } },
   "thor2-goats": { ongoing: null, instant: { gain: 1, gainTag: "Animal" } },
   "thor-2": { ongoing: null, instant: { gain: 2, thorPower: true } },
-  "odin-helmet": { ongoing: { cardDiscount: ["Event"] }, instant: null },
+  "odin-helmet": { ongoing: { cardDiscount: ["Event"] }, instant: { gain: 1 } },
   "odin-voyage": { ongoing: { extraFight: 1 }, instant: { gain: 2, minusWorlds: true } },
   "odin-gungnir": { ongoing: { discount: ["Giant"] }, instant: { gainTag: "Animal" } },
   "odin2-gungnir": { ongoing: { discount: ["Giant"] }, instant: { gain: 1, gainTag: "Glory" } },
@@ -309,7 +309,7 @@ const CARD_UI = {
   "freya2-tears": { ongoing: { discount: ["Giant"] }, instant: { gainCardType: "Item" } },
   "freya2-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
   "freya2-necklace": { ongoing: null, instant: { gain: 3, minusCardType: "Character" } },
-  "freya-2": { ongoing: null, instant: { freyaPower: true } },
+  "freya-2": { ongoing: null, instant: { gain: 1, freyaPower: true } },
 };
 
 const DECKS = {
@@ -387,7 +387,7 @@ const DECKS = {
   },
   "freya-2": {
     id: "freya-2", name: "FREYA 2", subtitle: "Alternative Character milestones and combat tempo.", cards: freyaTwoDeck,
-    image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 5, available: true,
+    image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 4, available: true,
   },
 };
 
