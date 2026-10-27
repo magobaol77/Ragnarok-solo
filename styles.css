@@ -1438,6 +1438,19 @@ h2 {
   font-size: .46rem;
 }
 
+.criterion-card-types {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.criterion-card-types .proto-icon.type-rect {
+  width: 13px;
+  height: 22px;
+  margin: 0;
+  border-width: 1px;
+}
+
 .market-card.cleared {
   opacity: .42;
   filter: grayscale(.7);

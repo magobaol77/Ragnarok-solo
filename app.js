@@ -6,10 +6,10 @@ const heimdallDeck = [
   card("veille", "Eternal Vigil", "Event", "Glory", 3, "1 x Giant", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Giant", value: 1 }),
   card("rig", "Rig", "Character", "Warrior", 3, "4 x Equipment", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { perTag: "Equipment", value: 4 }),
   card("dents", "Golden Teeth", "Item", "Artefact", 1, "1 x Undead", "Gain 1 Viking per Undead Monster.", { gainMonster: "Undead" }, { perMonster: "Undead", value: 1 }),
-  card("yeux", "Piercing Eyes", "Event", "Glory", 1, "1 x different icons", "You may fight any visible Monster.", { fightAny: true }, { uniqueTags: 1 }),
+  card("yeux", "Keen Eyes", "Event", "Glory", 1, "1 x Event", "You may fight any visible Monster.", { fightAny: true }, { perCardType: "Event", value: 1 }),
   card("combat", "Fight to the Death", "Event", null, 2, "2 x Elite", "Gain 3 Vikings minus Elite icons among Monsters.", { gainFlat: 3, losePerMonster: "Elite" }, { perMonster: "Elite", value: 2 }),
   card("meres", "The Nine Mothers", "Character", "Destiny", 5, "6 VP", "Gain 1 Viking per Event in Valhalla.", { gainCardType: "Event" }, { fixed: 6 }),
-  card("bifrost", "Bifrost", "Item", null, 0, "1 x Event", "Gain 1 Viking, then 1 Viking per Glory.", { gainFlat: 1, gainTag: "Glory" }, { perCardType: "Event", value: 1 }),
+  card("bifrost", "Bifrost", "Item", null, 4, "2 x different square icons", "Gain 1 Viking, then 1 Viking per Glory.", { gainFlat: 1, gainTag: "Glory" }, { uniqueTags: 2 }),
   card("evel", "Ragnarok's Awakening", "Event", "Glory", 3, "3 VP", "Gain 1 Viking per different square icon.", { gainUniqueTags: true }, { fixed: 3 }),
   card("epee", "Resonating Sword", "Item", "Equipment", 3, "1 x Beast", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Beast", value: 1 }),
   card("gulltopp", "Gulltopp", "Character", "Animal", 2, "2 VP", "Undead costs -1 this turn.", { discountTypes: ["Undead"] }, { fixed: 2 }),
@@ -21,7 +21,7 @@ const heimdallDeck = [
 const heimdallTwoDeck = heimdallDeck.map((deckCard) => {
   if (deckCard.id === "combat") return card("heimdall2-combat", "Fight to the Death", "Event", null, 2, "2 x Elite", "Gain 3 Vikings minus Elite Monsters.", { gainFlat: 3, losePerMonster: "Elite" }, { perMonster: "Elite", value: 2 });
   if (deckCard.id === "gardien") return card("heimdall2-gardien", "Guardian of the Worlds", "Event", null, 2, "1 x World", "Gain 1 Viking per Character in Valhalla.", { gainCardType: "Character" }, { perWorld: 1 });
-  if (deckCard.id === "heimdall") return card("heimdall-2", "Heimdall 2", "God", null, 0, "2 x different square icons", "God card: gain 1 Viking and all square icons cost -1 this round.", { god: true, allTagDiscount: true, gainFlat: 1 }, { uniqueTags: 2 });
+  if (deckCard.id === "heimdall") return card("heimdall-2", "Heimdall", "God", null, 0, "2 x different square icons", "God card: gain 1 Viking and all square icons cost -1 this round.", { god: true, allTagDiscount: true, gainFlat: 1 }, { uniqueTags: 2 });
   return deckCard;
 });
 
@@ -42,7 +42,7 @@ const tyrDeck = [
 ];
 
 const tyrTwoDeck = tyrDeck.map((deckCard) => deckCard.id === "tyr"
-  ? card("tyr-2", "Tyr 2", "God", null, 0, "2 x majority Monster type", "God card: gain 2 Vikings and activate Tyr's combat power this round.", { god: true, tyrPower: true, gainFlat: 2 }, { maxMonsterType: 2 })
+  ? card("tyr-2", "Tyr", "God", null, 0, "2 x majority Monster type", "God card: gain 2 Vikings and activate Tyr's combat power this round.", { god: true, tyrPower: true, gainFlat: 2 }, { maxMonsterType: 2 })
   : deckCard);
 
 const friggDeck = [
@@ -90,7 +90,7 @@ const friggThreeDeck = [
   card("frigg3-ring", "Odin's Ring", "Item", "Artefact", 4, "3 x Destiny", "Gain 1 Viking, then 1 Viking per Destiny icon.", { gainFlat: 1, gainTag: "Destiny" }, { perTag: "Destiny", value: 3 }),
   card("frigg3-key", "Palace Key", "Item", "Artefact", 2, "", "Reactivate your Mulligan.", { resetMulligan: true }, {}),
   card("frigg3-eir", "Eir", "Character", "Destiny", 2, "4 VP", "Gain 1 Viking.", { gainFlat: 1 }, { fixed: 4 }),
-  card("frigg-3", "Frigg 3", "God", null, 0, "4 x majority card type", "God card: play 1 banished card in Valhalla for free, or banish 1 card played this turn.", { god: true, friggThreePower: true }, { maxCardType: 4 }),
+  card("frigg-3", "Frigg", "God", null, 0, "4 x majority card type", "God card: play 1 banished card in Valhalla for free, or banish 1 card played this turn.", { god: true, friggThreePower: true }, { maxCardType: 4 }),
 ];
 
 const thorDeck = [
@@ -102,7 +102,7 @@ const thorDeck = [
   card("thor-char", "Char", "Item", null, 4, "6 VP", "You may fight any visible Monster. Gain 1 Viking, then 1 Viking per Warrior icon.", { fightAny: true, gainFlat: 1, gainTag: "Warrior" }, { fixed: 6 }),
   card("thor-tanngrisnir", "Tanngrisnir", "Character", "Animal", 1, "1 x Beast", "Gain 1 Viking per Beast. Discount 1 on Beasts.", { discountTypes: ["Beast"], gainMonster: "Beast" }, { perMonster: "Beast", value: 1 }),
   card("thor-mjolnir", "Mjolnir", "Item", "Equipment", 3, "2 x Elite", "No immediate effect.", {}, { perMonster: "Elite", value: 2 }),
-  card("thor-sif", "Sif", "Character", null, 3, "3 VP", "Fight 1 additional Monster. Gain 1 Viking, then 1 Viking per Equipment icon.", { extraFight: 1, gainFlat: 1, gainTag: "Equipment" }, { fixed: 3 }),
+  card("thor-sif", "Sif", "Character", null, 3, "5 VP", "Fight 1 additional Monster. Gain 1 Viking, then 1 Viking per Equipment icon.", { extraFight: 1, gainFlat: 1, gainTag: "Equipment" }, { fixed: 5 }),
   card("thor-goats", "Resurrection of the Goats", "Event", null, 2, "2 x Animal", "Gain 1 Viking, then 1 Viking per Animal icon.", { gainFlat: 1, gainTag: "Animal" }, { perTag: "Animal", value: 2 }),
   card("thor-death", "Fight to the Death", "Event", "Warrior", 0, "1 x World", "Gain 1 Viking.", { gainFlat: 1 }, { perWorld: 1 }),
   card("thor-gloves", "Jarngreipr", "Item", "Equipment", 1, "", "Gain 1 Viking per Elite. Discount 1 on Elite Monsters.", { discountTypes: ["Elite"], gainMonster: "Elite" }, {}),
@@ -115,14 +115,14 @@ const thorTwoDeck = [
   thorDeck.find((deckCard) => deckCard.id === "thor-tanngnjostr"),
   card("thor2-belt", "Megingjord", "Item", "Equipment", 2, "3 x Warrior", "Gain 1 Viking.", { gainFlat: 1 }, { perTag: "Warrior", value: 3 }),
   card("thor2-thrud", "Thrud", "Character", null, 5, "4 x Equipment", "Gain 3 Vikings minus Equipment icons.", { gainFlat: 3, losePerTag: "Equipment" }, { perTag: "Equipment", value: 4 }),
-  card("thor2-char", "Chariot", "Item", null, 3, "5 VP", "Gain 1 Viking per Warrior icon.", { gainTag: "Warrior" }, { fixed: 5 }),
+  card("thor2-char", "Chariot", "Item", null, 2, "3 VP", "Gain 1 Viking per Warrior icon.", { gainTag: "Warrior" }, { fixed: 3 }),
   thorDeck.find((deckCard) => deckCard.id === "thor-tanngrisnir"),
   card("thor2-mjolnir", "Mjolnir", "Item", "Equipment", 3, "2 x Elite", "Gain 2 Vikings minus Elite Monsters.", { gainFlat: 2, losePerMonster: "Elite" }, { perMonster: "Elite", value: 2 }),
   thorDeck.find((deckCard) => deckCard.id === "thor-sif"),
   card("thor2-goats", "Resurrection of the Goats", "Event", null, 1, "2 x Animal", "Gain 1 Viking, then 1 Viking per Animal icon.", { gainFlat: 1, gainTag: "Animal" }, { perTag: "Animal", value: 2 }),
   thorDeck.find((deckCard) => deckCard.id === "thor-death"),
   thorDeck.find((deckCard) => deckCard.id === "thor-gloves"),
-  card("thor-2", "Thor 2", "God", null, 0, "3 x Elite", "God card: gain 2 Vikings and activate Thor's power this round.", { god: true, gainFlat: 2, thorPower: true }, { perMonster: "Elite", value: 3 }),
+  card("thor-2", "Thor", "God", null, 0, "3 x Elite", "God card: gain 2 Vikings and activate Thor's power this round.", { god: true, gainFlat: 2, thorPower: true }, { perMonster: "Elite", value: 3 }),
 ];
 
 const odinDeck = [
@@ -142,11 +142,12 @@ const odinDeck = [
 ];
 
 const odinTwoDeck = [
-  ...odinDeck.filter((deckCard) => deckCard.type !== "God" && !["odin-gungnir", "odin-sleipnir", "odin-heidrun"].includes(deckCard.id)),
+  ...odinDeck.filter((deckCard) => deckCard.type !== "God" && !["odin-gungnir", "odin-sleipnir", "odin-heidrun", "odin-death"].includes(deckCard.id)),
   card("odin2-gungnir", "Gungnir", "Item", "Artefact", 1, "1 x Giant", "Discount 1 on Giants. Gain 1 Viking, then 1 Viking per Glory icon.", { discountTypes: ["Giant"], gainFlat: 1, gainTag: "Glory" }, { perMonster: "Giant", value: 1 }),
   card("odin2-sleipnir", "Sleipnir", "Character", "Animal", 2, "2 x Artefact", "Discount 1 on Glory icons. Gain 2 Vikings minus Animal icons.", { discountTypes: ["Glory"], gainFlat: 2, losePerTag: "Animal" }, { perTag: "Artefact", value: 2 }),
   card("odin2-heidrun", "Heidrun", "Character", "Animal", 5, "3 x Animal", "Discount 1 on Artefact icons. Gain 1 Viking per Animal icon.", { discountTypes: ["Artefact"], gainTag: "Animal" }, { perTag: "Animal", value: 3 }),
-  card("odin-2", "Odin 2", "God", null, 0, "4 x Worlds", "God card: discard 1 card, then draw 2 cards. Play Odin first.", { god: true, odinTwoPower: true }, { perWorld: 4 }),
+  card("odin2-death", "Fight to the Death", "Event", "Glory", 1, "2 VP", "Discount 1 on Giants. No immediate effect.", { discountTypes: ["Giant"] }, { fixed: 2 }),
+  card("odin-2", "Odin", "God", null, 0, "4 x Worlds", "God card: discard 1 card, then draw 2 cards. Play Odin first.", { god: true, odinTwoPower: true }, { perWorld: 4 }),
 ];
 
 const freyaDeck = [
@@ -162,7 +163,7 @@ const freyaDeck = [
   card("freya-skuld", "Skuld", "Character", "Warrior", 3, "2 VP", "Gain 1 Viking per Animal icon. Discount 1 on Giants and Undead.", { discountTypes: ["Giant", "Undead"], gainTag: "Animal" }, { fixed: 2 }),
   card("freya-cloak", "Fjadrhamr", "Item", null, 3, "2 x Character", "Discount 1 on Beasts.", { discountTypes: ["Beast"] }, { perCardType: "Character", value: 2 }),
   card("freya-necklace", "Brisingamen", "Item", null, 0, "1 x Giant", "Gain 2 Vikings minus Character cards.", { gainFlat: 2, losePerCardType: "Character" }, { perMonster: "Giant", value: 1 }),
-  card("freya", "Freya", "God", null, 0, "5 x Monster set", "God card: gain 2 Vikings and activate Freya's cumulative power: 1 Character discounts every Monster by 1, 2 Characters let you fight any Monster, and 3 Characters grant 1 additional fight.", { god: true, gainFlat: 2, freyaPower: true }, { monsterSets: 5 }),
+  card("freya", "Freya", "God", null, 0, "5 x Monster set", "God card: reactivate your Mulligan, gain 2 Vikings, and activate Freya's cumulative power: 1 Character discounts every Monster by 1, 2 Characters let you fight any Monster, and 3 Characters grant 1 additional fight.", { god: true, resetMulligan: true, gainFlat: 2, freyaPower: true }, { monsterSets: 5 }),
 ];
 
 const freyaTwoDeck = [
@@ -176,9 +177,9 @@ const freyaTwoDeck = [
   card("freya2-tears", "Golden Tears", "Event", null, 3, "3 x Monster set", "Gain 1 Viking per Item card. Discount 1 on Giants.", { gainCardType: "Item", discountTypes: ["Giant"] }, { monsterSets: 3 }),
   freyaDeck.find((deckCard) => deckCard.id === "freya-brynhildr"),
   freyaDeck.find((deckCard) => deckCard.id === "freya-skuld"),
-  card("freya2-cloak", "Fjadrhamr", "Item", null, 3, "4 x Event", "Discount 1 on Beasts.", { discountTypes: ["Beast"] }, { perCardType: "Event", value: 4 }),
+  card("freya2-cloak", "Fjadrhamr", "Item", null, 3, "4 x Event", "Discount 1 on Beasts. Reactivate your Mulligan.", { discountTypes: ["Beast"], resetMulligan: true }, { perCardType: "Event", value: 4 }),
   card("freya2-necklace", "Brisingamen", "Item", null, 1, "1 x Character", "Gain 3 Vikings minus Character cards.", { gainFlat: 3, losePerCardType: "Character" }, { perCardType: "Character", value: 1 }),
-  card("freya-2", "Freya 2", "God", null, 0, "5 x Monster set", "God card: gain 1 Viking, then activate the cumulative Character power: 1 Character gains 1 additional Viking, 2 Characters grant 1 additional fight, and 3 Characters let you fight any Monster.", { god: true, gainFlat: 1, freyaTwoPower: true }, { monsterSets: 5 }),
+  card("freya-2", "Freya", "God", null, 0, "5 x Monster set", "God card: reactivate your Mulligan, gain 3 Vikings, then activate the cumulative Character power: 1 Character gains 1 additional Viking, 2 Characters grant 1 additional fight, and 3 Characters let you fight any Monster.", { god: true, resetMulligan: true, gainFlat: 3, freyaTwoPower: true }, { monsterSets: 5 }),
 ];
 
 const CARD_UI = {
@@ -284,6 +285,7 @@ const CARD_UI = {
   "odin2-heidrun": { ongoing: { discount: ["Artefact"] }, instant: { gainTag: "Animal" } },
   "odin-wolves": { ongoing: { discount: ["Beast"] }, instant: null },
   "odin-death": { ongoing: { discount: ["Giant"] }, instant: { gain: 1 } },
+  "odin2-death": { ongoing: { discount: ["Giant"] }, instant: null },
   "odin-throne": { ongoing: { discount: ["Animal"] }, instant: { gainCardType: "Character" } },
   "odin-ravens": { ongoing: { discount: ["Undead"] }, instant: { gain: 1 } },
   "odin-mimir": { ongoing: { worldDiscount: 1 }, instant: { gain: 1, gainTag: "Artefact" } },
@@ -301,92 +303,40 @@ const CARD_UI = {
   "freya-skuld": { ongoing: { discount: ["Giant", "Undead"] }, instant: { gainTag: "Animal" } },
   "freya-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
   "freya-necklace": { ongoing: null, instant: { gain: 2, minusCardType: "Character" } },
-  freya: { ongoing: null, instant: { gain: 2, freyaPower: true } },
+  freya: { ongoing: null, instant: { resetMulligan: true, gain: 2, freyaPower: true } },
   "freya2-song": { ongoing: { discount: ["Warrior"] }, instant: { gainTag: "Warrior" } },
   "freya2-hildr": { ongoing: { cardDiscount: ["Event"] }, instant: { gain: 1 } },
   "freya2-cat-a": { ongoing: { cardDiscount: ["Item"] }, instant: { gain: 2 } },
   "freya2-cat-b": { ongoing: null, instant: { gainMajority: true } },
   "freya2-tears": { ongoing: { discount: ["Giant"] }, instant: { gainCardType: "Item" } },
-  "freya2-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
+  "freya2-cloak": { ongoing: { discount: ["Beast"] }, instant: { resetMulligan: true } },
   "freya2-necklace": { ongoing: null, instant: { gain: 3, minusCardType: "Character" } },
-  "freya-2": { ongoing: null, instant: { gain: 1, freyaPower: true } },
+  "freya-2": { ongoing: null, instant: { resetMulligan: true, gain: 3, freyaPower: true } },
 };
 
 const DECKS = {
-  heimdall: {
-    id: "heimdall",
-    name: "Heimdall",
-    subtitle: "Icon variety, broad discounts, and control over visible Monsters.",
-    cards: heimdallDeck,
-    image: "assets/heimdall-deck.jpg",
-    recap: "assets/heimdall-recap.jpg",
-    startingVikings: 2,
-    available: true,
-  },
   "heimdall-2": {
-    id: "heimdall-2", name: "HEIMDALL 2", subtitle: "Alternative Elite economy and World scoring.", cards: heimdallTwoDeck,
+    id: "heimdall-2", name: "Heimdall", subtitle: "Icon variety, Elite economy, and World scoring.", cards: heimdallTwoDeck,
     image: "assets/heimdall-deck.jpg", recap: "assets/heimdall-recap.jpg", startingVikings: 2, available: true,
   },
-  tyr: {
-    id: "tyr",
-    name: "Tyr",
-    subtitle: "Monster-type mastery, escalating combat discounts, and set scoring.",
-    cards: tyrDeck,
-    image: "assets/tyr-deck.jpg",
-    recap: "assets/tyr-recap.jpg?v=2",
-    startingVikings: 4,
-    available: true,
-  },
   "tyr-2": {
-    id: "tyr-2", name: "TYR 2", subtitle: "Alternative God activation with additional Vikings.", cards: tyrTwoDeck,
+    id: "tyr-2", name: "Tyr", subtitle: "Monster mastery, combat discounts, and additional Vikings.", cards: tyrTwoDeck,
     image: "assets/tyr-deck.jpg", recap: "assets/tyr-recap.jpg?v=2", startingVikings: 4, available: true,
   },
-  frigg: {
-    id: "frigg",
-    name: "Frigg",
-    subtitle: "Exile recovery, flexible Viking generation, and icon-based scoring.",
-    cards: friggDeck,
-    image: "assets/frigg-deck.jpg",
-    recap: "assets/frigg-recap.jpg",
-    startingVikings: 4,
-    available: true,
-  },
-  "frigg-alternative": {
-    id: "frigg-alternative",
-    name: "FRIGG 2",
-    subtitle: "Alternative exile recovery and a reusable mulligan.",
-    cards: friggAlternativeDeck,
-    image: "assets/frigg-deck.jpg",
-    recap: "assets/frigg-recap.jpg",
-    startingVikings: 3,
-    available: true,
-  },
   "frigg-3": {
-    id: "frigg-3", name: "FRIGG 3", subtitle: "Alternative exile engine and post-play card conversion.", cards: friggThreeDeck,
+    id: "frigg-3", name: "Frigg", subtitle: "Exile engine and post-play card conversion.", cards: friggThreeDeck,
     image: "assets/frigg-deck.jpg", recap: "assets/frigg-recap.jpg", startingVikings: 2, available: true,
   },
-  thor: {
-    id: "thor", name: "Thor", subtitle: "Elite combat and Event synergy.", cards: thorDeck,
-    image: "assets/thor-deck.jpg", recap: "assets/thor-recap.jpg", startingVikings: 2, available: true,
-  },
   "thor-2": {
-    id: "thor-2", name: "Thor 2", subtitle: "Alternative Elite combat and reusable Mulligan.", cards: thorTwoDeck,
+    id: "thor-2", name: "Thor", subtitle: "Elite combat and Event synergy.", cards: thorTwoDeck,
     image: "assets/thor-deck.jpg", recap: "assets/thor-recap.jpg", startingVikings: 2, available: true,
-  },
-  odin: {
-    id: "odin", name: "Odin", subtitle: "World scoring and knowledge of the deck.", cards: odinDeck,
-    image: "assets/odin-deck.jpg", recap: "assets/odin-recap.jpg", startingVikings: 4, available: true,
   },
   "odin-2": {
-    id: "odin-2", name: "Odin 2", subtitle: "Alternative hand filtering and World scoring.", cards: odinTwoDeck,
-    image: "assets/odin-deck.jpg", recap: "assets/odin-recap.jpg", startingVikings: 4, available: true,
-  },
-  freya: {
-    id: "freya", name: "Freya", subtitle: "Warrior icons and cumulative combat bonuses.", cards: freyaDeck,
-    image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 5, available: true,
+    id: "odin-2", name: "Odin", subtitle: "Hand filtering and World scoring.", cards: odinTwoDeck,
+    image: "assets/odin-deck.jpg", recap: "assets/odin-recap.jpg", startingVikings: 3, available: true,
   },
   "freya-2": {
-    id: "freya-2", name: "FREYA 2", subtitle: "Alternative Character milestones and combat tempo.", cards: freyaTwoDeck,
+    id: "freya-2", name: "Freya", subtitle: "Character milestones and combat tempo.", cards: freyaTwoDeck,
     image: "assets/freya-deck.jpg", recap: "assets/freya-recap.jpg", startingVikings: 4, available: true,
   },
 };
@@ -452,34 +402,34 @@ const monsters = [
 
 // Physical base deck, in the same order as the supplied world sheet (18 cards).
 const worlds = [
-  world("Yggdrasil", ["MonsterTotal"], 5, 3, ["Animal"]),
+  world("Yggdrasil 1", ["MonsterTotal"], 5, 3, ["Animal"]),
   world("Vanaheim", ["Item", "Beast"], 6, 4),
-  world("Yggdrasil", ["CardTotal"], 8, 7, ["Artefact"]),
-  world("Yggdrasil", ["Banished"], 4, 5, ["Destiny"]),
+  world("Yggdrasil 9", ["MajorityCardType"], 5, 7, ["Equipment"]),
+  world("Yggdrasil 8", ["Banished"], 4, 5, ["Destiny"]),
   world("Asgard", ["Character", "Giant"], 8, 8),
 
   world("Niflheim", ["Item", "Undead"], 8, 8),
   world("Midgard", ["Character", "Beast"], 7, 6),
-  world("Yggdrasil", ["MajorityCardType"], 4, 3, ["Equipment"]),
-  world("Yggdrasil", ["Elite"], 5, 5, ["Glory"]),
+  world("Yggdrasil 7", ["DifferentCardTypes"], 3, 2, ["Artefact"]),
+  world("Yggdrasil 2", ["Elite"], 6, 7, ["Glory"]),
   world("Alfheim", ["Event", "Beast"], 8, 8),
 
   world("Nidavellir", ["Event", "Undead"], 7, 6),
   world("Helheim", ["Character", "Undead"], 6, 4),
-  world("Yggdrasil", ["SquareTotal"], 9, 7),
-  world("Yggdrasil", ["MonsterTotal"], 8, 7, ["Warrior"]),
+  world("Yggdrasil 6", ["MajorityTag"], 6, 7),
+  world("Yggdrasil 3", ["MonsterTotal"], 8, 5, ["Warrior"]),
 
   world("Muspelheim", ["Item", "Giant"], 7, 6),
   world("Jotunheim", ["Event", "Giant"], 5, 4),
-  world("Yggdrasil", ["MajorityTag"], 5, 5),
-  world("Yggdrasil", ["DifferentTags"], 5, 3),
+  world("Yggdrasil 5", ["DifferentTags"], 6, 5),
+  world("Yggdrasil 4", ["SquareTotal"], 6, 3),
 ];
 
 let state;
-let selectedDeckId = "heimdall";
+let selectedDeckId = "heimdall-2";
 let selectedPlayerCount = 1;
 let selectedStatsDeckId = null;
-let playerSetup = [{ controller: "human", deckId: "heimdall" }];
+let playerSetup = [{ controller: "human", deckId: "heimdall-2" }];
 
 const els = {
   deckTitle: document.querySelector("#deckTitle"),
@@ -578,7 +528,7 @@ function world(name, criteria, cost, vp, tags = []) {
 }
 
 function newGame() {
-  const supportedAutomaDecks = ["heimdall", "heimdall-2", "tyr", "tyr-2", "freya", "freya-2", "thor", "thor-2", "odin", "odin-2", "frigg", "frigg-alternative", "frigg-3"];
+  const supportedAutomaDecks = ["heimdall-2", "tyr-2", "freya-2", "thor-2", "odin-2", "frigg-3"];
   const unsupportedAutoma = playerSetup.find((player) => player.controller === "automa" && !supportedAutomaDecks.includes(player.deckId));
   if (selectedPlayerCount > 1 && unsupportedAutoma) {
     renderPlayerSetup(`No Automa is available for ${DECKS[unsupportedAutoma.deckId].name} yet. Choose Heimdall or Tyr, or set this seat to Human.`);
@@ -779,7 +729,7 @@ function startOdinTwoPower() {
   state.temp.godActive = true;
   state.temp.odinTwoStarted = true;
   state.temp.odinTwoDiscardPending = true;
-  addLog("Odin 2 is played first: choose 1 card to discard, then draw 2 cards.");
+  addLog("Odin is played first: choose 1 card to discard, then draw 2 cards.");
   render();
   return true;
 }
@@ -795,7 +745,7 @@ function resolveOdinTwoDiscard(cardId) {
     if (drawnCard) state.hand.push(drawnCard);
   }
   state.temp.odinTwoDiscardPending = false;
-  addLog(`Odin 2 discarded ${discarded.name} and drew 2 cards.`);
+  addLog(`Odin discarded ${discarded.name} and drew 2 cards.`);
   render();
   return true;
 }
@@ -955,7 +905,7 @@ function resolvePlayEffect(playedCard) {
     if (effect.thorPower) addLog("Thor active: Elite Monsters cost -1 per Equipment icon this round.");
     if (effect.friggChoice) addLog("Frigg active: choose 2 Vikings or a free card from exile.");
     if (effect.friggAlternativePower) addLog("Frigg 2 active: choose exile recovery or draw 2 and discard 2.");
-    if (effect.friggThreePower) addLog("Frigg 3 active: recover a card from exile or banish a card played this turn.");
+    if (effect.friggThreePower) addLog("Frigg active: recover a card from exile or banish a card played this turn.");
   }
   if (effect.resetMulligan && instant.resetMulligan) {
     state.mulliganUsed = false;
@@ -1020,7 +970,7 @@ function resolveFreyaPower() {
     previousLevel < 2 && currentLevel >= 2 ? "fight any Monster" : "",
     previousLevel < 3 && currentLevel >= 3 ? "+1 fight" : "",
   ]).filter(Boolean).join(", ");
-  addLog(`${isFreyaTwo ? "Freya 2" : "Freya"} active with ${characters} Character card${characters === 1 ? "" : "s"}${gained ? `: ${gained}` : ": no new tier"}.`);
+  addLog(`Freya active with ${characters} Character card${characters === 1 ? "" : "s"}${gained ? `: ${gained}` : ": no new tier"}.`);
 }
 
 function sendReservedToValhalla() {
@@ -1328,6 +1278,7 @@ function worldCriterionCount(criterion) {
   if (criterion === "SquareTotal") return TAGS.reduce((sum, tag) => sum + countTag(tag), 0);
   if (criterion === "Banished") return state.banished.length;
   if (criterion === "MajorityCardType") return Math.max(0, ...["Character", "Item", "Event"].map(countCardType));
+  if (criterion === "DifferentCardTypes") return ["Character", "Item", "Event"].filter((type) => countCardType(type) > 0).length;
   if (criterion === "MajorityTag") return Math.max(0, ...TAGS.map(countTag));
   if (criterion === "DifferentTags") return uniqueTags();
   return 0;
@@ -1663,7 +1614,7 @@ function renderFriggChoice() {
     .map((cardInExile, index) => ({ cardInExile, index }))
     .filter(({ cardInExile }) => cardInExile.type !== "God");
   const isAlternative = state.pendingFriggChoice === "alternative" || isDiscarding;
-  els.friggChoiceEyebrow.textContent = isThird ? "Frigg 3 Power" : isAlternative ? "Frigg 2 Power" : "Frigg Power";
+  els.friggChoiceEyebrow.textContent = "Frigg Power";
   els.friggChoiceTitle.textContent = isDiscarding ? "Choose exactly 2 cards to discard" : "Choose one effect";
   els.friggVikingsBtn.hidden = isAlternative || isThird;
   els.friggAltDrawBtn.hidden = !isAlternative || isDiscarding;
@@ -1715,7 +1666,7 @@ function resolveFriggThreeBanish(cardId) {
   state.banished.push(banishedCard);
   gainVikings(gain);
   state.pendingFriggChoice = false;
-  addLog(`Frigg 3 banished ${banishedCard.name}: +${gain} Vikings${exileBonus ? ` (${exileBonus} exile bonus)` : ""}.`);
+  addLog(`Frigg banished ${banishedCard.name}: +${gain} Vikings${exileBonus ? ` (${exileBonus} exile bonus)` : ""}.`);
   render();
 }
 
@@ -2075,6 +2026,7 @@ function worldCriterionIconHtml(criterion) {
   if (criterion === "SquareTotal") return `<span class="criterion-symbol square-total" aria-label="All square icons"></span>`;
   if (criterion === "Banished") return `<span class="criterion-symbol banished-card" aria-label="Banished cards"></span>`;
   if (criterion === "MajorityCardType") return `<span class="criterion-symbol card-total labelled">MAX</span>`;
+  if (criterion === "DifferentCardTypes") return `<span class="criterion-card-types" aria-label="Different card types">${["Character", "Item", "Event"].map(iconHtml).join("")}</span>`;
   if (criterion === "MajorityTag") return iconHtml("SquareMax");
   if (criterion === "DifferentTags") return iconHtml("SquareDiff");
   return iconHtml(criterion);
@@ -3470,7 +3422,7 @@ function friggAutomaResolvePower() {
       .filter((playedCard) => playedCard.type !== "God")
       .sort((a, b) => friggCardValue(a) - friggCardValue(b))[0];
     if (banishChoice) {
-      addLog(`Frigg 3 Automa banishes ${banishChoice.name} from this turn.`);
+      addLog(`Frigg Automa banishes ${banishChoice.name} from this turn.`);
       return resolveFriggThreeBanish(banishChoice.id);
     }
   }
