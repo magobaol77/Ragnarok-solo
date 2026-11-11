@@ -504,6 +504,8 @@ h2 {
 
 .choice-dialog {
   width: min(520px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
 }
 
 .confirm-dialog {
@@ -652,6 +654,101 @@ h2 {
   border-radius: 6px;
   background: var(--surface);
   text-align: left;
+}
+
+.choice-dialog.setup-mode .frigg-power-actions > div > .eyebrow {
+  display: none;
+}
+
+.choice-dialog.setup-mode .exile-choice-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 0;
+}
+
+.choice-dialog .setup-choice-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  gap: 0;
+  min-width: 0;
+  min-height: 158px;
+  height: auto;
+  padding: 7px;
+  border-width: 3px;
+  overflow: hidden;
+}
+
+.setup-choice-card .card-top-zone {
+  grid-template-columns: minmax(26px, .7fr) minmax(52px, 1.2fr) minmax(52px, 1fr);
+  gap: 3px;
+  min-height: 30px;
+}
+
+.setup-choice-card h3 {
+  min-height: 28px;
+  margin: 6px 0 2px;
+  font-size: .86rem;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.setup-choice-card .card-bottom-zone {
+  gap: 3px 5px;
+  min-height: 44px;
+  margin-top: 4px;
+  padding-top: 5px;
+}
+
+.setup-choice-card .card-instant {
+  min-height: 26px;
+  padding-left: 30px;
+  gap: 2px;
+}
+
+.setup-choice-card .game-icon,
+.setup-choice-card .proto-icon {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border-width: 1px;
+}
+
+.setup-choice-card .proto-icon.type-rect {
+  width: 16px;
+  height: 25px;
+}
+
+.setup-choice-card .effect-chip,
+.setup-choice-card .score-badge {
+  min-height: 22px;
+  padding: 1px 4px;
+  font-size: .64rem;
+}
+
+.setup-choice-card .cost-badge {
+  min-width: 27px;
+  min-height: 27px;
+  padding: 2px 5px;
+  border-width: 1px;
+}
+
+.choice-dialog .setup-choice-card:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+  background: #e5e1d8;
+  filter: grayscale(.75);
+}
+
+.choice-dialog .setup-choice-card:disabled > * {
+  opacity: .48;
+}
+
+@media (max-width: 520px) {
+  .choice-dialog.setup-mode .exile-choice-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .banished-arrow-icon {

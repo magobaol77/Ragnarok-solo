@@ -5,7 +5,7 @@ const HIGH_SCORES_KEY = "ragnarok-solo-completed-games-v1";
 const heimdallDeck = [
   card("veille", "Eternal Vigil", "Event", "Glory", 3, "1 x Giant", "Gain 1 Viking.", { gainFlat: 1 }, { perMonster: "Giant", value: 1 }),
   card("rig", "Rig", "Character", "Warrior", 3, "4 x Equipment", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { perTag: "Equipment", value: 4 }),
-  card("dents", "Golden Teeth", "Item", "Artefact", 1, "1 x Undead", "Gain 1 Viking per Undead Monster.", { gainMonster: "Undead" }, { perMonster: "Undead", value: 1 }),
+  card("dents", "Golden Teeth", "Item", "Artefact", 2, "1 x Undead", "Gain 1 Viking per Undead Monster.", { gainMonster: "Undead" }, { perMonster: "Undead", value: 1 }),
   card("yeux", "Keen Eyes", "Event", "Glory", 1, "1 x Event", "You may fight any visible Monster.", { fightAny: true }, { perCardType: "Event", value: 1 }),
   card("combat", "Fight to the Death", "Event", null, 2, "2 x Elite", "Gain 3 Vikings minus Elite icons among Monsters.", { gainFlat: 3, losePerMonster: "Elite" }, { perMonster: "Elite", value: 2 }),
   card("meres", "The Nine Mothers", "Character", "Destiny", 5, "6 VP", "Gain 1 Viking per Event in Valhalla.", { gainCardType: "Event" }, { fixed: 6 }),
@@ -90,7 +90,7 @@ const friggThreeDeck = [
   card("frigg3-ring", "Odin's Ring", "Item", "Artefact", 4, "3 x Destiny", "Gain 1 Viking, then 1 Viking per Destiny icon.", { gainFlat: 1, gainTag: "Destiny" }, { perTag: "Destiny", value: 3 }),
   card("frigg3-key", "Palace Key", "Item", "Artefact", 2, "", "Reactivate your Mulligan.", { resetMulligan: true }, {}),
   card("frigg3-eir", "Eir", "Character", "Destiny", 2, "4 VP", "Gain 1 Viking.", { gainFlat: 1 }, { fixed: 4 }),
-  card("frigg-3", "Frigg", "God", null, 0, "4 x majority card type", "God card: play 1 banished card in Valhalla for free, or banish 1 card played this turn.", { god: true, friggThreePower: true }, { maxCardType: 4 }),
+  card("frigg-3", "Frigg", "God", null, 0, "4 x majority card type", "God card: play 1 banished card in Valhalla for free, or gain 2 Vikings.", { god: true, friggChoice: true }, { maxCardType: 4 }),
 ];
 
 const thorDeck = [
@@ -177,9 +177,9 @@ const freyaTwoDeck = [
   card("freya2-tears", "Golden Tears", "Event", null, 3, "3 x Monster set", "Gain 1 Viking per Item card. Discount 1 on Giants.", { gainCardType: "Item", discountTypes: ["Giant"] }, { monsterSets: 3 }),
   freyaDeck.find((deckCard) => deckCard.id === "freya-brynhildr"),
   freyaDeck.find((deckCard) => deckCard.id === "freya-skuld"),
-  card("freya2-cloak", "Fjadrhamr", "Item", null, 3, "4 x Event", "Discount 1 on Beasts. Reactivate your Mulligan.", { discountTypes: ["Beast"], resetMulligan: true }, { perCardType: "Event", value: 4 }),
+  card("freya2-cloak", "Fjadrhamr", "Item", null, 2, "4 x Event", "Discount 1 on Beasts. No immediate effect.", { discountTypes: ["Beast"] }, { perCardType: "Event", value: 4 }),
   card("freya2-necklace", "Brisingamen", "Item", null, 1, "1 x Character", "Gain 3 Vikings minus Character cards.", { gainFlat: 3, losePerCardType: "Character" }, { perCardType: "Character", value: 1 }),
-  card("freya-2", "Freya", "God", null, 0, "5 x Monster set", "God card: reactivate your Mulligan, gain 3 Vikings, then activate the cumulative Character power: 1 Character gains 1 additional Viking, 2 Characters grant 1 additional fight, and 3 Characters let you fight any Monster.", { god: true, resetMulligan: true, gainFlat: 3, freyaTwoPower: true }, { monsterSets: 5 }),
+  card("freya-2", "Freya", "God", null, 0, "5 x Monster set", "God card: reactivate your Mulligan, gain 2 Vikings, then activate the cumulative Character power: 1 Character gains 1 additional Viking, 2 Characters grant 1 additional fight, and 3 Characters let you fight any Monster.", { god: true, resetMulligan: true, gainFlat: 2, freyaTwoPower: true }, { monsterSets: 5 }),
 ];
 
 const CARD_UI = {
@@ -251,7 +251,7 @@ const CARD_UI = {
   "frigg3-ring": { ongoing: null, instant: { gain: 1, gainTag: "Destiny" } },
   "frigg3-key": { ongoing: { discount: ["Giant", "Undead"] }, instant: { resetMulligan: true } },
   "frigg3-eir": { ongoing: { discount: ["Beast"] }, instant: { gain: 1 } },
-  "frigg-3": { ongoing: null, instant: { friggThreePower: true } },
+  "frigg-3": { ongoing: null, instant: { friggChoice: true } },
   "thor-magni": { ongoing: { discount: ["Undead"] }, instant: { gain: 1 } },
   "thor-lightning": { ongoing: { discount: ["Beast", "Undead", "Giant"] }, instant: { gain: 1, gainUniqueMonsterTypes: true } },
   "thor-tanngnjostr": { ongoing: { discount: ["Giant"] }, instant: { gainMonster: "Giant" } },
@@ -309,9 +309,9 @@ const CARD_UI = {
   "freya2-cat-a": { ongoing: { cardDiscount: ["Item"] }, instant: { gain: 2 } },
   "freya2-cat-b": { ongoing: null, instant: { gainMajority: true } },
   "freya2-tears": { ongoing: { discount: ["Giant"] }, instant: { gainCardType: "Item" } },
-  "freya2-cloak": { ongoing: { discount: ["Beast"] }, instant: { resetMulligan: true } },
+  "freya2-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
   "freya2-necklace": { ongoing: null, instant: { gain: 3, minusCardType: "Character" } },
-  "freya-2": { ongoing: null, instant: { resetMulligan: true, gain: 3, freyaPower: true } },
+  "freya-2": { ongoing: null, instant: { resetMulligan: true, gain: 2, freyaPower: true } },
 };
 
 const DECKS = {
@@ -565,6 +565,7 @@ function newGame() {
     log: [`Game started with ${chosenDeck.name}. Choose 1 card from your hand.`],
   };
   setupBattlefield();
+  prepareFriggSetup("human");
   drawToFour();
   els.startScreen.classList.add("is-hidden");
   els.gameScreen.classList.remove("is-hidden");
@@ -596,6 +597,7 @@ function newMultiplayerGame() {
   setupBattlefield();
   for (let index = 0; index < players.length; index += 1) {
     loadPlayer(index, "choose");
+    prepareFriggSetup(players[index].controller);
     drawToFour();
     syncActivePlayer();
   }
@@ -692,6 +694,8 @@ function blankTemp() {
     freyaMonsterDiscount: 0,
     friggAlternativeStarted: false,
     friggDiscardIds: [],
+    friggSetupCards: [],
+    friggSetupDone: false,
     odinTwoStarted: false,
     odinTwoDiscardPending: false,
     godActive: false,
@@ -707,6 +711,32 @@ function drawToFour() {
     }
     state.hand.push(state.deck.pop());
   }
+}
+
+function prepareFriggSetup(controller) {
+  if (state.deckId !== "frigg-3" || state.temp.friggSetupDone || state.pendingFriggChoice === "setup") return;
+  state.temp.friggSetupCards = [state.deck.pop(), state.deck.pop()].filter(Boolean);
+  state.pendingFriggChoice = "setup";
+  if (controller === "automa") {
+    const eligible = state.temp.friggSetupCards.filter((cardInSetup) => cardInSetup.type !== "God");
+    const choice = eligible.sort((a, b) => friggExilePriority(b) - friggExilePriority(a))[0];
+    if (choice) resolveFriggSetup(choice.id, false);
+  }
+}
+
+function resolveFriggSetup(cardId, shouldRender = true) {
+  if (state.pendingFriggChoice !== "setup") return;
+  const setupCards = state.temp.friggSetupCards;
+  const selected = setupCards.find((cardInSetup) => cardInSetup.id === cardId && cardInSetup.type !== "God");
+  if (!selected) return;
+  const bottomCards = setupCards.filter((cardInSetup) => cardInSetup.id !== selected.id);
+  state.banished.push(selected);
+  state.deck.unshift(...bottomCards);
+  state.temp.friggSetupCards = [];
+  state.temp.friggSetupDone = true;
+  state.pendingFriggChoice = false;
+  addLog(`Frigg setup: ${selected.name} enters exile; ${bottomCards.map((card) => card.name).join(" and ")} goes to the bottom of the deck.`);
+  if (shouldRender) render();
 }
 
 function hasPendingOdinDraw() {
@@ -843,7 +873,7 @@ function drawMonsters(amount) {
 
 function selectReserve(id) {
   if (state.temp.odinTwoDiscardPending) return resolveOdinTwoDiscard(id);
-  if (state.phase !== "choose" || hasPendingOdinDraw() || hasPendingOdinTwoPower()) return;
+  if (state.phase !== "choose" || state.pendingFriggChoice === "setup" || hasPendingOdinDraw() || hasPendingOdinTwoPower()) return;
   const selectedCard = state.hand.find((handCard) => handCard.id === id);
   if (!selectedCard || selectedCard.type === "God") return;
   state.reservedId = id;
@@ -851,7 +881,7 @@ function selectReserve(id) {
 }
 
 function useMulligan() {
-  if (state.phase !== "choose" || state.mulliganUsed || state.hand.length !== 4) return;
+  if (state.phase !== "choose" || state.pendingFriggChoice === "setup" || state.mulliganUsed || state.hand.length !== 4) return;
   state.discard.push(...state.hand);
   state.hand = [];
   state.reservedId = null;
@@ -899,13 +929,11 @@ function resolvePlayEffect(playedCard) {
     if (effect.friggAlternativePower) {
       state.pendingFriggChoice = "alternative";
     }
-    if (effect.friggThreePower) state.pendingFriggChoice = "third";
     if (effect.allTagDiscount) addLog("Heimdall active: square icons cost -1 this round.");
     if (effect.tyrPower) addLog("Tyr active: Monsters cost -1 per defeated Monster of the same type this round.");
     if (effect.thorPower) addLog("Thor active: Elite Monsters cost -1 per Equipment icon this round.");
     if (effect.friggChoice) addLog("Frigg active: choose 2 Vikings or a free card from exile.");
     if (effect.friggAlternativePower) addLog("Frigg 2 active: choose exile recovery or draw 2 and discard 2.");
-    if (effect.friggThreePower) addLog("Frigg active: recover a card from exile or banish a card played this turn.");
   }
   if (effect.resetMulligan && instant.resetMulligan) {
     state.mulliganUsed = false;
@@ -1610,17 +1638,21 @@ function renderFriggChoice() {
   }
   const isDiscarding = state.pendingFriggChoice === "alternative-discard";
   const isThird = state.pendingFriggChoice === "third";
+  const isSetup = state.pendingFriggChoice === "setup";
   const availableCards = state.banished
     .map((cardInExile, index) => ({ cardInExile, index }))
     .filter(({ cardInExile }) => cardInExile.type !== "God");
   const isAlternative = state.pendingFriggChoice === "alternative" || isDiscarding;
-  els.friggChoiceEyebrow.textContent = "Frigg Power";
-  els.friggChoiceTitle.textContent = isDiscarding ? "Choose exactly 2 cards to discard" : "Choose one effect";
-  els.friggVikingsBtn.hidden = isAlternative || isThird;
-  els.friggAltDrawBtn.hidden = !isAlternative || isDiscarding;
+  els.friggChoiceDialog.classList.toggle("setup-mode", isSetup);
+  els.friggChoiceEyebrow.textContent = isSetup ? "Frigg Setup" : "Frigg Power";
+  els.friggChoiceTitle.textContent = isSetup ? "Choose 1 card to exile" : isDiscarding ? "Choose exactly 2 cards to discard" : "Choose one effect";
+  els.friggVikingsBtn.hidden = isSetup || isAlternative || isThird;
+  els.friggAltDrawBtn.hidden = isSetup || !isAlternative || isDiscarding;
   els.friggAltDiscardBtn.hidden = !isDiscarding;
   els.friggAltDiscardBtn.disabled = !isDiscarding || state.temp.friggDiscardIds.length !== 2;
-  els.friggExileChoices.innerHTML = isThird
+  els.friggExileChoices.innerHTML = isSetup
+    ? state.temp.friggSetupCards.map((setupCard) => `<button class="exile-choice setup-choice-card game-card type-${setupCard.type.toLowerCase()}" type="button" ${setupCard.type === "God" ? "disabled" : `data-frigg-setup="${setupCard.id}"`}>${cardHtml(setupCard, setupCard.cost)}</button>`).join("")
+    : isThird
     ? `
       <p class="eyebrow">Play from exile for free</p>
       ${availableCards.length
@@ -3565,6 +3597,8 @@ els.friggVikingsBtn.addEventListener("click", resolveFriggVikings);
 els.friggAltDrawBtn.addEventListener("click", startFriggAlternativeDraw);
 els.friggAltDiscardBtn.addEventListener("click", confirmFriggAlternativeDiscard);
 els.friggExileChoices.addEventListener("click", (event) => {
+  const setupTarget = event.target.closest("[data-frigg-setup]");
+  if (setupTarget) return resolveFriggSetup(setupTarget.dataset.friggSetup);
   const target = event.target.closest("[data-frigg-exile]");
   if (target) return resolveFriggExile(Number(target.dataset.friggExile));
   const thirdBanishTarget = event.target.closest("[data-frigg-third-banish]");
