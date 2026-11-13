@@ -80,15 +80,15 @@ const friggAlternativeDeck = [
 const friggThreeDeck = [
   card("frigg3-weaving", "Weaving the Future", "Event", "Destiny", 1, "", "Each time you banish a card, gain 1 additional Viking.", {}, {}),
   card("frigg3-belt", "Hlin's Belt", "Item", "Artefact", 2, "2 x majority square icon", "You may fight any visible Monster.", { fightAny: true }, { maxIcons: 2 }),
-  card("frigg3-hlin", "Hlin", "Character", null, 2, "4 x Artefact", "Gain 1 Viking, then 1 Viking per Artefact icon.", { gainFlat: 1, gainTag: "Artefact" }, { perTag: "Artefact", value: 4 }),
-  card("frigg3-prophecy", "Prophecy", "Event", "Destiny", 2, "3 VP", "Gain 1 Viking.", { gainFlat: 1 }, { fixed: 3 }),
+  card("frigg3-hlin", "Hlin", "Character", null, 2, "4 x Artefact", "Gain 1 Viking per Artefact icon.", { gainTag: "Artefact" }, { perTag: "Artefact", value: 4 }),
+  card("frigg3-prophecy", "Prophecy", "Event", "Destiny", 2, "", "Gain 1 Viking.", { gainFlat: 1 }, {}),
   card("frigg3-council", "Council of Queens", "Event", null, 3, "3 x Item", "Gain 1 Viking per banished card.", { gainBanished: true }, { perCardType: "Item", value: 3 }),
   card("frigg3-blessing", "Blessing", "Event", null, 4, "3 x majority card type", "Gain 1 Viking per card of your majority color.", { gainCardMajority: true }, { maxCardType: 3 }),
   card("frigg3-veil", "Veil of Destiny", "Item", "Destiny", 4, "3 x Character", "Gain 1 Viking per banished card.", { gainBanished: true }, { perCardType: "Character", value: 3 }),
-  card("frigg3-fulla", "Fulla", "Character", null, 0, "", "Discount 1 on Artefact icons.", { discountTypes: ["Artefact"] }, {}),
+  card("frigg3-fulla", "Fulla", "Character", null, 1, "2 VP", "Discount 1 on Artefact icons.", { discountTypes: ["Artefact"] }, { fixed: 2 }),
   card("frigg3-gna", "Gna", "Character", null, 3, "3 x Event", "Gain 1 Viking per banished card.", { gainBanished: true }, { perCardType: "Event", value: 3 }),
-  card("frigg3-ring", "Odin's Ring", "Item", "Artefact", 4, "3 x Destiny", "Gain 1 Viking, then 1 Viking per Destiny icon.", { gainFlat: 1, gainTag: "Destiny" }, { perTag: "Destiny", value: 3 }),
-  card("frigg3-key", "Palace Key", "Item", "Artefact", 2, "", "Reactivate your Mulligan.", { resetMulligan: true }, {}),
+  card("frigg3-ring", "Odin's Ring", "Item", "Artefact", 4, "3 x Destiny", "Gain 1 Viking per Destiny icon.", { gainTag: "Destiny" }, { perTag: "Destiny", value: 3 }),
+  card("frigg3-key", "Palace Key", "Item", "Artefact", 2, "", "No immediate effect.", {}, {}),
   card("frigg3-eir", "Eir", "Character", "Destiny", 2, "4 VP", "Gain 1 Viking.", { gainFlat: 1 }, { fixed: 4 }),
   card("frigg-3", "Frigg", "God", null, 0, "4 x majority card type", "God card: play 1 banished card in Valhalla for free, or gain 2 Vikings.", { god: true, friggChoice: true }, { maxCardType: 4 }),
 ];
@@ -168,7 +168,7 @@ const freyaDeck = [
 
 const freyaTwoDeck = [
   card("freya2-song", "Song of the Valkyries", "Event", null, 3, "2 x Warrior", "Discount 1 on Warrior icons. Gain 1 Viking per Warrior icon.", { discountTypes: ["Warrior"], gainTag: "Warrior" }, { perTag: "Warrior", value: 2 }),
-  card("freya2-hildr", "Hildr", "Character", "Warrior", 2, "2 x Monster set", "Discount 1 on Event cards. Gain 1 Viking.", { discountCardTypes: ["Event"], gainFlat: 1 }, { monsterSets: 2 }),
+  card("freya2-hildr", "Hildr", "Character", "Warrior", 2, "2 x Monster set", "Discount 1 on Event cards. No immediate effect.", { discountCardTypes: ["Event"] }, { monsterSets: 2 }),
   card("freya2-cat-a", "Cat", "Character", "Animal", 3, "3 x Item", "Discount 1 on Item cards. Gain 2 Vikings.", { gainFlat: 2, discountCardTypes: ["Item"] }, { perCardType: "Item", value: 3 }),
   freyaDeck.find((deckCard) => deckCard.id === "freya-char"),
   card("freya2-cat-b", "Cat", "Character", "Animal", 1, "1 x majority Monster type", "Gain Vikings equal to your majority icon count.", { gainMajority: true }, { maxMonsterType: 1 }),
@@ -179,7 +179,7 @@ const freyaTwoDeck = [
   freyaDeck.find((deckCard) => deckCard.id === "freya-skuld"),
   card("freya2-cloak", "Fjadrhamr", "Item", null, 2, "4 x Event", "Discount 1 on Beasts. No immediate effect.", { discountTypes: ["Beast"] }, { perCardType: "Event", value: 4 }),
   card("freya2-necklace", "Brisingamen", "Item", null, 1, "1 x Character", "Gain 3 Vikings minus Character cards.", { gainFlat: 3, losePerCardType: "Character" }, { perCardType: "Character", value: 1 }),
-  card("freya-2", "Freya", "God", null, 0, "5 x Monster set", "God card: reactivate your Mulligan, gain 2 Vikings, then activate the cumulative Character power: 1 Character gains 1 additional Viking, 2 Characters grant 1 additional fight, and 3 Characters let you fight any Monster.", { god: true, resetMulligan: true, gainFlat: 2, freyaTwoPower: true }, { monsterSets: 5 }),
+  card("freya-2", "Freya", "God", null, 0, "5 x Monster set", "God card: gain 1 Viking, then activate the cumulative Character power: 1 Character gains 1 additional Viking, 2 Characters grant 1 additional fight, and 3 Characters let you fight any Monster.", { god: true, gainFlat: 1, freyaTwoPower: true }, { monsterSets: 5 }),
 ];
 
 const CARD_UI = {
@@ -241,15 +241,15 @@ const CARD_UI = {
   "frigg-alternative": { ongoing: null, instant: { friggAlternativePower: true } },
   "frigg3-weaving": { ongoing: { exileBonus: 1 }, instant: null },
   "frigg3-belt": { ongoing: { discount: ["Artefact"] }, instant: { fightAny: true } },
-  "frigg3-hlin": { ongoing: null, instant: { gain: 1, gainTag: "Artefact" } },
+  "frigg3-hlin": { ongoing: null, instant: { gainTag: "Artefact" } },
   "frigg3-prophecy": { ongoing: { extraFight: 1 }, instant: { gain: 1 } },
   "frigg3-council": { ongoing: { discount: ["Beast"] }, instant: { gainBanished: true } },
   "frigg3-blessing": { ongoing: null, instant: { gainCardMajority: true } },
   "frigg3-veil": { ongoing: { discount: ["Undead"] }, instant: { gainBanished: true } },
   "frigg3-fulla": { ongoing: { discount: ["Artefact"] }, instant: null },
   "frigg3-gna": { ongoing: { discount: ["Giant"] }, instant: { gainBanished: true } },
-  "frigg3-ring": { ongoing: null, instant: { gain: 1, gainTag: "Destiny" } },
-  "frigg3-key": { ongoing: { discount: ["Giant", "Undead"] }, instant: { resetMulligan: true } },
+  "frigg3-ring": { ongoing: null, instant: { gainTag: "Destiny" } },
+  "frigg3-key": { ongoing: { discount: ["Giant", "Undead"] }, instant: null },
   "frigg3-eir": { ongoing: { discount: ["Beast"] }, instant: { gain: 1 } },
   "frigg-3": { ongoing: null, instant: { friggChoice: true } },
   "thor-magni": { ongoing: { discount: ["Undead"] }, instant: { gain: 1 } },
@@ -305,13 +305,13 @@ const CARD_UI = {
   "freya-necklace": { ongoing: null, instant: { gain: 2, minusCardType: "Character" } },
   freya: { ongoing: null, instant: { resetMulligan: true, gain: 2, freyaPower: true } },
   "freya2-song": { ongoing: { discount: ["Warrior"] }, instant: { gainTag: "Warrior" } },
-  "freya2-hildr": { ongoing: { cardDiscount: ["Event"] }, instant: { gain: 1 } },
+  "freya2-hildr": { ongoing: { cardDiscount: ["Event"] }, instant: null },
   "freya2-cat-a": { ongoing: { cardDiscount: ["Item"] }, instant: { gain: 2 } },
   "freya2-cat-b": { ongoing: null, instant: { gainMajority: true } },
   "freya2-tears": { ongoing: { discount: ["Giant"] }, instant: { gainCardType: "Item" } },
   "freya2-cloak": { ongoing: { discount: ["Beast"] }, instant: null },
   "freya2-necklace": { ongoing: null, instant: { gain: 3, minusCardType: "Character" } },
-  "freya-2": { ongoing: null, instant: { resetMulligan: true, gain: 2, freyaPower: true } },
+  "freya-2": { ongoing: null, instant: { gain: 1, freyaPower: true } },
 };
 
 const DECKS = {
